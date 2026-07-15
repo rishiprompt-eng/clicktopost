@@ -83,7 +83,6 @@
             </button>
         </header>
 
-        <!-- High Scores Stats Dashboard -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 fade-in text-xs font-mono">
             <div class="bg-slate-900/40 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between shadow-sm">
                 <span class="text-gray-500">🧱 TOWER MAX</span>
@@ -161,7 +160,6 @@
             <span class="text-xs text-gray-500">Optimizing core balance networks. Please re-trigger your generation request...</span>
         </div>
 
-        <!-- Unified Interactive Arcade Console HUD Layout Frame Block -->
         <section id="loading-state" class="hidden space-y-4 mb-6 fade-in">
             <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 relative overflow-hidden shadow-2xl">
                 
@@ -189,9 +187,7 @@
                     <div id="active-tab-title" class="text-xs font-mono font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/40 border border-indigo-900/30 px-3 py-1.5 rounded-xl">🧱 TOWER STACK MATCH</div>
                 </div>
 
-                <!-- Dual Column Grid Blueprint -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-                    <!-- Column 1: Game Screen (7 spans) -->
                     <div class="md:col-span-7 flex flex-col items-center">
                         <div class="relative w-full max-w-[400px] aspect-[4/3] bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col items-center justify-center shadow-inner">
                             <canvas id="arcadeCanvas" width="400" height="300" class="w-full h-full block"></canvas>
@@ -200,15 +196,13 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Column 2: Leaderboard HUD (5 spans) -->
                     <div class="md:col-span-5 bg-slate-950/80 border border-slate-800/60 p-4 rounded-xl shadow-inner flex flex-col min-h-[300px]">
                         <div class="text-xs font-mono font-bold text-gray-400 border-b border-slate-900 pb-2 mb-3 flex items-center justify-between">
                             <span>🏆 GLOBAL RANKINGS</span>
                             <button type="button" id="toggle-combined-leaderboard" class="text-[10px] text-indigo-400 font-bold uppercase bg-indigo-950/60 px-2 py-0.5 border border-indigo-900/30 rounded-md cursor-pointer hover:bg-indigo-900/80 transition-colors">Show Combined</button>
                         </div>
                         <div id="leaderboard-rows-container" class="space-y-1.5 text-xs font-mono flex-1 overflow-y-auto pr-1">
-                            <!-- Populated dynamically via JS state hooks -->
-                        </div>
+                            </div>
                     </div>
                 </div>
                 
@@ -218,7 +212,6 @@
             </div>
         </section>
 
-        <!-- Formatting Filters Switchboard Toolbar Panel -->
         <div id="master-toolbar" class="hidden flex flex-col gap-3 sm:flex-row justify-between sm:items-center mb-6 fade-in bg-slate-900/40 backdrop-blur-md border border-slate-800 p-4 rounded-xl shadow-lg">
             <div class="flex flex-wrap items-center gap-3">
                 <span class="text-xs font-mono text-gray-400 block sm:inline">⚡ FORMAT FILTERS:</span>
@@ -234,7 +227,6 @@
         <section id="output-container" class="space-y-6"></section>
     </div>
 
-    <!-- Storage Drawer Sector -->
     <div id="vault-drawer" class="hidden fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex justify-end transition-all">
         <div class="bg-slate-900 border-l border-slate-800 w-full max-w-md h-full flex flex-col p-6 shadow-2xl overflow-hidden">
             <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-4">
@@ -245,7 +237,6 @@
         </div>
     </div>
 
-    <!-- Phone Simulator Preview Modal Box -->
     <div id="preview-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 fade-in">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-sm overflow-hidden flex flex-col max-h-[90vh] shadow-2xl">
             <div class="p-4 border-b border-slate-900 flex justify-between items-center bg-slate-950">
@@ -262,13 +253,16 @@
                 </div>
                 <div id="modal-hook-zone" class="whitespace-pre-wrap leading-[1.4] tracking-normal break-words font-sans text-[14px] text-gray-900"></div>
                 <div class="hook-cutoff-line"><span class="hook-cutoff-badge">LinkedIn "...See More" Cutoff</span></div>
-                <div id="modal-body-zone" class="whitespace-pre-wrap stroke-slate-200 leading-[1.4] tracking-normal break-words font-sans text-[14px] text-gray-900"></div>
+                <div id="modal-body-zone" class="whitespace-pre-wrap leading-[1.4] tracking-normal break-words font-sans text-[14px] text-gray-900"></div>
             </div>
         </div>
     </div>
 
     <script>
         const N8N_WEBHOOK_URL = 'https://imperfect-sustained-jump.ngrok-free.dev/webhook/repurpose-video';
+        
+        // INTEGRATED OFFICIAL LIVE DEPLOYMENT DOMAIN ROUTING FALLBACK KEY
+        const PRODUCTION_SITE_URL = 'https://clicktopost.vercel.app/';
 
         localStorage.removeItem('clipToPost_clicks');
 
@@ -941,14 +935,14 @@
             );
         });
 
-        // FIXED LINKEDIN HIGH-VIBE CASUAL COPIER ENGINE
+        // FIXED LINKEDIN HIGH-VIBE CASUAL COPIER ENGINE WITH PRE-CONFIGURED DEPLOYMENT URL LINK
         bragBtn.addEventListener('click', () => {
             let sMax = parseInt(localStorage.getItem('clipToPost_best_stack') || '0', 10);
             let dMax = parseInt(localStorage.getItem('clipToPost_best_dash') || '0', 10);
             let fMax = parseInt(localStorage.getItem('clipToPost_best_fusion') || '0', 10);
             let totalBragValue = sMax + dMax + fMax;
             
-            let casualBragPayload = `okay wait... this is actually insane. 💀\n\nI tried using ClipToPost to turn a YouTube video into some LinkedIn posts. The AI literally finished generating 3 variants in under 60 seconds. Fast as hell.\n\nBUT the dev put a live retro arcade game room right inside the loading screen while you wait... and I am completely trapped.\n\nMy productivity is cooked. I'm currently sitting at a ${totalBragValue} combined high score (${sMax} Stack / ${dMax} Runner / ${fMax} Breaker).\n\nGo drop a video link in it and see if you can beat me: [YOUR_WEBSITE_LINK]\n\nSeriously, the product build is legendary. Let me know your scores below.`;
+            let casualBragPayload = `okay wait... this is actually insane. 💀\n\nI tried using ClipToPost to turn a YouTube video into some LinkedIn posts. The AI literally finished generating 3 variants in under 60 seconds. Fast as hell.\n\nBUT the dev put a live retro arcade game room right inside the loading screen while you wait... and I am completely trapped.\n\nMy productivity is cooked. I'm currently sitting at a ${totalBragValue} combined high score (${sMax} Stack / ${dMax} Runner / ${fMax} Breaker).\n\nGo drop a video link in it and see if you can beat me: ${PRODUCTION_SITE_URL}\n\nSeriously, the product build is legendary. Let me know your scores below.`;
             
             executeClipboardWrite(casualBragPayload,
                 () => {
