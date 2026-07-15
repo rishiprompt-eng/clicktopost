@@ -83,6 +83,7 @@
             </button>
         </header>
 
+        <!-- High Scores Stats Dashboard -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 fade-in text-xs font-mono">
             <div class="bg-slate-900/40 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between shadow-sm">
                 <span class="text-gray-500">🧱 TOWER MAX</span>
@@ -103,8 +104,15 @@
         </div>
 
         <main class="bg-slate-900/40 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 shadow-2xl glow-effect mb-6 fade-in">
-            <div id="rate-limit-warning" class="hidden mb-4 p-4 bg-amber-950/30 border border-amber-800/60 rounded-xl text-amber-300 text-sm font-light">
-                ⚠️ <strong>Daily Evaluation Cap Reached!</strong> Upgrade to the ultimate creator plan to remove pipeline execution limits entirely.
+            <div id="rate-limit-warning" class="hidden mb-6 p-6 bg-indigo-950/40 border border-indigo-500/30 rounded-2xl fade-in">
+                <div class="text-center max-w-md mx-auto">
+                    <span class="text-2xl block mb-2">🛑</span>
+                    <h3 class="text-lg font-bold text-white mb-1">Free Generation Limit Reached</h3>
+                    <p class="text-xs text-gray-400 mb-4">You've consumed your 3 free credits. Upgrade now to get unlimited pipeline generations and unlock executive copywriting formats.</p>
+                    <a href="https://clicktopost.vercel.app/" class="inline-block bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-mono text-xs font-bold px-6 py-2.5 rounded-xl transition-all shadow-md active:scale-95">
+                        ⚡ UNLOCK UNLIMITED ACCELERATION
+                    </a>
+                </div>
             </div>
 
             <div class="space-y-4">
@@ -121,7 +129,7 @@
                         id="submit-btn"
                         class="bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-semibold px-8 py-3.5 rounded-xl text-base transition-all shadow-lg shadow-indigo-600/10 active:scale-[0.98] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                     >
-                        Generate Posts
+                        Generate Posts (<span id="credit-counter">3</span> Left)
                     </button>
                 </div>
 
@@ -160,6 +168,7 @@
             <span class="text-xs text-gray-500">Optimizing core balance networks. Please re-trigger your generation request...</span>
         </div>
 
+        <!-- Unified Interactive Arcade Console HUD Layout Frame Block -->
         <section id="loading-state" class="hidden space-y-4 mb-6 fade-in">
             <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 relative overflow-hidden shadow-2xl">
                 
@@ -187,7 +196,9 @@
                     <div id="active-tab-title" class="text-xs font-mono font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/40 border border-indigo-900/30 px-3 py-1.5 rounded-xl">🧱 TOWER STACK MATCH</div>
                 </div>
 
+                <!-- Dual Column Grid Blueprint -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+                    <!-- Column 1: Game Screen (7 spans) -->
                     <div class="md:col-span-7 flex flex-col items-center">
                         <div class="relative w-full max-w-[400px] aspect-[4/3] bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col items-center justify-center shadow-inner">
                             <canvas id="arcadeCanvas" width="400" height="300" class="w-full h-full block"></canvas>
@@ -196,13 +207,15 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Column 2: Leaderboard HUD (5 spans) -->
                     <div class="md:col-span-5 bg-slate-950/80 border border-slate-800/60 p-4 rounded-xl shadow-inner flex flex-col min-h-[300px]">
                         <div class="text-xs font-mono font-bold text-gray-400 border-b border-slate-900 pb-2 mb-3 flex items-center justify-between">
                             <span>🏆 GLOBAL RANKINGS</span>
                             <button type="button" id="toggle-combined-leaderboard" class="text-[10px] text-indigo-400 font-bold uppercase bg-indigo-950/60 px-2 py-0.5 border border-indigo-900/30 rounded-md cursor-pointer hover:bg-indigo-900/80 transition-colors">Show Combined</button>
                         </div>
                         <div id="leaderboard-rows-container" class="space-y-1.5 text-xs font-mono flex-1 overflow-y-auto pr-1">
-                            </div>
+                            <!-- Populated dynamically via JS state hooks -->
+                        </div>
                     </div>
                 </div>
                 
@@ -212,6 +225,7 @@
             </div>
         </section>
 
+        <!-- Formatting Filters Switchboard Toolbar Panel -->
         <div id="master-toolbar" class="hidden flex flex-col gap-3 sm:flex-row justify-between sm:items-center mb-6 fade-in bg-slate-900/40 backdrop-blur-md border border-slate-800 p-4 rounded-xl shadow-lg">
             <div class="flex flex-wrap items-center gap-3">
                 <span class="text-xs font-mono text-gray-400 block sm:inline">⚡ FORMAT FILTERS:</span>
@@ -227,6 +241,7 @@
         <section id="output-container" class="space-y-6"></section>
     </div>
 
+    <!-- Storage Drawer Sector -->
     <div id="vault-drawer" class="hidden fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex justify-end transition-all">
         <div class="bg-slate-900 border-l border-slate-800 w-full max-w-md h-full flex flex-col p-6 shadow-2xl overflow-hidden">
             <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-4">
@@ -237,6 +252,7 @@
         </div>
     </div>
 
+    <!-- Phone Simulator Preview Modal Box -->
     <div id="preview-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 fade-in">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-sm overflow-hidden flex flex-col max-h-[90vh] shadow-2xl">
             <div class="p-4 border-b border-slate-900 flex justify-between items-center bg-slate-950">
@@ -260,14 +276,11 @@
 
     <script>
         const N8N_WEBHOOK_URL = 'https://imperfect-sustained-jump.ngrok-free.dev/webhook/repurpose-video';
-        
-        // INTEGRATED OFFICIAL LIVE DEPLOYMENT DOMAIN ROUTING FALLBACK KEY
         const PRODUCTION_SITE_URL = 'https://clicktopost.vercel.app/';
-
-        localStorage.removeItem('clipToPost_clicks');
 
         const urlInput = document.getElementById('youtube-url');
         const submitBtn = document.getElementById('submit-btn');
+        const creditCounter = document.getElementById('credit-counter');
         const loadingState = document.getElementById('loading-state');
         const outputContainer = document.getElementById('output-container');
         const warningBanner = document.getElementById('rate-limit-warning');
@@ -314,7 +327,6 @@
 
         const TARGET_LEADERBOARD_RECORDS = { stack: 1500, dash: 1200, fusion: 2500 };
 
-        // Realtime Global Leaderboard Dataset Seed Matrix Array
         const GLOBAL_CREATORS_LEADERBOARD = [
             { name: "Justin Welsh", stack: 1400, dash: 1100, fusion: 2400 },
             { name: "Sahil Bloom", stack: 1200, dash: 950, fusion: 2150 },
@@ -766,11 +778,19 @@
 
         cleanModeToggle.addEventListener('change', () => renderInterfaceAssets(boomerFontToggle.checked));
 
+        // HARD FIXED TO 3 TOTAL ALLOTED GENERATIONS TOTAL
         function checkUsageLimits() {
             const usageCount = parseInt(localStorage.getItem('clipToPost_clicks') || '0', 10);
-            if (usageCount >= 10) {
-                urlInput.disabled = true; submitBtn.disabled = true;
-                warningBanner.classList.remove('hidden'); return false;
+            const remaining = Math.max(0, 3 - usageCount);
+            
+            creditCounter.textContent = remaining;
+
+            if (usageCount >= 3) {
+                urlInput.disabled = true; 
+                submitBtn.disabled = true;
+                submitBtn.textContent = "Cap Reached";
+                warningBanner.classList.remove('hidden'); 
+                return false;
             }
             return true;
         }
@@ -935,7 +955,6 @@
             );
         });
 
-        // FIXED LINKEDIN HIGH-VIBE CASUAL COPIER ENGINE WITH PRE-CONFIGURED DEPLOYMENT URL LINK
         bragBtn.addEventListener('click', () => {
             let sMax = parseInt(localStorage.getItem('clipToPost_best_stack') || '0', 10);
             let dMax = parseInt(localStorage.getItem('clipToPost_best_dash') || '0', 10);
