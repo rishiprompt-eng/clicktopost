@@ -44,7 +44,6 @@
             pointer-events: none !important;
         }
         
-        /* Eliminate outline border highlighting on canvas focus */
         #arcadeCanvas:focus { outline: none !important; }
     </style>
 </head>
@@ -56,7 +55,7 @@
                 <h1 class="text-4xl md:text-5xl font-black tracking-tight text-white">ClipToPost</h1>
             </div>
             <div class="flex items-center gap-3">
-                <div id="user-profile-badge" class="hidden flex items-center gap-2 bg-slate-900/60 border border-slate-800 px-3 py-1.5 rounded-xl">
+                <div id="user-profile-badge" class="hidden flex items-center gap-2 bg-slate-900/60 border border-slate-800/80 px-3 py-1.5 rounded-xl">
                     <img id="user-avatar" src="" class="w-5 h-5 rounded-full border border-indigo-500/50" alt="Avatar">
                     <span id="user-name-label" class="text-xs font-mono text-gray-300 truncate max-w-[100px]">Operator</span>
                 </div>
@@ -237,7 +236,6 @@
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
                     <div class="md:col-span-7 flex flex-col items-center">
                         <div class="relative w-full max-w-[400px] aspect-[4/3] bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col items-center justify-center shadow-inner">
-                            <!-- ADDED attribute tabindex="0" to allow direct programmatic browser focusing -->
                             <canvas id="arcadeCanvas" width="400" height="300" class="w-full h-full block" tabindex="0"></canvas>
                             <div id="arcade-controls" class="absolute bottom-2 text-[10px] text-gray-400 font-mono bg-gray-900/90 px-3 py-1 rounded-full pointer-events-none tracking-wide border border-slate-800">
                                 Press SPACE to Drop Block Perfectly
@@ -457,7 +455,6 @@
         window.addEventListener('keydown', e => { 
             if(document.activeElement.tagName === 'INPUT') return;
             
-            // Capture game keys and forcefully prevent page scroll or space latch failures
             if([32, 37, 38, 39, 40].includes(e.keyCode)) {
                 e.preventDefault(); 
                 e.stopPropagation();
@@ -479,7 +476,6 @@
 
         const canvas = document.getElementById('arcadeCanvas'); const ctx = canvas.getContext('2d');
 
-        // Automatically bind mouse and programmatic click focus triggers directly onto the canvas block element
         canvas.addEventListener('mouseenter', () => canvas.focus());
         canvas.addEventListener('click', () => canvas.focus());
 
@@ -527,9 +523,10 @@
             stackLayers = [{ x: 125, y: 250, w: 150, h: 25, color: '#6366f1' }];
             currentBlock = { x: 0, y: 225, w: 150, h: 25, dir: 1 }; blockSpeed = 3.8;
             drawLeaderboardStandings('stack', isViewingCombinedLeaderboard);
-            setTimeout(() => canvas.focus(), 10); // Native input focus lock
+            setTimeout(() => canvas.focus(), 10);
         }
         function updateStack() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); 
             if (towerGameOver) { 
                 ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
                 ctx.fillText("CRASHED! SELECT ANOTHER TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return; 
@@ -551,7 +548,7 @@
             }
         }
 
-        // CYBER RUNNER HIGH-CONTRAST NEON ARRAYS
+        // CYBER RUNNER - HARDWARE OPTIMIZED HIGH-PERFORMANCE RENDERING
         let runnerX = 200; let runnerLane = 1; let runnerObstacles = []; let runnerFrame = 0; let runnerGameOver = false;
         function initDash() {
             score = 0; scoreDisplay.textContent = score; runnerGameOver = false;
@@ -563,6 +560,8 @@
             setTimeout(() => canvas.focus(), 10);
         }
         function updateDash() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); 
+            
             if (runnerGameOver) {
                 ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
                 ctx.fillText("SYSTEM DEFUNCT! CHOOSE TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return;
@@ -581,13 +580,22 @@
                 runnerObstacles.push({ lane: spawnLane, y: -35, speed: 7 + (score / 350), processed: false, wasTargetingPlayer: (spawnLane === runnerLane) }); 
             }
             
-            ctx.shadowBlur = 20; ctx.shadowColor = '#00ffff'; ctx.fillStyle = '#00f5ff';
-            ctx.beginPath(); ctx.moveTo(runnerX, 230); ctx.lineTo(runnerX - 18, 265); ctx.lineTo(runnerX + 18, 265); ctx.closePath(); ctx.fill(); ctx.shadowBlur = 0;
+            // EXACT MATCH: Translucent Blue-Glow Space Fighter Casing Structure
+            ctx.shadowBlur = 20; ctx.shadowColor = '#5c92ff'; ctx.fillStyle = '#3b82f6';
+            ctx.beginPath(); ctx.moveTo(runnerX, 240); ctx.lineTo(runnerX - 15, 265); ctx.lineTo(runnerX + 15, 265); ctx.closePath(); ctx.fill();
+            
+            // Inner neon accent element mapping
+            ctx.fillStyle = '#93c5fd'; ctx.beginPath(); ctx.moveTo(runnerX, 246); ctx.lineTo(runnerX - 7, 262); ctx.lineTo(runnerX + 7, 262); ctx.closePath(); ctx.fill(); ctx.shadowBlur = 0;
 
             for (let i = runnerObstacles.length - 1; i >= 0; i--) {
                 let obs = runnerObstacles[i]; obs.y += obs.speed; let obsX = (obs.lane * 133) + 66;
-                ctx.shadowBlur = 25; ctx.shadowColor = '#ff007f'; ctx.fillStyle = '#ff0055'; 
-                ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 14, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
+                
+                // EXACT MATCH: Neon Crimson Outer Heat Shield Corona Base
+                ctx.shadowBlur = 30; ctx.shadowColor = '#ff3b3b'; ctx.fillStyle = '#ef4444'; 
+                ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 14, 0, Math.PI * 2); ctx.fill();
+                
+                // Pure white hyper-dense compression core dot
+                ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 5, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
                 
                 if (!obs.processed && obs.y > 210 && obs.y < 260 && obs.lane === runnerLane) { 
                     obs.processed = true; score -= 10; if (score <= 0) { score = 0; runnerGameOver = true; }
@@ -611,6 +619,7 @@
             setTimeout(() => canvas.focus(), 10);
         }
         function updateFusion() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); 
             if (fusionGameOver) {
                 ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
                 ctx.fillText("GAME OVER! CHOOSE ANOTHER TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return;
@@ -630,7 +639,7 @@
         }
 
         function runMasterLoop() {
-            if (!gameActive) return; ctx.fillStyle = '#020617'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            if (!gameActive) return; 
             if (currentActiveGame === 'stack') updateStack(); else if (currentActiveGame === 'dash') updateDash(); else if (currentActiveGame === 'fusion') updateFusion();
             gameLoopId = requestAnimationFrame(runMasterLoop);
         }
@@ -810,7 +819,6 @@
             executeClipboardWrite(masterTextString, () => { alert('All Variants Copied!'); }, () => {});
         });
 
-        // FIXED: DYNAMICALLY RE-INJECTED BRAG SCRIPT STRINGS
         bragBtn.addEventListener('click', () => {
             let sMax = parseInt(localStorage.getItem('clipToPost_best_stack') || '0', 10);
             let dMax = parseInt(localStorage.getItem('clipToPost_best_dash') || '0', 10);
@@ -838,7 +846,6 @@
             submitBtn.disabled = true; urlInput.disabled = true;
             loadingState.classList.remove('hidden'); outputContainer.innerHTML = ''; masterToolbar.classList.add('hidden'); failoverDeck.classList.add('hidden');
             
-            // Clean DOM element selection target focus prior to loading game initialization loops
             document.activeElement.blur();
             triggerGameSwap('stack');
 
@@ -867,17 +874,32 @@
 
                 if (!response.ok) throw new Error("Fault.");
                 const data = await response.json();
-                const rawOutputText = data.output || data.text || '';
+                
+                // Fixed: Explicit safety parameters mapping down to incoming payload context configurations
+                const rawOutputText = data.output || data.text || (Array.isArray(data) ? (data[0]?.output || data[0]?.text) : '') || '';
+                if (!rawOutputText) throw new Error("Empty text payload structure returned.");
+                
                 const postsArray = rawOutputText.split('===NEXT_POST===').filter(post => post.trim().length > 0);
                 
                 localStorage.setItem('clipToPost_clicks', parseInt(localStorage.getItem('clipToPost_clicks') || '0', 10) + 1);
                 pushToVaultCaches(postsArray);
 
                 activeGenerationDataset = postsArray.map(rawText => {
-                    return { fullText: rawText.trim(), cleanText: rawText.trim(), isHashtagHidden: false, isEmojiHidden: false, isHookManuallyOptimized: false };
+                    const trimmed = rawText.trim();
+                    const hashtagIndex = trimmed.search(/#[a-zA-Z0-9]+/);
+                    return { 
+                        fullText: trimmed, 
+                        cleanText: hashtagIndex !== -1 ? trimmed.substring(0, hashtagIndex).trim() : trimmed, 
+                        isHashtagHidden: false, 
+                        isEmojiHidden: false 
+                    };
                 });
                 masterToolbar.classList.remove('hidden'); renderInterfaceAssets(boomerFontToggle.checked);
-            } catch (err) { failoverDeck.classList.remove('hidden'); }
+            } catch (err) { 
+                console.error(err);
+                alert(`Pipeline Error: ${err.message}`);
+                failoverDeck.classList.remove('hidden'); 
+            }
             finally {
                 gameActive = false; loadingState.classList.add('hidden'); submitBtn.disabled = false; urlInput.disabled = false;
                 checkUsageLimits(); updateVaultCounter();
