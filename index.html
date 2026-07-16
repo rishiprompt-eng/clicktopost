@@ -153,7 +153,7 @@
             <div class="p-4 bg-slate-950 border border-slate-800/80 rounded-xl max-w-xl mx-auto mb-6 text-left shadow-inner">
                 <label class="flex items-start cursor-pointer text-xs font-mono text-gray-400 select-none">
                     <input type="checkbox" id="global-legal-gate" onchange="evaluateInterfaceSecurityGate()" class="rounded border-slate-800 bg-slate-950 text-indigo-600 focus:ring-0 focus:ring-offset-0 mr-3 mt-0.5 w-4 h-4 cursor-pointer">
-                    <span>I agree to the Master Access Covenant framework in Hyderabad, India.</span>
+                    <span>I agree to the Master Access Covenant framework.</span>
                 </label>
             </div>
         </div>
@@ -171,7 +171,7 @@
                     <div class="text-[11px] text-gray-400 font-mono tracking-wider flex items-center gap-3 justify-between sm:justify-end">
                         <div>SCORE: <span id="game-score" class="text-white font-bold">0</span></div>
                         <div class="text-indigo-400 border-l border-slate-800 pl-3">BEST: <span id="current-game-best" class="font-bold">0</span></div>
-                        <div class="text-amber-400 border-l border-slate-800 pl-3">TARGET: <span id="leaderboard-top-score" class="font-bold">1500</span></div>
+                        <div class="text-amber-400 border-l border-slate-800 pl-3">TARGET: <span id="leaderboard-top-score" class="font-bold">5000</span></div>
                     </div>
                 </div>
 
@@ -181,7 +181,6 @@
                         <button type="button" id="btn-dash" class="game-tab-btn flex-1 sm:flex-none px-3 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer text-gray-500 hover:text-gray-300">⚡ RUNNER</button>
                         <button type="button" id="btn-fusion" class="game-tab-btn flex-1 sm:flex-none px-3 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer text-gray-500 hover:text-gray-300">🧩 BREAKER</button>
                     </div>
-                    <div id="active-tab-title" class="hidden sm:block text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/40 border border-indigo-900/30 px-3 py-1.5 rounded-xl">🧱 TOWER STACK MATCH</div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
@@ -201,7 +200,7 @@
                 
                 <div class="mt-4 flex flex-col sm:flex-row gap-3 justify-center items-center">
                     <button type="button" id="attempt-sandbox-mode-btn" class="w-full sm:w-auto bg-slate-950 border border-slate-800 text-gray-300 hover:text-white font-mono text-[11px] px-4 py-2.5 rounded-xl transition-all font-bold shadow-md cursor-pointer uppercase tracking-wider">
-                        操控 Play Sandbox Mode
+                        🎮 Play Sandbox Mode
                     </button>
                     <button type="button" id="attempt-free-credit-btn" class="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-mono text-[11px] px-4 py-2.5 rounded-xl transition-all font-black shadow-md cursor-pointer uppercase tracking-wider">
                         🔥 Attempt Credit Trial (5k)
@@ -238,55 +237,15 @@
         </div>
     </div>
 
-    <div id="preview-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 fade-in">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-sm overflow-hidden flex flex-col max-h-[90vh] shadow-2xl">
-            <div class="p-4 border-b border-slate-900 flex justify-between items-center bg-slate-950">
-                <div class="text-xs font-mono tracking-wider font-bold text-indigo-400 uppercase">📱 Simulated Feed View</div>
-                <button id="close-modal-btn" class="text-gray-400 hover:text-white transition-all text-sm cursor-pointer font-bold">✕ Close</button>
-            </div>
-            <div class="p-4 bg-white text-gray-900 overflow-y-auto preview-scroll flex-1 font-sans text-[14px]">
-                <div class="flex items-center gap-2.5 mb-3">
-                    <div class="w-10 h-10 rounded-full bg-gray-200 border border-gray-300 flex items-center justify-center text-gray-400 font-bold text-sm select-none">👤</div>
-                    <div>
-                        <div class="font-bold text-[14px] text-gray-900 leading-tight">Elite Content Creator</div>
-                    </div>
-                </div>
-                <div id="modal-hook-zone" class="whitespace-pre-wrap leading-[1.4] tracking-normal break-words font-sans text-[14px] text-gray-900"></div>
-                <div class="hook-cutoff-line"><span class="hook-cutoff-badge">LinkedIn "...See More" Cutoff</span></div>
-                <div id="modal-body-zone" class="whitespace-pre-wrap leading-[1.4] tracking-normal break-words font-sans text-[14px] text-gray-900"></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="legal-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 99999; overflow-y: auto; padding: 40px 0; box-sizing: border-box;">
-        <div style="background: #ffffff; border: 1px solid #e1e4e8; border-radius: 8px; padding: 40px; max-width: 750px; margin: 0 auto; box-shadow: 0 4px 24px rgba(0,0,0,0.15); position: relative; font-family: sans-serif; color: #333333;">
-            <button style="position: absolute; top: 20px; right: 20px; background: #f1f3f5; border: none; padding: 8px 14px; border-radius: 4px; font-weight: bold; cursor: pointer; color: #495057;" onclick="toggleLegalModal(false)">✕ Close</button>
-            <h1 style="font-size: 22px; border-bottom: 2px solid #eaecef; padding-bottom: 12px; color: #111; text-align: center; margin-top: 10px; font-weight: bold;">TERMS OF SERVICE AND PLATFORM ACCESS AGREEMENT</h1>
-            <p style="font-size: 13.5px; text-align: justify; line-height: 1.6; margin-bottom: 10px;"><strong>1.1 Governing Law:</strong> Locked seat jurisdiction in Hyderabad, India.</p>
-        </div>
-    </div>
-
     <script>
-        const RAZORPAY_SOLO_URL   = 'https://rzp.io/rzp/ERdjInlT';
-        const RAZORPAY_AGENCY_URL = 'https://rzp.io/rzp/kK3urmV';
-        
-        // TIED TO YOUR NEW UNLIMITED FREE CLOUDFLARE QUICK TUNNEL
-        const N8N_WEBHOOK_URL = 'https://journal-counties-clips-comparative.trycloudflare.com/webhook/repurpose-video';
-        
-        const PRODUCTION_SITE_URL = 'https://clicktopost.vercel.app/';
         const GOOGLE_CLIENT_ID = '1065350715296-mjiaqmhjtpdvo58jf71mabrek92rj3jv.apps.googleusercontent.com';
         
-        const IMMUTABLE_BASE_ANCHOR = "c2p_7f9a2e3b1c8d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f";
-
         let authenticatedUserContext = null;
-
         const urlInput = document.getElementById('youtube-url');
         const submitBtn = document.getElementById('submit-btn');
         const creditCounter = document.getElementById('credit-counter');
-        const loadingState = document.getElementById('loading-state');
         const outputContainer = document.getElementById('output-container');
         const warningBanner = document.getElementById('rate-limit-warning');
-        const statusText = document.getElementById('status-text');
         const scoreDisplay = document.getElementById('game-score');
         const currentBestDisplay = document.getElementById('current-game-best');
         const leaderboardTopDisplay = document.getElementById('leaderboard-top-score');
@@ -299,49 +258,36 @@
         const sandboxModeBtn = document.getElementById('attempt-sandbox-mode-btn');
         const statusBanner = document.getElementById('pipeline-status-banner');
         const statusMessage = document.getElementById('pipeline-status-message');
-        
-        const modal = document.getElementById('preview-modal');
-        const modalHookZone = document.getElementById('modal-hook-zone');
-        const modalBodyZone = document.getElementById('modal-body-zone');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-
+        const btnStack = document.getElementById('btn-stack');
+        const btnDash = document.getElementById('btn-dash');
+        const btnFusion = document.getElementById('btn-fusion');
         const vaultDrawer = document.getElementById('vault-drawer');
         const vaultItemsContainer = document.getElementById('vault-items-container');
         const vaultTriggerBtn = document.getElementById('vault-trigger-btn');
         const vaultCounterBadge = document.getElementById('vault-counter-badge');
         const closeVaultBtn = document.getElementById('close-vault-btn');
-
         const filterDouble = document.getElementById('filter-double');
         const filterCaps = document.getElementById('filter-caps');
         const filterBullets = document.getElementById('filter-bullets');
-
-        const btnStack = document.getElementById('btn-stack');
-        const btnDash = document.getElementById('btn-dash');
-        const btnFusion = document.getElementById('btn-fusion');
 
         let currentActiveGame = 'stack';
         let gameLoopId = null; let score = 0; let gameActive = false; let keys = {};
         let spaceLatch = false;
         let activeGenerationDataset = [];
-
         let isDoubleSpaced = false;
         let isHookCapitalized = false;
         let isBulletCleaned = false;
         let isViewingCombinedLeaderboard = false;
         let generatedFingerprint = "pending";
-
         let isFreeCreditTrialRunActive = false;
         let screenshake = 0;
         let particles = [];
 
         const TARGET_LEADERBOARD_RECORDS = { stack: 1500, dash: 1200, fusion: 2500 };
-
         const GLOBAL_CREATORS_LEADERBOARD = [
             { name: "Justin Welsh", stack: 1400, dash: 1100, fusion: 2400 },
             { name: "Sahil Bloom", stack: 1200, dash: 950, fusion: 2150 },
-            { name: "Alex Hormozi", stack: 1100, dash: 800, fusion: 1900 },
-            { name: "Tim Ferriss", stack: 900, dash: 650, fusion: 1600 },
-            { name: "Ship 30 Captain", stack: 700, dash: 450, fusion: 1100 }
+            { name: "Alex Hormozi", stack: 1100, dash: 800, fusion: 1900 }
         ];
 
         function parseGoogleIdentityToken(token) {
@@ -355,55 +301,31 @@
         function onGoogleIdentityAuthSuccess(response) {
             const claims = parseGoogleIdentityToken(response.credential);
             if (!claims) return;
-            
-            authenticatedUserContext = {
-                uid: claims.sub,
-                email: claims.email,
-                name: claims.name,
-                picture: claims.picture,
-                rawIdentityJwt: response.credential
-            };
-
+            authenticatedUserContext = { uid: claims.sub, email: claims.email, name: claims.name, picture: claims.picture, rawIdentityJwt: response.credential };
             document.getElementById('authentication-barrier').classList.add('hidden');
-            const generationDeck = document.getElementById('interactive-generation-deck');
-            generationDeck.classList.remove('opacity-30', 'pointer-events-none');
-
+            document.getElementById('interactive-generation-deck').classList.remove('opacity-30', 'pointer-events-none');
             document.getElementById('user-avatar').setAttribute('src', authenticatedUserContext.picture);
             document.getElementById('user-name-label').textContent = authenticatedUserContext.name;
             document.getElementById('user-profile-badge').classList.remove('hidden');
-
             checkUsageLimits();
         }
 
-        const canvas = document.getElementById('arcadeCanvas'); 
-        const ctx = canvas.getContext('2d');
-
+        const canvas = document.getElementById('arcadeCanvas'); const ctx = canvas.getContext('2d');
         window.addEventListener('load', function () {
             if(GOOGLE_CLIENT_ID !== 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com') {
-                google.accounts.id.initialize({
-                    client_id: GOOGLE_CLIENT_ID,
-                    callback: onGoogleIdentityAuthSuccess
-                });
-                google.accounts.id.renderButton(
-                    document.getElementById("google-auth-btn-render-target"),
-                    { theme: "filled_dark", size: "large", width: "240" }
-                );
+                google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: onGoogleIdentityAuthSuccess });
+                google.accounts.id.renderButton(document.getElementById("google-auth-btn-render-target"), { theme: "filled_dark", size: "large", width: "240" });
             }
-            gameActive = true;
-            triggerGameSwap('stack');
-            runMasterLoop();
+            gameActive = true; triggerGameSwap('stack'); runMasterLoop();
         });
 
         async function constructDeviceFingerprint() {
             try {
-                const canvasEngine = document.createElement('canvas');
-                const canvasCtx = canvasEngine.getContext('2d');
+                const canvasEngine = document.createElement('canvas'); const canvasCtx = canvasEngine.getContext('2d');
                 canvasCtx.textBaseline = "top"; canvasCtx.font = "14px 'Arial'"; canvasCtx.fillStyle = "#f60";
-                canvasCtx.fillRect(125,1,62,20); canvasCtx.fillStyle = "#069";
-                canvasCtx.fillText("ClipToPost_Core_Secure_Token_V3", 2, 15);
+                canvasCtx.fillRect(125,1,62,20); canvasCtx.fillStyle = "#069"; canvasCtx.fillText("ClipToPost_Core_Secure_Token_V3", 2, 15);
                 const baselineDataUri = canvasEngine.toDataURL();
-                
-                const rawFeaturesString = [baselineDataUri, navigator.userAgent, screen.width + "x" + screen.height, new Date().getTimezoneOffset(), navigator.hardwareConcurrency || 4].join('||');
+                const rawFeaturesString = [baselineDataUri, navigator.userAgent, screen.width + "x" + screen.height, new Date().getTimezoneOffset()].join('||');
                 const dataBuffer = new TextEncoder().encode(rawFeaturesString);
                 const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
                 generatedFingerprint = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
@@ -419,93 +341,48 @@
                 else if(normalizedX > 266) { keys[39] = true; keys[37] = false; }
             }
         }, { passive: true });
-
         canvas.addEventListener('touchend', () => { keys[37] = false; keys[39] = false; });
 
         window.addEventListener('keydown', e => { 
             if(document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
-            if([32, 37, 38, 39, 40].includes(e.keyCode)) {
-                e.preventDefault(); 
-                e.stopPropagation();
-            }
-            if(e.keyCode === 32 && !keys[32]) spaceLatch = true;
-            keys[e.keyCode] = true; 
+            if([32, 37, 38, 39, 40].includes(e.keyCode)) { e.preventDefault(); e.stopPropagation(); }
+            if(e.keyCode === 32 && !keys[32]) spaceLatch = true; keys[e.keyCode] = true; 
         }, { passive: false });
-
         window.addEventListener('keyup', e => { 
             if(document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
-            keys[e.keyCode] = false; 
-            if(e.keyCode === 32) spaceLatch = false; 
+            keys[e.keyCode] = false; if(e.keyCode === 32) spaceLatch = false; 
         });
 
         function spawnExplosion(x, y, color) {
-            for (let i = 0; i < 15; i++) {
-                particles.push({
-                    x: x, y: y,
-                    dx: (Math.random() - 0.5) * 8,
-                    dy: (Math.random() - 0.5) * 8,
-                    radius: Math.random() * 3 + 2,
-                    alpha: 1,
-                    color: color
-                });
-            }
+            for (let i = 0; i < 15; i++) { particles.push({ x: x, y: y, dx: (Math.random() - 0.5) * 8, dy: (Math.random() - 0.5) * 8, radius: Math.random() * 3 + 2, alpha: 1, color: color }); }
         }
-
         function drawParticles() {
             for (let i = particles.length - 1; i >= 0; i--) {
-                let p = particles[i];
-                p.x += p.dx; p.y += p.dy; p.alpha -= 0.04;
-                if (p.alpha <= 0) { particles.splice(i, 1); continue; }
-                ctx.save();
-                ctx.globalAlpha = p.alpha;
-                ctx.fillStyle = p.color;
-                ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2); ctx.fill();
-                ctx.restore();
+                let p = particles[i]; p.x += p.dx; p.y += p.dy; p.alpha -= 0.04; if (p.alpha <= 0) { particles.splice(i, 1); continue; }
+                ctx.save(); ctx.globalAlpha = p.alpha; ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2); ctx.fill(); ctx.restore();
             }
         }
 
         function drawLeaderboardStandings(gameKey, renderCombined = false) {
             const rowBox = document.getElementById('leaderboard-rows-container'); if(!rowBox) return; rowBox.innerHTML = '';
-            let sMax = parseInt(localStorage.getItem('clipToPost_best_stack') || '0', 10);
-            let dMax = parseInt(localStorage.getItem('clipToPost_best_dash') || '0', 10);
-            let fMax = parseInt(localStorage.getItem('clipToPost_best_fusion') || '0', 10);
-            let userCombinedValue = sMax + dMax + fMax;
-
-            let compiledPool = [...GLOBAL_CREATORS_LEADERBOARD].map(item => {
-                return { name: item.name, score: renderCombined ? (item.stack + item.dash + item.fusion) : item[gameKey], isUser: false };
-            });
-            compiledPool.push({ name: "YOU (Operator)", score: renderCombined ? userCombinedValue : parseInt(localStorage.getItem(`clipToPost_best_${gameKey}`) || '0', 10), isUser: true });
+            let compiledPool = [...GLOBAL_CREATORS_LEADERBOARD].map(item => { return { name: item.name, score: item[gameKey], isUser: false }; });
+            compiledPool.push({ name: "YOU (Operator)", score: parseInt(localStorage.getItem(`clipToPost_best_${gameKey}`) || '0', 10), isUser: true });
             compiledPool.sort((first, second) => second.score - first.score);
-
             compiledPool.forEach((p, rankIndex) => {
                 const placementLine = document.createElement('div');
-                const rowStyleClasses = p.isUser ? "bg-indigo-950/50 border border-indigo-500/30 text-indigo-300 font-bold" : "bg-slate-900/30 text-gray-400 border border-transparent";
-                placementLine.className = `flex justify-between items-center p-2.5 rounded-lg ${rowStyleClasses}`;
-                placementLine.innerHTML = `<div class="flex items-center gap-2"><span class="text-gray-600 font-bold w-4">${rankIndex + 1}.</span><span class="truncate max-w-[130px]">${p.name}</span></div><span class="${p.isUser ? 'text-indigo-400' : 'text-slate-200'} font-bold">${p.score}</span>`;
+                placementLine.className = `flex justify-between items-center p-2.5 rounded-lg ${p.isUser ? "bg-indigo-950/50 border border-indigo-500/30 text-indigo-300 font-bold" : "bg-slate-900/30 text-gray-400 border border-transparent"}`;
+                placementLine.innerHTML = `<div class="flex items-center gap-2"><span class="text-gray-600 font-bold w-4">${rankIndex + 1}.</span><span class="truncate max-w-[130px]">${p.name}</span></div><span class="font-bold">${p.score}</span>`;
                 rowBox.appendChild(placementLine);
             });
         }
 
         function synchronizeHighScores(gameKey, currentRunScore) {
-            if (!isFreeCreditTrialRunActive) {
-                if (currentRunScore > parseInt(localStorage.getItem(`clipToPost_best_${gameKey}`) || '0', 10)) {
-                    localStorage.setItem(`clipToPost_best_${gameKey}`, currentRunScore);
-                }
-            } else {
-                if (currentRunScore >= 5000) {
-                    let currentClicks = parseInt(localStorage.getItem('clipToPost_clicks') || '0', 10);
-                    localStorage.setItem('clipToPost_clicks', Math.max(0, currentClicks - 1));
-                    localStorage.setItem('clipToPost_trial_consumed_v1', 'true');
-                    alert("🚨 TARGET ATTAINED! Allocation limits rolled back securely.");
-                    resetArcadeUIStatus();
-                    checkUsageLimits();
-                    return;
-                }
+            if (!isFreeCreditTrialRunActive && currentRunScore > parseInt(localStorage.getItem(`clipToPost_best_${gameKey}`) || '0', 10)) {
+                localStorage.setItem(`clipToPost_best_${gameKey}`, currentRunScore);
             }
             document.getElementById('best-stack').textContent = localStorage.getItem('clipToPost_best_stack') || '0';
             document.getElementById('best-dash').textContent = localStorage.getItem('clipToPost_best_dash') || '0';
             document.getElementById('best-fusion').textContent = localStorage.getItem('clipToPost_best_fusion') || '0';
-            document.getElementById('best-combined').textContent = parseInt(localStorage.getItem('clipToPost_best_stack') || '0',10) + parseInt(localStorage.getItem('clipToPost_best_dash') || '0',10) + parseInt(localStorage.getItem('clipToPost_best_fusion') || '0',10);
             currentBestDisplay.textContent = localStorage.getItem(`clipToPost_best_${gameKey}`) || '0';
             drawLeaderboardStandings(gameKey, isViewingCombinedLeaderboard);
         }
@@ -515,49 +392,28 @@
         function initStack() {
             score = 0; scoreDisplay.textContent = score; towerGameOver = false; spaceLatch = false;
             leaderboardTopDisplay.textContent = isFreeCreditTrialRunActive ? "5000" : TARGET_LEADERBOARD_RECORDS.stack;
-            document.getElementById('active-tab-title').textContent = "🧱 TOWER STACK MATCH";
-            currentBestDisplay.textContent = localStorage.getItem('clipToPost_best_stack') || '0';
             stackLayers = [{ x: 125, y: 250, w: 150, h: 25, color: '#6366f1' }];
-            blockSpeed = isFreeCreditTrialRunActive ? 5.0 : 3.8; 
-            currentBlock = { x: 0, y: 225, w: 150, h: 25, dir: 1 };
+            blockSpeed = isFreeCreditTrialRunActive ? 5.0 : 3.8; currentBlock = { x: 0, y: 225, w: 150, h: 25, dir: 1 };
             drawLeaderboardStandings('stack', isViewingCombinedLeaderboard);
         }
         function updateStack() {
-            if (towerGameOver) { 
-                ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
-                ctx.fillText(isFreeCreditTrialRunActive ? "TRIAL OVER. ACCESS DISCONNECTED." : "CRASHED! SELECT ANOTHER TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return; 
-            }
+            if (towerGameOver) { ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center'; ctx.fillText("CRASHED!", canvas.width / 2, canvas.height / 2); return; }
             let activeSpeed = blockSpeed;
-            if (isFreeCreditTrialRunActive && score >= 1200) {
-                activeSpeed = blockSpeed * Math.pow(1.22, (score - 1000) / 200); 
-            } else if (score >= 1200) {
-                activeSpeed = blockSpeed * 1.20; 
-            }
-            currentBlock.x += currentBlock.dir * activeSpeed;
-            if (currentBlock.x < 0 || currentBlock.x + currentBlock.w > canvas.width) currentBlock.dir *= -1;
+            if (isFreeCreditTrialRunActive && score >= 1200) activeSpeed = blockSpeed * Math.pow(1.22, (score - 1000) / 200);
+            currentBlock.x += currentBlock.dir * activeSpeed; if (currentBlock.x < 0 || currentBlock.x + currentBlock.w > canvas.width) currentBlock.dir *= -1;
             stackLayers.forEach(l => { ctx.fillStyle = l.color; ctx.fillRect(l.x, l.y, l.w, l.h); });
             ctx.fillStyle = '#ec4899'; ctx.fillRect(currentBlock.x, currentBlock.y, currentBlock.w, currentBlock.h);
-
             if (spaceLatch) {
                 spaceLatch = false; let base = stackLayers[stackLayers.length - 1];
                 let left = Math.max(currentBlock.x, base.x); let right = Math.min(currentBlock.x + currentBlock.w, base.x + base.w);
-                let absoluteMargin = isFreeCreditTrialRunActive && score >= 1200 ? 5 : 0;
-                if (left >= right || (right - left) <= absoluteMargin) { towerGameOver = true; handleTrialRunFailure(); return; }
+                if (left >= right) { towerGameOver = true; handleTrialRunFailure(); return; }
                 let cutWidth = right - left; let cutX = left;
                 stackLayers.push({ x: cutX, y: currentBlock.y, w: cutWidth, h: 25, color: `hsl(${200 + (stackLayers.length * 15)}, 90%, 60%)` });
                 score += 100; scoreDisplay.textContent = score; synchronizeHighScores('stack', score);
-                
-                screenshake = 10; 
-                spawnExplosion(cutX + cutWidth/2, currentBlock.y, '#ec4899');
-
+                screenshake = 10; spawnExplosion(cutX + cutWidth/2, currentBlock.y, '#ec4899');
                 if (currentBlock.y <= 90) { stackLayers.forEach(l => l.y += 50); stackLayers.shift(); }
                 currentBlock = { x: 0, y: stackLayers[stackLayers.length - 1].y - 25, w: cutWidth, h: 25, dir: 1 }; blockSpeed += isFreeCreditTrialRunActive ? 0.45 : 0.28;
             }
-            
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.85)'; ctx.strokeStyle = 'rgba(51, 65, 85, 0.5)'; ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.roundRect(100, 272, 200, 20, 10); ctx.fill(); ctx.stroke();
-            ctx.fillStyle = '#94a3b8'; ctx.font = '10px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText(isFreeCreditTrialRunActive ? "⚠️ ASYMPTOTIC TRIAL SPEED RUN" : "Press SPACE to Drop Block Perfectly", canvas.width / 2, 282);
         }
 
         // CYBER RUNNER
@@ -565,33 +421,24 @@
         function initDash() {
             score = 0; scoreDisplay.textContent = score; runnerGameOver = false;
             leaderboardTopDisplay.textContent = isFreeCreditTrialRunActive ? "5000" : TARGET_LEADERBOARD_RECORDS.dash;
-            document.getElementById('active-tab-title').textContent = "⚡ CYBER RUNNER MATCH";
-            currentBestDisplay.textContent = localStorage.getItem('clipToPost_best_dash') || '0';
             runnerLane = 1; runnerX = 200; runnerObstacles = []; runnerFrame = 0;
             drawLeaderboardStandings('dash', isViewingCombinedLeaderboard);
         }
         function updateDash() {
-            if (runnerGameOver) {
-                ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
-                ctx.fillText(isFreeCreditTrialRunActive ? "SHIELD DESTRUCTED." : "CRASHED! CHOOSE TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return;
-            }
-            runnerFrame++; 
-            let defaultBaseInterval = isFreeCreditTrialRunActive ? 15 : 22; 
-            let currentSpawnInterval = Math.max(isFreeCreditTrialRunActive ? 5 : 9, defaultBaseInterval - Math.floor(score / 150));
+            if (runnerGameOver) { ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center'; ctx.fillText("SYSTEM DEFUNCT!", canvas.width / 2, canvas.height / 2); return; }
+            runnerFrame++; let defaultBaseInterval = isFreeCreditTrialRunActive ? 15 : 25; 
+            let currentSpawnInterval = Math.max(isFreeCreditTrialRunActive ? 5 : 10, defaultBaseInterval - Math.floor(score / 150));
             
-            ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 1;
-            for(let i = 0; i <= canvas.height; i += 30) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke(); }
+            ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 1; for(let i = 0; i <= canvas.height; i += 30) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke(); }
             ctx.strokeStyle = '#312e81'; ctx.lineWidth = 4; [133, 266].forEach(lx => { ctx.beginPath(); ctx.moveTo(lx, 0); ctx.lineTo(lx, canvas.height); ctx.stroke(); });
 
             if (keys[37]) { keys[37] = false; if (runnerLane > 0) runnerLane--; }
             if (keys[39]) { keys[39] = false; if (runnerLane < 2) runnerLane++; }
-            let targetX = (runnerLane * 133) + 66; 
-            let turnVelocity = isFreeCreditTrialRunActive ? 0.18 : 0.28;
-            runnerX += (targetX - runnerX) * turnVelocity; 
+            let targetX = (runnerLane * 133) + 66; runnerX += (targetX - runnerX) * 0.28; 
 
             if (runnerFrame % currentSpawnInterval === 0) { 
                 let spawnLane = Math.floor(Math.random() * 3);
-                let initialSpeed = isFreeCreditTrialRunActive ? 8.5 : 5.5; 
+                let initialSpeed = isFreeCreditTrialRunActive ? 8.5 : 2.5; 
                 let velocityFactor = isFreeCreditTrialRunActive && score >= 1200 ? Math.pow(1.30, (score / 250)) : (score / 250);
                 runnerObstacles.push({ lane: spawnLane, y: -35, speed: initialSpeed + velocityFactor, processed: false, wasTargetingPlayer: (spawnLane === runnerLane) }); 
             }
@@ -602,15 +449,12 @@
 
             for (let i = runnerObstacles.length - 1; i >= 0; i--) {
                 let obs = runnerObstacles[i]; obs.y += obs.speed; let obsX = (obs.lane * 133) + 66;
-                ctx.shadowBlur = 30; ctx.shadowColor = '#ff3b3b'; ctx.fillStyle = '#ef4444'; 
-                ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 14, 0, Math.PI * 2); ctx.fill();
+                ctx.shadowBlur = 30; ctx.shadowColor = '#ff3b3b'; ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 14, 0, Math.PI * 2); ctx.fill();
                 ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 5, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
                 
                 let effectiveRadius = isFreeCreditTrialRunActive && score >= 1200 ? 32 : 14;
                 if (!obs.processed && obs.y > (230 - effectiveRadius) && obs.y < 265 && obs.lane === runnerLane) { 
-                    obs.processed = true; score -= isFreeCreditTrialRunActive ? 200 : 10; 
-                    screenshake = 15;
-                    spawnExplosion(runnerX, 250, '#ef4444');
+                    obs.processed = true; score -= isFreeCreditTrialRunActive ? 200 : 10; screenshake = 15; spawnExplosion(runnerX, 250, '#ef4444');
                     if (score <= 0) { score = 0; runnerGameOver = true; handleTrialRunFailure(); }
                     scoreDisplay.textContent = score; runnerObstacles.splice(i, 1); continue;
                 }
@@ -625,136 +469,74 @@
         let paddle = { x: 160, y: 270, width: 75, height: 10, speed: 7 }; let ball = { x: 200, y: 150, dx: 3.5, dy: -3.5, radius: 5 }; let bricks = []; let fusionGameOver = false;
         function initFusion() {
             score = 0; scoreDisplay.textContent = score; fusionGameOver = false;
-            leaderboardTopDisplay.textContent = isFreeCreditTrialRunActive ? "5000" : TARGET_LEADERBOARD_RECORDS.fusion; document.getElementById('active-tab-title').textContent = "🧩 BRICK BREAKER MATCH";
-            currentBestDisplay.textContent = localStorage.getItem('clipToPost_best_fusion') || '0'; 
+            leaderboardTopDisplay.textContent = isFreeCreditTrialRunActive ? "5000" : TARGET_LEADERBOARD_RECORDS.fusion; 
             paddle.width = isFreeCreditTrialRunActive ? 35 : 75; paddle.speed = isFreeCreditTrialRunActive ? 5.5 : 8.5;
             ball.x = 200; ball.y = 150; ball.dx = isFreeCreditTrialRunActive ? 5.0 : 3.5; ball.dy = isFreeCreditTrialRunActive ? -5.0 : -3.5; bricks = [];
-            let rowsCount = isFreeCreditTrialRunActive ? 6 : 3;
-            for (let r = 0; r < rowsCount; r++) { for (let c = 0; c < 7; c++) { bricks.push({ x: 25 + c * 52, y: 40 + r * 18, width: 44, height: 12, alive: true }); } }
+            let rowsCount = isFreeCreditTrialRunActive ? 6 : 3; for (let r = 0; r < rowsCount; r++) { for (let c = 0; c < 7; c++) { bricks.push({ x: 25 + c * 52, y: 40 + r * 18, width: 44, height: 12, alive: true }); } }
             drawLeaderboardStandings('fusion', isViewingCombinedLeaderboard);
         }
         function updateFusion() {
-            if (fusionGameOver) {
-                ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
-                ctx.fillText(isFreeCreditTrialRunActive ? "EXPERT ATTEMPT TERMINATED." : "GAME OVER! CHOOSE ANOTHER TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return;
-            }
+            if (fusionGameOver) { ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center'; ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2); return; }
             if (keys[37] && paddle.x > 0) paddle.x -= paddle.speed; if (keys[39] && paddle.x < canvas.width - paddle.width) paddle.x += paddle.speed;
-            let baselineSpeedFactor = 1.0;
-            if (isFreeCreditTrialRunActive && score >= 1000) baselineSpeedFactor = 1.45; 
+            let baselineSpeedFactor = 1.0; if (isFreeCreditTrialRunActive && score >= 1000) baselineSpeedFactor = 1.45; 
             ball.x += ball.dx * baselineSpeedFactor; ball.y += ball.dy * baselineSpeedFactor; 
             if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) ball.dx *= -1; if (ball.y - ball.radius < 0) ball.dy *= -1;
-            if (ball.y + ball.radius >= paddle.y && ball.y - ball.radius <= paddle.y + paddle.height && ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) {
-                ball.dy = -Math.abs(ball.dy);
-                screenshake = 4;
-            }
+            if (ball.y + ball.radius >= paddle.y && ball.y - ball.radius <= paddle.y + paddle.height && ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) { ball.dy = -Math.abs(ball.dy); screenshake = 4; }
             if (ball.y > canvas.height) { fusionGameOver = true; handleTrialRunFailure(); return; }
             ctx.fillStyle = '#eab308'; ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
             ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2); ctx.fillStyle = '#ffffff'; ctx.fill(); ctx.closePath();
             let activeBricks = false;
             bricks.forEach(b => {
                 if (!b.alive) return; activeBricks = true; ctx.fillStyle = '#ec4899'; ctx.fillRect(b.x, b.y, b.width, b.height);
-                if (ball.x > b.x && ball.x < b.x + b.width && ball.y > b.y && ball.y < b.y + b.height) { 
-                    b.alive = false; ball.dy *= -1; score += 50; scoreDisplay.textContent = score; synchronizeHighScores('fusion', score); 
-                    screenshake = 6;
-                    spawnExplosion(b.x + b.width/2, b.y + b.height/2, '#ec4899');
-                }
+                if (ball.x > b.x && ball.x < b.x + b.width && ball.y > b.y && ball.y < b.y + b.height) { b.alive = false; ball.dy *= -1; score += 50; scoreDisplay.textContent = score; synchronizeHighScores('fusion', score); screenshake = 6; spawnExplosion(b.x + b.width/2, b.y + b.height/2, '#ec4899'); }
             });
             if (!activeBricks) bricks.forEach(b => b.alive = true);
         }
 
-        // --- GLOBAL CONTAINER TICK ENGINE WITH HARDWARE SCREENSHAKE ---
         function runMasterLoop() {
             ctx.save();
-            if (screenshake > 0) {
-                let dx = (Math.random() - 0.5) * screenshake;
-                let dy = (Math.random() - 0.5) * screenshake;
-                ctx.translate(dx, dy);
-                screenshake *= 0.9; 
-                if (screenshake < 0.5) screenshake = 0;
-            }
+            if (screenshake > 0) { ctx.translate((Math.random() - 0.5) * screenshake, (Math.random() - 0.5) * screenshake); screenshake *= 0.9; if (screenshake < 0.5) screenshake = 0; }
             ctx.clearRect(0, 0, canvas.width, canvas.height); 
             if (gameActive) {
-                if (currentActiveGame === 'stack') updateStack(); 
-                else if (currentActiveGame === 'dash') updateDash(); 
-                else if (currentActiveGame === 'fusion') updateFusion();
+                if (currentActiveGame === 'stack') updateStack(); else if (currentActiveGame === 'dash') updateDash(); else if (currentActiveGame === 'fusion') updateFusion();
             }
-            drawParticles();
-            ctx.restore();
-            gameLoopId = requestAnimationFrame(runMasterLoop);
+            drawParticles(); ctx.restore(); gameLoopId = requestAnimationFrame(runMasterLoop);
         }
 
         function triggerGameSwap(target) {
-            currentActiveGame = target; 
-            bragBtn.classList.add('hidden');
-            if (target === 'stack') initStack(); 
-            else if (target === 'dash') initDash(); 
-            else if (target === 'fusion') initFusion();
+            currentActiveGame = target; bragBtn.classList.add('hidden');
+            if (target === 'stack') initStack(); else if (target === 'dash') initDash(); else if (target === 'fusion') initFusion();
             gameActive = true; 
         }
 
         btnStack.addEventListener('click', () => toggleGameTab('stack', btnStack));
         btnDash.addEventListener('click', () => toggleGameTab('dash', btnDash));
         btnFusion.addEventListener('click', () => toggleGameTab('fusion', btnFusion));
-
         function toggleGameTab(target, activeBtn) {
-            document.querySelectorAll('.game-tab-btn').forEach(b => {
-                b.classList.remove('bg-indigo-600', 'text-white'); b.classList.add('text-gray-500');
-            });
-            activeBtn.classList.remove('text-gray-500'); activeBtn.classList.add('bg-indigo-600', 'text-white');
-            triggerGameSwap(target);
+            document.querySelectorAll('.game-tab-btn').forEach(b => { b.classList.remove('bg-indigo-600', 'text-white'); b.classList.add('text-gray-500'); });
+            activeBtn.classList.remove('text-gray-500'); activeBtn.classList.add('bg-indigo-600', 'text-white'); triggerGameSwap(target);
         }
 
-        sandboxModeBtn.addEventListener('click', () => {
-            isFreeCreditTrialRunActive = false;
-            resetArcadeUIStatus();
-        });
-
+        sandboxModeBtn.addEventListener('click', () => { isFreeCreditTrialRunActive = false; resetArcadeUIStatus(); });
         freeCreditBtn.addEventListener('click', () => {
             let validationFlag = localStorage.getItem('clipToPost_trial_consumed_v1');
-            if (validationFlag === "true") {
-                alert("This device footprint has already consumed its single allocated promotional trial.");
-                return;
-            }
-            isFreeCreditTrialRunActive = true;
-            freeCreditBtn.textContent = "🔥 TRIAL RUNNING";
+            if (validationFlag === "true") { alert("Trial already consumed."); return; }
+            isFreeCreditTrialRunActive = true; freeCreditBtn.textContent = "🔥 TRIAL RUNNING";
             document.getElementById('status-text').textContent = "ARCADE CORE: EXTRA-DENSE TRIAL MODE";
-            document.getElementById('status-text').className = "text-xs text-amber-400 font-mono tracking-wide uppercase";
-            document.getElementById('game-status-dot').className = "relative inline-flex rounded-full h-2 w-2 bg-amber-500";
-            document.getElementById('game-pulse').className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75";
             triggerGameSwap(currentActiveGame);
         });
 
-        function handleTrialRunFailure() {
-            if (!isFreeCreditTrialRunActive) return;
-            localStorage.setItem('clipToPost_trial_consumed_v1', 'true');
-            isFreeCreditTrialRunActive = false;
-            setTimeout(() => {
-                alert("Trial finished! Returning environment metrics to practice settings.");
-                resetArcadeUIStatus();
-            }, 100);
-        }
-
+        function handleTrialRunFailure() { if (isFreeCreditTrialRunActive) { localStorage.setItem('clipToPost_trial_consumed_v1', 'true'); isFreeCreditTrialRunActive = false; setTimeout(() => { resetArcadeUIStatus(); }, 100); } }
         function resetArcadeUIStatus() {
-            isFreeCreditTrialRunActive = false;
-            freeCreditBtn.textContent = "🔥 Attempt Free Generation Trial (Target 5,000)";
-            document.getElementById('status-text').textContent = "ARCADE CORE: SANDBOX PRACTICE MODE";
-            document.getElementById('status-text').className = "text-xs text-indigo-400 font-mono tracking-wide uppercase";
-            document.getElementById('game-status-dot').className = "relative inline-flex rounded-full h-2 w-2 bg-indigo-500";
-            document.getElementById('game-pulse').className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75";
-            triggerGameSwap(currentActiveGame);
+            isFreeCreditTrialRunActive = false; freeCreditBtn.textContent = "🔥 Attempt Free Generation Trial (Target 5,000)";
+            document.getElementById('status-text').textContent = "ARCADE CORE: SANDBOX PRACTICE MODE"; triggerGameSwap(currentActiveGame);
         }
-
-        updateVaultCounter();
-        vaultTriggerBtn.addEventListener('click', () => { renderVaultArchive(); vaultDrawer.classList.remove('hidden'); });
-        closeVaultBtn.addEventListener('click', () => vaultDrawer.classList.add('hidden'));
 
         function applyTransformers(baseText) {
             let txt = baseText;
             if (isBulletCleaned) txt = txt.replace(/^[ \t]*[—\-\u2014\u2013•*][ \t]*/gm, '• ');
             if (isDoubleSpaced) txt = txt.split('\n').filter(l => l.trim() !== '').join('\n\n');
-            if (isHookCapitalized) {
-                let paragraphs = txt.split('\n'); if (paragraphs.length > 0 && paragraphs[0].trim() !== '') { paragraphs[0] = paragraphs[0].toUpperCase(); txt = paragraphs.join('\n'); }
-            }
+            if (isHookCapitalized) { let paragraphs = txt.split('\n'); if (paragraphs.length > 0 && paragraphs[0].trim() !== '') { paragraphs[0] = paragraphs[0].toUpperCase(); txt = paragraphs.join('\n'); } }
             return txt;
         }
 
@@ -765,19 +547,14 @@
 
         function checkUsageLimits() {
             const usageCount = parseInt(localStorage.getItem('clipToPost_clicks') || '0', 10);
-            const remaining = Math.max(0, 3 - usageCount); creditCounter.textContent = remaining;
-            if (usageCount >= 3) {
-                urlInput.disabled = true; submitBtn.disabled = true; submitBtn.textContent = "Cap Reached";
-                warningBanner.classList.remove('hidden'); return false;
-            }
+            creditCounter.textContent = Math.max(0, 3 - usageCount);
+            if (usageCount >= 3) { urlInput.disabled = true; submitBtn.disabled = true; warningBanner.classList.remove('hidden'); return false; }
             return true;
         }
 
         function resolveDynamicTextString(item) {
             let runningText = item.isHashtagHidden ? item.cleanText : item.fullText;
-            if (item.isEmojiHidden) {
-                runningText = runningText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDC00-\uDFFF])/g, '');
-            }
+            if (item.isEmojiHidden) runningText = runningText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|[\u2011-\u26FF])/g, '');
             return applyTransformers(runningText.trim());
         }
 
@@ -792,20 +569,15 @@
                 let paragraphSplits = targetText.split('\n');
                 let extractedFirstLine = paragraphSplits[0] || '';
                 let isHookCharacterCountSnappy = extractedFirstLine.length <= 140;
-                
-                let hookDiagnosticBadgeMarkup = isHookCharacterCountSnappy 
-                    ? `<span class="px-2.5 py-0.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-mono rounded-md font-bold uppercase tracking-wide">✅ HOOK OPTIMAL</span>`
-                    : `<span class="px-2.5 py-0.5 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[10px] font-mono rounded-md font-bold uppercase tracking-wide">⚠️ HOOK TRUNCATED</span>`;
 
                 card.innerHTML = `
                     <div class="flex flex-wrap justify-between items-center gap-3 mb-4 border-b border-gray-800/50 pb-3">
                         <div class="flex items-center gap-3">
                             <span class="text-xs text-indigo-400 font-mono font-bold uppercase">Asset Variant ${index + 1}</span>
-                            ${hookDiagnosticBadgeMarkup}
+                            <span class="px-2.5 py-0.5 rounded-md font-bold uppercase text-[10px] ${isHookCharacterCountSnappy ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'}">${isHookCharacterCountSnappy ? '✅ HOOK OPTIMAL' : '⚠️ HOOK TRUNCATED'}</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <button class="hook-optimize-fix-btn text-[10px] font-mono text-indigo-400 hover:text-white transition-all bg-indigo-950/40 px-2 py-1 rounded-md border border-indigo-900/60 font-bold uppercase">[✨ Hook Fix]</button>
-                            <button class="mobile-preview-btn text-xs font-mono text-gray-400 hover:text-indigo-400 transition-all bg-gray-950 px-2.5 py-1 rounded-md border border-gray-800/80">📱 Mobile View</button>
                         </div>
                     </div>
                     <div class="whitespace-pre-wrap ${typographyClass} mb-6 select-text"></div>
@@ -817,43 +589,14 @@
                         <button class="copy-btn bg-gray-950 border border-gray-800 text-gray-300 px-4 py-2 rounded-xl text-xs font-medium transition-all">Copy Text Asset</button>
                     </div>
                 `;
-                
                 card.querySelector('.whitespace-pre-wrap').textContent = targetText;
-                card.querySelector('.copy-btn').addEventListener('click', () => { executeClipboardWrite(targetText, () => { alert('Text copied!'); }, () => {}); });
-                
+                card.querySelector('.copy-btn').addEventListener('click', () => { navigator.clipboard.writeText(targetText); alert('Copied!'); });
                 card.querySelector('.hook-optimize-fix-btn').addEventListener('click', () => {
                     let lines = item.fullText.split('\n');
                     if(lines.length > 0 && lines[0].trim() !== '') {
-                        let headerHook = lines[0].trim();
-                        if (!headerHook.endsWith('—') && !headerHook.endsWith('?') && !headerHook.endsWith('!')) {
-                            lines[0] = headerHook.toUpperCase() + ' —';
-                        } else {
-                            lines[0] = headerHook.toUpperCase();
-                        }
-                        item.fullText = lines.join('\n');
-                        let reTrimmed = item.fullText.trim();
-                        let tagIdx = reTrimmed.search(/#[a-zA-Z0-9]+/);
-                        item.cleanText = tagIdx !== -1 ? reTrimmed.substring(0, tagIdx).trim() : reTrimmed;
-                        renderInterfaceAssets(boomerFontToggle.checked);
+                        let h = lines[0].trim(); lines[0] = h.toUpperCase() + (h.endsWith('—') ? '' : ' —');
+                        item.fullText = lines.join('\n'); renderInterfaceAssets(boomerFontToggle.checked);
                     }
-                });
-
-                card.querySelector('.mobile-preview-btn').addEventListener('click', () => {
-                    let textBlocks = targetText.split('\n');
-                    modalHookZone.textContent = textBlocks[0] || '';
-                    modalBodyZone.textContent = textBlocks.slice(1).join('\n') || '';
-                    modal.classList.remove('hidden');
-                });
-                
-                card.querySelector('.hashtag-toggle-btn').addEventListener('click', (e) => {
-                    item.isHashtagHidden = !item.isHashtagHidden;
-                    e.target.textContent = item.isHashtagHidden ? "👔 Add Tags" : "👔 Strip Tags";
-                    card.querySelector('.whitespace-pre-wrap').textContent = resolveDynamicTextString(item);
-                });
-                card.querySelector('.emoji-toggle-btn').addEventListener('click', (e) => {
-                    item.isEmojiHidden = !item.isEmojiHidden;
-                    e.target.textContent = item.isEmojiHidden ? "🎨 Add Emojis" : "🎨 Strip Emojis";
-                    card.querySelector('.whitespace-pre-wrap').textContent = resolveDynamicTextString(item);
                 });
                 outputContainer.appendChild(card);
             });
@@ -862,117 +605,47 @@
         async function fireTransformationPipeline() {
             if (!checkUsageLimits()) return;
             if (!authenticatedUserContext) { alert('Please sign in via Google Auth first.'); return; }
-            const videoUrl = urlInput.value.trim();
-            const validationSyntax = /(youtube\.com|youtu\.be)/i;
-            if (!videoUrl || !validationSyntax.test(videoUrl)) { alert('Invalid YouTube Link.'); return; }
             
-            submitBtn.disabled = true; urlInput.disabled = true;
-            submitBtn.textContent = "Processing...";
-            outputContainer.innerHTML = ''; masterToolbar.classList.add('hidden'); failoverDeck.classList.add('hidden');
+            submitBtn.disabled = true; urlInput.disabled = true; submitBtn.textContent = "Processing...";
+            statusBanner.classList.remove('hidden'); statusMessage.textContent = "CONNECTING TO SECURE ROUTING GATEWAY...";
             
-            statusBanner.classList.remove('hidden', 'bg-rose-950/40', 'border-rose-500/30', 'text-rose-300');
-            statusBanner.classList.add('bg-indigo-950/40', 'border-indigo-500/30', 'text-indigo-300');
-            statusMessage.textContent = "CONNECTING TO PIPELINE HOST ENGINE... PLEASE ENJOY GAME STANDARDS BELOW.";
-            
-            document.activeElement.blur();
-            isFreeCreditTrialRunActive = false;
-            triggerGameSwap('stack');
-
-            const dateObj = new Date();
-            const todayStamp = `${dateObj.getUTCFullYear()}-${dateObj.getUTCMonth()}-${dateObj.getUTCDate()}`;
-            const computedTransitToken = `${IMMUTABLE_BASE_ANCHOR}_${todayStamp}`;
-
-            const networkController = new AbortController();
-            const fallbackTimeoutId = setTimeout(() => networkController.abort(), 90000);
-
             try {
-                const response = await fetch(N8N_WEBHOOK_URL, {
+                const response = await fetch('/api/generate-posts', {
                     method: 'POST',
-                    signal: networkController.signal,
-                    headers: { 'Content-Type': 'application/json', 'X-ClipToPost-Secret': computedTransitToken },
-                    body: JSON.stringify({ 
-                        youtubeUrl: videoUrl, 
-                        engineMode: document.querySelector('input[name="engine-mode"]:checked').value,
-                        cleanLayout: String(cleanModeToggle.checked),
-                        deviceFingerprint: generatedFingerprint,
-                        userEmail: authenticatedUserContext.email,
-                        userGoogleId: authenticatedUserContext.uid,
-                        userName: authenticatedUserContext.name,
-                        identityJwt: authenticatedUserContext.rawIdentityJwt
-                    })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ youtubeUrl: urlInput.value.trim(), userGoogleId: authenticatedUserContext.uid })
                 });
 
-                clearTimeout(fallbackTimeoutId);
-
-                if (!response.ok) throw new Error("Server rejected transcription sync variables framework.");
-                
-                statusMessage.textContent = "COMPILING AI ENGAGEMENT COPIES... DOWNLOADING STRUCTURAL BUNDLES.";
+                if (!response.ok) throw new Error("Fault.");
                 const data = await response.json();
-                
-                const rawOutputText = data.output || data.text || (Array.isArray(data) ? (data[0]?.output || data[0]?.text) : '') || '';
-                if (!rawOutputText) throw new Error("Empty text payload structure returned.");
-                const postsArray = rawOutputText.split('===NEXT_POST===').filter(post => post.trim().length > 0);
-                
-                localStorage.setItem('clipToPost_clicks', parseInt(localStorage.getItem('clipToPost_clicks') || '0', 10) + 1);
-                pushToVaultCaches(postsArray);
-
-                activeGenerationDataset = postsArray.map(rawText => {
-                    const trimmed = rawText.trim();
-                    const hashtagIndex = trimmed.search(/#[a-zA-Z0-9]+/);
-                    return { 
-                        fullText: trimmed, 
-                        cleanText: hashtagIndex !== -1 ? trimmed.substring(0, hashtagIndex).trim() : trimmed, 
-                        isHashtagHidden: false, 
-                        isEmojiHidden: false 
-                    };
-                });
-                
                 statusBanner.classList.add('hidden');
-                masterToolbar.classList.remove('hidden'); 
+                activeGenerationDataset = data.posts || [];
                 renderInterfaceAssets(boomerFontToggle.checked);
-            } catch (err) { 
-                console.error(err);
-                statusBanner.classList.remove('bg-indigo-950/40', 'border-indigo-500/30', 'text-indigo-300');
-                statusBanner.classList.add('bg-rose-950/40', 'border-rose-400/30', 'text-rose-400');
-                
-                if (err.name === 'AbortError') {
-                    statusMessage.textContent = "❌ BACKEND TIMEOUT: Server took too long to reply. Please check if your ngrok webhook link is active and rerun.";
-                } else {
-                    statusMessage.textContent = `❌ CONNECTION ERROR: Unable to contact your server. Confirm your backend n8n instance is open.`;
-                }
-                failoverDeck.classList.remove('hidden'); 
+            } catch (err) {
+                statusMessage.textContent = "❌ PIPELINE ERROR: Gateway verification failed.";
+            } finally {
+                submitBtn.disabled = false; urlInput.disabled = false; submitBtn.textContent = "Generate Posts";
             }
-            finally {
-                resetArcadeUIStatus();
-                submitBtn.disabled = false; urlInput.disabled = false;
-                submitBtn.textContent = "Generate Posts";
-                checkUsageLimits(); updateVaultCounter();
-            }
+        }
+
+        // REDIRECT PROXIED SECURE BILLING ENGINE ACTUATORS
+        async function triggerSecurePaymentRoute(tierParam) {
+            const isTermsAgreed = document.getElementById('global-legal-gate').checked;
+            if(!isTermsAgreed) { alert("Please read and check the agreement framework parameters before checkout."); return; }
+            
+            try {
+                const response = await fetch('/api/billing/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tier: tierParam })
+                });
+                const data = await response.json();
+                if(data.redirectUrl) window.location.href = data.redirectUrl;
+            } catch(e) { alert("Billing relay error."); }
         }
 
         submitBtn.addEventListener('click', fireTransformationPipeline);
-        constructDeviceFingerprint().then(() => { updateVaultCounter(); gameActive = true; runMasterLoop(); });
-        closeModalBtn.addEventListener('click', () => modal.classList.add('hidden'));
-    </script>
-    <script>
-        function evaluateInterfaceSecurityGate() {
-            const globalGate = document.getElementById('global-legal-gate');
-            const tierButtons = document.querySelectorAll('.checkout-btn-tier');
-            if (globalGate && globalGate.checked) { tierButtons.forEach(btn => btn.classList.remove('disabled')); } 
-            else { tierButtons.forEach(btn => btn.classList.add('disabled')); }
-        }
-        function routeToGateway(event, tier) {
-            const globalGate = document.getElementById('global-legal-gate');
-            if (!globalGate || !globalGate.checked) { event.preventDefault(); alert("Please agree to terms."); return false; }
-            if (tier === 'solo') { event.preventDefault(); window.location.href = RAZORPAY_SOLO_URL; } 
-            else if (tier === 'agency') { event.preventDefault(); window.location.href = RAZORPAY_AGENCY_URL; }
-        }
-        function toggleLegalModal(show) {
-            const modalView = document.getElementById('legal-modal');
-            if (modalView) modalView.style.display = show ? 'block' : 'none';
-            document.body.style.overflow = show ? 'hidden' : 'auto';
-        }
-        document.addEventListener("DOMContentLoaded", () => { evaluateInterfaceSecurityGate(); });
+        constructDeviceFingerprint().then(() => { synchronizeHighScores('stack', 0); });
     </script>
 </body>
 </html>
