@@ -1,5 +1,5 @@
 // api/generate-posts.js
-// 🔒 PRODUCTION-GRADE DEEP NESTED OBJECT PARSER PIPELINE
+// 🔒 PRODUCTION-GRADE DEEP NESTED OBJECT PARSER PIPELINE WITH DATA RETRIEVAL
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     }
 
     // ----------------------------------------------------
-    // 🔍 PATH 1: STATUS CHECKS + STABLE COMPILER (GET)
+    // 🔍 PATH 1: STATUS CHECKS WITH COMPREHENSIVE DATA RETRIEVAL (GET)
     // ----------------------------------------------------
     if (req.method === 'GET') {
         const { id } = req.query;
@@ -27,7 +27,8 @@ export default async function handler(req, res) {
 
         try {
             const baseUrl = targetTunnel.split('/webhook')[0];
-            const statusCheckUrl = `${baseUrl}/api/v1/executions/${id}`;
+            // 🎯 CRITICAL FIX: Append '?includeData=true' so n8n returns node-level output blocks!
+            const statusCheckUrl = `${baseUrl}/api/v1/executions/${id}?includeData=true`;
 
             const response = await fetch(statusCheckUrl, {
                 method: 'GET',
@@ -50,14 +51,14 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: "processing" });
                 }
 
-                // Extrapolate data using the absolute final node configuration layout key
+                // Get the final node execution block in the workflow chain
                 const finalNodeKey = nodeKeys[nodeKeys.length - 1]; 
                 const nodeOutputData = runData[finalNodeKey];
 
                 let finalOutput = "";
 
                 try {
-                    // Comprehensive multi-layer array resolution check framework
+                    // Safe-navigation checks to extract n8n node-level outputs
                     if (Array.isArray(nodeOutputData) && nodeOutputData[0]?.json?.output) {
                         finalOutput = nodeOutputData[0].json.output;
                     } else if (nodeOutputData?.data?.main?.[0]?.[0]?.json?.output) {
@@ -67,11 +68,10 @@ export default async function handler(req, res) {
                     } else if (nodeOutputData?.output) {
                         finalOutput = nodeOutputData.output;
                     } else {
-                        // Regular Expression string stringifier structural extraction fallback
+                        // Regular expression extraction fallback
                         const stringifiedDump = JSON.stringify(nodeOutputData);
                         const match = stringifiedDump.match(/"output"\s*:\s*"([\s\S]*?)"(?=,|\})/);
                         if (match && match[1]) {
-                            // Unescape newlines and internal quotes correctly
                             finalOutput = JSON.parse(`"${match[1]}"`);
                         }
                     }
@@ -83,7 +83,7 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: "processing", message: "String serialization in progress." });
                 }
 
-                // Process the raw text and split it across the post split boundaries safely
+                // Split text across post split boundaries cleanly
                 const parsedPosts = finalOutput.split('===NEXT_POST===').map(postText => {
                     const cleanText = postText.replace(/#\w+/g, '').trim();
                     return { 
