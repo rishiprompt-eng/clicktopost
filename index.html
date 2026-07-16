@@ -94,67 +94,6 @@
                 </div>
             </div>
 
-            <div id="rate-limit-warning" class="hidden mb-6 p-6 bg-slate-950/80 border border-indigo-900/50 rounded-2xl shadow-inner fade-in">
-                <div class="text-center max-w-2xl mx-auto mb-6">
-                    <span class="inline-block px-3 py-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-[10px] font-mono rounded-full uppercase tracking-wider mb-3">⚡ Evaluation Limit Hit</span>
-                    <h3 class="text-xl md:text-2xl font-black text-white mb-2">Free Allotment Exhausted</h3>
-                    <p class="text-xs text-gray-400 max-w-md mx-auto mb-4">This account has consumed all free testing cycles. Select a membership blueprint below to restore access.</p>
-                </div>
-
-                <div class="p-4 bg-slate-950 border border-slate-800/80 rounded-xl max-w-xl mx-auto mb-6 text-left shadow-inner">
-                    <label class="flex items-start cursor-pointer text-xs font-mono text-gray-400 select-none">
-                        <input type="checkbox" id="global-legal-gate" onchange="evaluateInterfaceSecurityGate()" class="rounded border-slate-800 bg-slate-950 text-indigo-600 focus:ring-0 focus:ring-offset-0 mr-3 mt-0.5 w-4 h-4 cursor-pointer">
-                        <span>
-                            I clarify that I am a sophisticated commercial operator. I explicitly read, understand, and agree to the 
-                            <span class="text-indigo-400 font-bold underline cursor-pointer hover:text-indigo-300" onclick="toggleLegalModal(true)">Master Access Covenant</span>, including the absolute non-refundable credit exchange framework and exclusive binding arbitration seat in Hyderabad, India.
-                        </span>
-                    </label>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl mx-auto items-stretch">
-                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-5 flex flex-col justify-between transition-all hover:border-slate-700">
-                        <div>
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="text-sm font-bold text-white uppercase tracking-wide">Solo Creator</h4>
-                                <div class="text-right">
-                                    <span class="text-lg font-black text-indigo-400 font-mono">₹699</span>
-                                    <span class="text-[10px] text-gray-500 block">/ month</span>
-                                </div>
-                            </div>
-                            <ul class="space-y-2 my-4 text-[11px] text-gray-400 font-light">
-                                <li class="flex items-center gap-2">🔹 <strong>60 video generations</strong> per billing cycle</li>
-                                <li class="flex items-center gap-2">🔹 Custom Hook Fold-Line Button</li>
-                                <li class="flex items-center gap-2">🔹 Expanded Vault Memory Access</li>
-                            </ul>
-                        </div>
-                        <a id="checkout-link-creator" href="#" onclick="routeToGateway(event, 'solo')" class="checkout-btn-tier disabled w-full text-center bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold py-2.5 rounded-lg transition-all shadow-md block mt-2 cursor-pointer">
-                            Upgrade to Creator (60 Limit)
-                        </a>
-                    </div>
-
-                    <div class="bg-indigo-950/20 border border-indigo-500/30 rounded-xl p-5 flex flex-col justify-between transition-all relative overflow-hidden">
-                        <div class="absolute top-0 right-0 bg-indigo-600 text-white text-[8px] font-bold font-mono px-2 py-0.5 uppercase tracking-wide rounded-bl shadow-sm">PRO</div>
-                        <div>
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="text-sm font-bold text-indigo-300 uppercase tracking-wide">Asymmetric Agency</h4>
-                                <div class="text-right">
-                                    <span class="text-lg font-black text-indigo-400 font-mono">₹2,499</span>
-                                    <span class="text-[10px] text-gray-500 block">/ month</span>
-                                </div>
-                            </div>
-                            <ul class="space-y-2 my-4 text-[11px] text-gray-400 font-light">
-                                <li class="flex items-center gap-2">🔹 <strong>300 video generations</strong> per billing cycle</li>
-                                <li class="flex items-center gap-2">🔹 Priority High-Traffic Balance Routing</li>
-                                <li class="flex items-center gap-2">🔹 Multi-User Seats & CSV Bulk Export</li>
-                            </ul>
-                        </div>
-                        <a id="checkout-link-agency" href="#" onclick="routeToGateway(event, 'agency')" class="checkout-btn-tier disabled w-full text-center bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-400 hover:to-indigo-500 text-white text-xs font-bold py-2.5 rounded-lg transition-all shadow-md block mt-2 cursor-pointer">
-                            Deploy Agency Tier (300 Limit)
-                        </a>
-                    </div>
-                </div>
-            </div>
-
             <div id="interactive-generation-deck" class="opacity-30 pointer-events-none space-y-4 transition-opacity duration-300">
                 <div class="flex flex-col sm:flex-row gap-3">
                     <input 
@@ -202,7 +141,43 @@
             </div>
         </main>
 
-        <!-- PERMANENT ARCADE CABINET DASHBOARD -->
+        <div id="rate-limit-warning" class="hidden mb-6 p-6 bg-slate-950/80 border border-indigo-900/50 rounded-2xl shadow-inner fade-in">
+            <div class="text-center max-w-2xl mx-auto mb-6">
+                <span class="inline-block px-3 py-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-[10px] font-mono rounded-full uppercase tracking-wider mb-3">⚡ Evaluation Limit Hit</span>
+                <h3 class="text-xl md:text-2xl font-black text-white mb-2">Free Allotment Exhausted</h3>
+                <p class="text-xs text-gray-400 max-w-md mx-auto mb-4">This account has consumed all free testing cycles. Select a membership blueprint below to restore access.</p>
+            </div>
+            <div class="p-4 bg-slate-950 border border-slate-800/80 rounded-xl max-w-xl mx-auto mb-6 text-left shadow-inner">
+                <label class="flex items-start cursor-pointer text-xs font-mono text-gray-400 select-none">
+                    <input type="checkbox" id="global-legal-gate" onchange="evaluateInterfaceSecurityGate()" class="rounded border-slate-800 bg-slate-950 text-indigo-600 focus:ring-0 focus:ring-offset-0 mr-3 mt-0.5 w-4 h-4 cursor-pointer">
+                    <span>
+                        I clarify that I am a sophisticated commercial operator. I explicitly read, understand, and agree to the 
+                        <span class="text-indigo-400 font-bold underline cursor-pointer hover:text-indigo-300" onclick="toggleLegalModal(true)">Master Access Covenant</span>, including the absolute arbitration seat in Hyderabad, India.
+                    </span>
+                </label>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl mx-auto items-stretch">
+                <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-5 flex flex-col justify-between transition-all hover:border-slate-700">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-sm font-bold text-white uppercase tracking-wide">Solo Creator</h4>
+                            <div class="text-right"><span class="text-lg font-black text-indigo-400 font-mono">₹699</span></div>
+                        </div>
+                    </div>
+                    <a id="checkout-link-creator" href="#" onclick="routeToGateway(event, 'solo')" class="checkout-btn-tier disabled w-full text-center bg-indigo-600 text-white text-xs font-semibold py-2.5 rounded-lg transition-all shadow-md block mt-2 cursor-pointer">Upgrade</a>
+                </div>
+                <div class="bg-indigo-950/20 border border-indigo-500/30 rounded-xl p-5 flex flex-col justify-between transition-all relative overflow-hidden">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-sm font-bold text-indigo-300 uppercase tracking-wide">Agency Plan</h4>
+                            <div class="text-right"><span class="text-lg font-black text-indigo-400 font-mono">₹2,499</span></div>
+                        </div>
+                    </div>
+                    <a id="checkout-link-agency" href="#" onclick="routeToGateway(event, 'agency')" class="checkout-btn-tier disabled w-full text-center bg-gradient-to-r from-indigo-500 to-indigo-600 text-white text-xs font-bold py-2.5 rounded-lg transition-all shadow-md block mt-2 cursor-pointer">Deploy</a>
+                </div>
+            </div>
+        </div>
+
         <section id="permanent-arcade-deck" class="mb-6 space-y-4 fade-in">
             <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 relative overflow-hidden shadow-2xl">
                 <div class="w-full flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
@@ -246,7 +221,7 @@
                 
                 <div class="mt-4 flex flex-col sm:flex-row gap-3 justify-center items-center">
                     <button type="button" id="attempt-sandbox-mode-btn" class="bg-slate-950 border border-slate-800 text-gray-300 hover:text-white font-mono text-[11px] px-4 py-2.5 rounded-xl transition-all font-bold shadow-md cursor-pointer uppercase tracking-wider">
-                        幕 Play Practice Sandbox Mode
+                        🎮 Play Practice Sandbox Mode
                     </button>
                     <button type="button" id="attempt-free-credit-btn" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-mono text-[11px] px-4 py-2.5 rounded-xl transition-all font-black shadow-md cursor-pointer uppercase tracking-wider">
                         🔥 Attempt Free Generation Trial (Target 5,000)
@@ -313,7 +288,6 @@
         </div>
     </div>
 
-    <!-- REWRITTEN MASTER CONTROLLER Logic ENGINE -->
     <script>
         const RAZORPAY_SOLO_URL   = 'https://rzp.io/rzp/ERdjInlT';
         const RAZORPAY_AGENCY_URL = 'https://rzp.io/rzp/kK3urmV';
@@ -377,6 +351,8 @@
         let generatedFingerprint = "pending";
 
         let isFreeCreditTrialRunActive = false;
+        let screenshake = 0;
+        let particles = [];
 
         const TARGET_LEADERBOARD_RECORDS = { stack: 1500, dash: 1200, fusion: 2500 };
 
@@ -433,7 +409,6 @@
                     { theme: "filled_dark", size: "large", width: "240" }
                 );
             }
-            // Fire execution tick pipeline loops cleanly
             gameActive = true;
             triggerGameSwap('stack');
             runMasterLoop();
@@ -455,28 +430,47 @@
             } catch(e) { generatedFingerprint = "fb_" + Math.random().toString(36).substring(2, 10); }
         }
 
-        // --- FIXED: TARGETED CANVAS KEYBOARD LISTENER ---
         window.addEventListener('keydown', e => { 
             if(document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
             if([32, 37, 38, 39, 40].includes(e.keyCode)) {
                 e.preventDefault(); 
                 e.stopPropagation();
             }
-            if(e.keyCode === 32 && !keys[32]) {
-                spaceLatch = true;
-            }
+            if(e.keyCode === 32 && !keys[32]) spaceLatch = true;
             keys[e.keyCode] = true; 
         }, { passive: false });
 
         window.addEventListener('keyup', e => { 
             if(document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
-            if([32, 37, 38, 39, 40].includes(e.keyCode)) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
             keys[e.keyCode] = false; 
             if(e.keyCode === 32) spaceLatch = false; 
-        }, { passive: false });
+        });
+
+        function spawnExplosion(x, y, color) {
+            for (let i = 0; i < 15; i++) {
+                particles.push({
+                    x: x, y: y,
+                    dx: (Math.random() - 0.5) * 8,
+                    dy: (Math.random() - 0.5) * 8,
+                    radius: Math.random() * 3 + 2,
+                    alpha: 1,
+                    color: color
+                });
+            }
+        }
+
+        function drawParticles() {
+            for (let i = particles.length - 1; i >= 0; i--) {
+                let p = particles[i];
+                p.x += p.dx; p.y += p.dy; p.alpha -= 0.04;
+                if (p.alpha <= 0) { particles.splice(i, 1); continue; }
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.fillStyle = p.color;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2); ctx.fill();
+                ctx.restore();
+            }
+        }
 
         function drawLeaderboardStandings(gameKey, renderCombined = false) {
             const rowBox = document.getElementById('leaderboard-rows-container'); if(!rowBox) return; rowBox.innerHTML = '';
@@ -525,14 +519,14 @@
         }
 
         // TOWER STACK
-        let stackLayers = []; let currentBlock = {}; let blockSpeed = 3; let towerGameOver = false;
+        let stackLayers = []; let currentBlock = {}; let blockSpeed = 5.5; let towerGameOver = false;
         function initStack() {
             score = 0; scoreDisplay.textContent = score; towerGameOver = false; spaceLatch = false;
             leaderboardTopDisplay.textContent = isFreeCreditTrialRunActive ? "5000" : TARGET_LEADERBOARD_RECORDS.stack;
             document.getElementById('active-tab-title').textContent = "🧱 TOWER STACK MATCH";
             currentBestDisplay.textContent = localStorage.getItem('clipToPost_best_stack') || '0';
             stackLayers = [{ x: 125, y: 250, w: 150, h: 25, color: '#6366f1' }];
-            blockSpeed = isFreeCreditTrialRunActive ? 6.5 : 3.5;
+            blockSpeed = isFreeCreditTrialRunActive ? 7.5 : 5.5; // Accelerated engaging baseline
             currentBlock = { x: 0, y: 225, w: 150, h: 25, dir: 1 };
             drawLeaderboardStandings('stack', isViewingCombinedLeaderboard);
         }
@@ -545,7 +539,7 @@
             if (isFreeCreditTrialRunActive && score >= 1200) {
                 activeSpeed = blockSpeed * Math.pow(1.38, (score - 1000) / 200); 
             } else if (score >= 1200) {
-                activeSpeed = blockSpeed * 1.25; 
+                activeSpeed = blockSpeed * 1.35; 
             }
             currentBlock.x += currentBlock.dir * activeSpeed;
             if (currentBlock.x < 0 || currentBlock.x + currentBlock.w > canvas.width) currentBlock.dir *= -1;
@@ -560,8 +554,12 @@
                 let cutWidth = right - left; let cutX = left;
                 stackLayers.push({ x: cutX, y: currentBlock.y, w: cutWidth, h: 25, color: `hsl(${200 + (stackLayers.length * 15)}, 90%, 60%)` });
                 score += 100; scoreDisplay.textContent = score; synchronizeHighScores('stack', score);
+                
+                screenshake = 10; // Trigger Juiced shake
+                spawnExplosion(cutX + cutWidth/2, currentBlock.y, '#ec4899');
+
                 if (currentBlock.y <= 90) { stackLayers.forEach(l => l.y += 50); stackLayers.shift(); }
-                currentBlock = { x: 0, y: stackLayers[stackLayers.length - 1].y - 25, w: cutWidth, h: 25, dir: 1 }; blockSpeed += isFreeCreditTrialRunActive ? 0.7 : 0.35;
+                currentBlock = { x: 0, y: stackLayers[stackLayers.length - 1].y - 25, w: cutWidth, h: 25, dir: 1 }; blockSpeed += isFreeCreditTrialRunActive ? 0.7 : 0.45;
             }
             
             ctx.fillStyle = 'rgba(15, 23, 42, 0.85)'; ctx.strokeStyle = 'rgba(51, 65, 85, 0.5)'; ctx.lineWidth = 1;
@@ -586,8 +584,8 @@
                 ctx.fillText(isFreeCreditTrialRunActive ? "SHIELD DESTRUCTED." : "SYSTEM DEFUNCT! CHOOSE TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return;
             }
             runnerFrame++; 
-            let defaultBaseInterval = isFreeCreditTrialRunActive ? 12 : 24;
-            let currentSpawnInterval = Math.max(isFreeCreditTrialRunActive ? 4 : 8, defaultBaseInterval - Math.floor(score / 150));
+            let defaultBaseInterval = isFreeCreditTrialRunActive ? 10 : 16;
+            let currentSpawnInterval = Math.max(isFreeCreditTrialRunActive ? 3 : 6, defaultBaseInterval - Math.floor(score / 120));
             
             ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 1;
             for(let i = 0; i <= canvas.height; i += 30) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke(); }
@@ -596,13 +594,13 @@
             if (keys[37]) { keys[37] = false; if (runnerLane > 0) runnerLane--; }
             if (keys[39]) { keys[39] = false; if (runnerLane < 2) runnerLane++; }
             let targetX = (runnerLane * 133) + 66; 
-            let turnVelocity = isFreeCreditTrialRunActive ? 0.18 : 0.28;
+            let turnVelocity = isFreeCreditTrialRunActive ? 0.22 : 0.35;
             runnerX += (targetX - runnerX) * turnVelocity; 
 
             if (runnerFrame % currentSpawnInterval === 0) { 
                 let spawnLane = Math.floor(Math.random() * 3);
-                let initialSpeed = isFreeCreditTrialRunActive ? 11 : 6.5;
-                let velocityFactor = isFreeCreditTrialRunActive && score >= 1200 ? Math.pow(1.4, (score / 300)) : (score / 280);
+                let initialSpeed = isFreeCreditTrialRunActive ? 12 : 8.5; // High base engaging velocity
+                let velocityFactor = isFreeCreditTrialRunActive && score >= 1200 ? Math.pow(1.45, (score / 250)) : (score / 200);
                 runnerObstacles.push({ lane: spawnLane, y: -35, speed: initialSpeed + velocityFactor, processed: false, wasTargetingPlayer: (spawnLane === runnerLane) }); 
             }
             
@@ -619,6 +617,8 @@
                 let effectiveRadius = isFreeCreditTrialRunActive && score >= 1200 ? 32 : 14;
                 if (!obs.processed && obs.y > (230 - effectiveRadius) && obs.y < 265 && obs.lane === runnerLane) { 
                     obs.processed = true; score -= isFreeCreditTrialRunActive ? 200 : 10; 
+                    screenshake = 15;
+                    spawnExplosion(runnerX, 250, '#ef4444');
                     if (score <= 0) { score = 0; runnerGameOver = true; handleTrialRunFailure(); }
                     scoreDisplay.textContent = score; runnerObstacles.splice(i, 1); continue;
                 }
@@ -627,11 +627,6 @@
                     runnerObstacles.splice(i, 1);
                 }
             }
-            
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.85)'; ctx.strokeStyle = 'rgba(51, 65, 85, 0.5)'; ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.roundRect(80, 272, 240, 20, 10); ctx.fill(); ctx.stroke();
-            ctx.fillStyle = '#94a3b8'; ctx.font = '10px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText(isFreeCreditTrialRunActive ? "⚠️ DENSITY FIELD ENFORCED" : "Avoider Matrix: Move fast or drop points!", canvas.width / 2, 282);
         }
 
         // BRICK BREAKER
@@ -640,8 +635,8 @@
             score = 0; scoreDisplay.textContent = score; fusionGameOver = false;
             leaderboardTopDisplay.textContent = isFreeCreditTrialRunActive ? "5000" : TARGET_LEADERBOARD_RECORDS.fusion; document.getElementById('active-tab-title').textContent = "🧩 BRICK BREAKER MATCH";
             currentBestDisplay.textContent = localStorage.getItem('clipToPost_best_fusion') || '0'; 
-            paddle.width = isFreeCreditTrialRunActive ? 35 : 75; paddle.speed = isFreeCreditTrialRunActive ? 5.0 : 8;
-            ball.x = 200; ball.y = 150; ball.dx = isFreeCreditTrialRunActive ? 7.0 : 4.2; ball.dy = isFreeCreditTrialRunActive ? -7.0 : -4.2; bricks = [];
+            paddle.width = isFreeCreditTrialRunActive ? 35 : 75; paddle.speed = isFreeCreditTrialRunActive ? 6.0 : 10;
+            ball.x = 200; ball.y = 150; ball.dx = isFreeCreditTrialRunActive ? 7.5 : 5.5; ball.dy = isFreeCreditTrialRunActive ? -7.5 : -5.5; bricks = [];
             let rowsCount = isFreeCreditTrialRunActive ? 6 : 3;
             for (let r = 0; r < rowsCount; r++) { for (let c = 0; c < 7; c++) { bricks.push({ x: 25 + c * 52, y: 40 + r * 18, width: 44, height: 12, alive: true }); } }
             drawLeaderboardStandings('fusion', isViewingCombinedLeaderboard);
@@ -653,34 +648,46 @@
             }
             if (keys[37] && paddle.x > 0) paddle.x -= paddle.speed; if (keys[39] && paddle.x < canvas.width - paddle.width) paddle.x += paddle.speed;
             let baselineSpeedFactor = 1.0;
-            if (isFreeCreditTrialRunActive && score >= 1000) baselineSpeedFactor = 1.85; 
+            if (isFreeCreditTrialRunActive && score >= 1000) baselineSpeedFactor = 1.95; 
             ball.x += ball.dx * baselineSpeedFactor; ball.y += ball.dy * baselineSpeedFactor; 
             if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) ball.dx *= -1; if (ball.y - ball.radius < 0) ball.dy *= -1;
-            if (ball.y + ball.radius >= paddle.y && ball.y - ball.radius <= paddle.y + paddle.height && ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) ball.dy = -Math.abs(ball.dy); 
+            if (ball.y + ball.radius >= paddle.y && ball.y - ball.radius <= paddle.y + paddle.height && ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) {
+                ball.dy = -Math.abs(ball.dy);
+                screenshake = 4;
+            }
             if (ball.y > canvas.height) { fusionGameOver = true; handleTrialRunFailure(); return; }
             ctx.fillStyle = '#eab308'; ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
             ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2); ctx.fillStyle = '#ffffff'; ctx.fill(); ctx.closePath();
             let activeBricks = false;
             bricks.forEach(b => {
                 if (!b.alive) return; activeBricks = true; ctx.fillStyle = '#ec4899'; ctx.fillRect(b.x, b.y, b.width, b.height);
-                if (ball.x > b.x && ball.x < b.x + b.width && ball.y > b.y && ball.y < b.y + b.height) { b.alive = false; ball.dy *= -1; score += 50; scoreDisplay.textContent = score; synchronizeHighScores('fusion', score); }
+                if (ball.x > b.x && ball.x < b.x + b.width && ball.y > b.y && ball.y < b.y + b.height) { 
+                    b.alive = false; ball.dy *= -1; score += 50; scoreDisplay.textContent = score; synchronizeHighScores('fusion', score); 
+                    screenshake = 6;
+                    spawnExplosion(b.x + b.width/2, b.y + b.height/2, '#ec4899');
+                }
             });
             if (!activeBricks) bricks.forEach(b => b.alive = true);
-            
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.85)'; ctx.strokeStyle = 'rgba(51, 65, 85, 0.5)'; ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.roundRect(100, 272, 200, 20, 10); ctx.fill(); ctx.stroke();
-            ctx.fillStyle = '#94a3b8'; ctx.font = '10px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText(isFreeCreditTrialRunActive ? "⚠️ ASYMPTOTIC GRID VELOCITY HIGH" : "Use Arrow Keys to Slide the Paddle", canvas.width / 2, 282);
         }
 
-        // --- GLOBAL CONTAINER TICK ENGINE ---
+        // --- GLOBAL CONTAINER TICK ENGINE WITH HARDWARE SCREENSHAKE ---
         function runMasterLoop() {
+            ctx.save();
+            if (screenshake > 0) {
+                let dx = (Math.random() - 0.5) * screenshake;
+                let dy = (Math.random() - 0.5) * screenshake;
+                ctx.translate(dx, dy);
+                screenshake *= 0.9; // Smooth continuous linear layout reduction
+                if (screenshake < 0.5) screenshake = 0;
+            }
             ctx.clearRect(0, 0, canvas.width, canvas.height); 
             if (gameActive) {
                 if (currentActiveGame === 'stack') updateStack(); 
                 else if (currentActiveGame === 'dash') updateDash(); 
                 else if (currentActiveGame === 'fusion') updateFusion();
             }
+            drawParticles();
+            ctx.restore();
             gameLoopId = requestAnimationFrame(runMasterLoop);
         }
 
@@ -690,8 +697,6 @@
             if (target === 'stack') initStack(); 
             else if (target === 'dash') initDash(); 
             else if (target === 'fusion') initFusion();
-            
-            // FIXED: Explicit structural reactivation parameter assigned onto canvas wrapper targets
             gameActive = true; 
         }
 
