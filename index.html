@@ -177,7 +177,7 @@
                             <canvas id="arcadeCanvas" width="400" height="300" class="absolute top-0 left-0 w-full h-full block" style="object-fit: contain;" tabindex="0"></canvas>
                         </div>
                         <div class="text-[10px] text-gray-500 font-mono mt-2 text-center select-none uppercase tracking-wide">
-                            💡 Tap to stack • Drag finger left/right for Runner & Breaker
+                            💡 Instant Mobile Precision Mode: Swipe or Drag Anywhere
                         </div>
                     </div>
                     <div class="md:col-span-5 bg-slate-950/80 border border-slate-800/60 p-4 rounded-xl shadow-inner flex flex-col min-h-[220px] md:min-h-[300px] w-full">
@@ -266,7 +266,6 @@
         let screenshake = 0;
         let particles = [];
 
-        // Drag/Swipe Tracking Vectors
         let touchStartStartX = 0;
         let touchStartStartY = 0;
 
@@ -319,7 +318,7 @@
             } catch(e) { generatedFingerprint = "fb_" + Math.random().toString(36).substring(2, 10); }
         }
 
-        // UNIFIED INSTANT TOUCH CONTROLLER: REMOVES LATENCY INTERFERENCES
+        // HYPER-SENSITIVE DRAG ENGINE: ZERO ANOMALOUS DELAY PRESERVATION
         canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
             const touchObj = e.touches[0];
@@ -327,7 +326,7 @@
             touchStartStartY = touchObj.clientY;
             
             if (currentActiveGame === 'stack') {
-                spaceLatch = true; // Instant trigger drop block tracking hook
+                spaceLatch = true;
             }
         }, { passive: false });
 
@@ -336,16 +335,17 @@
             const touchObj = e.touches[0];
             const canvasRect = canvas.getBoundingClientRect();
             
-            // Universal Drag Tracking Protocol for Runner and Breaker modes
             if (currentActiveGame === 'dash') {
                 const deltaX = touchObj.clientX - touchStartStartX;
-                if (Math.abs(deltaX) > 20) {
-                    if (deltaX > 0) { keys[39] = true; keys[37] = false; } 
-                    else { keys[37] = true; keys[39] = false; }
-                    touchStartStartX = touchObj.clientX; // Shift vector index origin smoothly
+                if (Math.abs(deltaX) > 12) { // Exponential drop threshold for crisp tracking
+                    if (deltaX > 0) {
+                        if (runnerLane < 2) runnerLane++;
+                    } else {
+                        if (runnerLane > 0) runnerLane--;
+                    }
+                    touchStartStartX = touchObj.clientX;
                 }
             } else if (currentActiveGame === 'fusion') {
-                // Precise continuous slide mapping tracking parameter formula loop
                 const touchXRelative = touchObj.clientX - canvasRect.left;
                 const targetPaddleX = touchXRelative * (400 / canvasRect.width) - (paddle.width / 2);
                 paddle.x = Math.max(0, Math.min(400 - paddle.width, targetPaddleX));
@@ -401,13 +401,13 @@
             drawLeaderboardStandings(gameKey, isViewingCombinedLeaderboard);
         }
 
-        // TOWER STACK 
-        let stackLayers = []; let currentBlock = {}; let blockSpeed = 6.5; let towerGameOver = false; // FIXED: Baseline vector seed boosted from 3.8 to 6.5 for responsive handling
+        // TOWER STACK
+        let stackLayers = []; let currentBlock = {}; let blockSpeed = 9.5; let towerGameOver = false; // ACCELERATED: Crisp 9.5 baseline pace
         function initStack() {
             score = 0; scoreDisplay.textContent = score; towerGameOver = false; spaceLatch = false;
             leaderboardTopDisplay.textContent = isFreeCreditTrialRunActive ? "5000" : TARGET_LEADERBOARD_RECORDS.stack;
             stackLayers = [{ x: 125, y: 250, w: 150, h: 25, color: '#6366f1' }];
-            blockSpeed = isFreeCreditTrialRunActive ? 8.5 : 6.5; currentBlock = { x: 0, y: 225, w: 150, h: 25, dir: 1 };
+            blockSpeed = isFreeCreditTrialRunActive ? 12.0 : 9.5; currentBlock = { x: 0, y: 225, w: 150, h: 25, dir: 1 };
             drawLeaderboardStandings('stack', isViewingCombinedLeaderboard);
         }
         function updateStack() {
@@ -426,7 +426,7 @@
                 score += 100; scoreDisplay.textContent = score; synchronizeHighScores('stack', score);
                 screenshake = 10; spawnExplosion(cutX + cutWidth/2, currentBlock.y, '#ec4899');
                 if (currentBlock.y <= 90) { stackLayers.forEach(l => l.y += 50); stackLayers.shift(); }
-                currentBlock = { x: 0, y: stackLayers[stackLayers.length - 1].y - 25, w: cutWidth, h: 25, dir: 1 }; blockSpeed += isFreeCreditTrialRunActive ? 0.45 : 0.35;
+                currentBlock = { x: 0, y: stackLayers[stackLayers.length - 1].y - 25, w: cutWidth, h: 25, dir: 1 }; blockSpeed += isFreeCreditTrialRunActive ? 0.55 : 0.45;
             }
         }
 
@@ -440,20 +440,23 @@
         }
         function updateDash() {
             if (runnerGameOver) { ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center'; ctx.fillText("SYSTEM DEFUNCT!", canvas.width / 2, canvas.height / 2); return; }
-            runnerFrame++; let defaultBaseInterval = isFreeCreditTrialRunActive ? 12 : 18; // Increased frequency cadence parameters
-            let currentSpawnInterval = Math.max(isFreeCreditTrialRunActive ? 4 : 7, defaultBaseInterval - Math.floor(score / 150));
+            runnerFrame++; let defaultBaseInterval = isFreeCreditTrialRunActive ? 8 : 12; // High-density spawn interval cadence parameters
+            let currentSpawnInterval = Math.max(isFreeCreditTrialRunActive ? 3 : 5, defaultBaseInterval - Math.floor(score / 150));
             
             ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 1; for(let i = 0; i <= canvas.height; i += 30) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke(); }
             ctx.strokeStyle = '#312e81'; ctx.lineWidth = 4; [133, 266].forEach(lx => { ctx.beginPath(); ctx.moveTo(lx, 0); ctx.lineTo(lx, canvas.height); ctx.stroke(); });
 
             if (keys[37]) { keys[37] = false; if (runnerLane > 0) runnerLane--; }
             if (keys[39]) { keys[39] = false; if (runnerLane < 2) runnerLane++; }
-            let targetX = (runnerLane * 133) + 66; runnerX += (targetX - runnerX) * 0.28; 
+            
+            // ACCELERATED SNAP DODGING: Position snaps directly on swipe to preserve responsiveness
+            let targetX = (runnerLane * 133) + 66; 
+            runnerX = targetX;
 
             if (runnerFrame % currentSpawnInterval === 0) { 
                 let spawnLane = Math.floor(Math.random() * 3);
-                let initialSpeed = isFreeCreditTrialRunActive ? 10.5 : 5.8; // FIXED: Drop velocity speed boosted from 2.5 to 5.8 for an actual challenge challenge loops
-                let velocityFactor = isFreeCreditTrialRunActive && score >= 1200 ? Math.pow(1.30, (score / 250)) : (score / 250);
+                let initialSpeed = isFreeCreditTrialRunActive ? 14.5 : 8.5; // Upgraded baseline drop speed values
+                let velocityFactor = isFreeCreditTrialRunActive && score >= 1200 ? Math.pow(1.35, (score / 250)) : (score / 200);
                 runnerObstacles.push({ lane: spawnLane, y: -35, speed: initialSpeed + velocityFactor, processed: false, wasTargetingPlayer: (spawnLane === runnerLane) }); 
             }
             
@@ -480,19 +483,18 @@
         }
 
         // BRICK BREAKER
-        let paddle = { x: 160, y: 270, width: 75, height: 10, speed: 7 }; let ball = { x: 200, y: 150, dx: 3.5, dy: -3.5, radius: 5 }; let bricks = []; let fusionGameOver = false;
+        let paddle = { x: 160, y: 270, width: 75, height: 10, speed: 7 }; let ball = { x: 200, y: 150, dx: 5.5, dy: -5.5, radius: 5 }; let bricks = []; let fusionGameOver = false; // ACCELERATED: Ball baseline speed boosted to 5.5
         function initFusion() {
             score = 0; scoreDisplay.textContent = score; fusionGameOver = false;
             leaderboardTopDisplay.textContent = isFreeCreditTrialRunActive ? "5000" : TARGET_LEADERBOARD_RECORDS.fusion; 
-            paddle.width = isFreeCreditTrialRunActive ? 35 : 75; paddle.speed = isFreeCreditTrialRunActive ? 6.5 : 9.5;
-            ball.x = 200; ball.y = 150; ball.dx = isFreeCreditTrialRunActive ? 6.0 : 4.5; ball.dy = isFreeCreditTrialRunActive ? -6.0 : -4.5; bricks = [];
+            paddle.width = isFreeCreditTrialRunActive ? 35 : 75; paddle.speed = isFreeCreditTrialRunActive ? 8.5 : 12.5;
+            ball.x = 200; ball.y = 150; ball.dx = isFreeCreditTrialRunActive ? 8.0 : 5.5; ball.dy = isFreeCreditTrialRunActive ? -8.0 : -5.5; bricks = [];
             let rowsCount = isFreeCreditTrialRunActive ? 6 : 3; for (let r = 0; r < rowsCount; r++) { for (let c = 0; c < 7; c++) { bricks.push({ x: 25 + c * 52, y: 40 + r * 18, width: 44, height: 12, alive: true }); } }
             drawLeaderboardStandings('fusion', isViewingCombinedLeaderboard);
         }
         function updateFusion() {
             if (fusionGameOver) { ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center'; ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2); return; }
             
-            // Desktop keyboard tracking fallback overrides
             if (keys[37] && paddle.x > 0) paddle.x -= paddle.speed; 
             if (keys[39] && paddle.x < canvas.width - paddle.width) paddle.x += paddle.speed;
             
@@ -620,12 +622,52 @@
             });
         }
 
+        // ⏱️ RECURSIVE POLLING RETRIEVAL LOOPS
+        async function pollExecutionStatus(executionId) {
+            try {
+                const response = await fetch(`/api/generate-posts?id=${executionId}`);
+                if (!response.ok) {
+                    setTimeout(() => pollExecutionStatus(executionId), 3000);
+                    return;
+                }
+                
+                const data = await response.json();
+                
+                if (data.status === 'completed') {
+                    statusBanner.classList.add('hidden');
+                    activeGenerationDataset = data.posts || [];
+                    renderInterfaceAssets(boomerFontToggle.checked);
+                    
+                    submitBtn.disabled = false;
+                    urlInput.disabled = false;
+                    submitBtn.textContent = "Generate Posts";
+                } else if (data.status === 'failed') {
+                    statusMessage.textContent = "❌ PIPELINE ERROR: Agent execution failed.";
+                    submitBtn.disabled = false;
+                    urlInput.disabled = false;
+                    submitBtn.textContent = "Generate Posts";
+                } else {
+                    const messages = [
+                        "Agents are reviewing video transcript...",
+                        "Drafting custom value hooks...",
+                        "Assembling variation assets...",
+                        "Polishing copy structures..."
+                    ];
+                    const randomMessage = messages[Math.floor(Date.now() / 4000) % messages.length];
+                    statusMessage.textContent = `⚡ PROCESS RUNNING: ${randomMessage}`;
+                    setTimeout(() => pollExecutionStatus(executionId), 3000);
+                }
+            } catch (err) {
+                setTimeout(() => pollExecutionStatus(executionId), 3000);
+            }
+        }
+
         async function fireTransformationPipeline() {
             if (!checkUsageLimits()) return;
             if (!authenticatedUserContext) { alert('Please sign in via Google Auth first.'); return; }
             
-            submitBtn.disabled = true; urlInput.disabled = true; submitBtn.textContent = "Processing...";
-            statusBanner.classList.remove('hidden'); statusMessage.textContent = "CONNECTING TO SECURE ROUTING GATEWAY...";
+            submitBtn.disabled = true; urlInput.disabled = true; submitBtn.textContent = "Deploying Agents...";
+            statusBanner.classList.remove('hidden'); statusMessage.textContent = "LAUNCHING SECURE PIPELINE WORKERS...";
             
             try {
                 const response = await fetch('/api/generate-posts', {
@@ -634,14 +676,17 @@
                     body: JSON.stringify({ youtubeUrl: urlInput.value.trim(), userGoogleId: authenticatedUserContext.uid })
                 });
 
-                if (!response.ok) throw new Error("Fault.");
+                if (!response.ok) throw new Error("Fault initiating execution loop.");
                 const data = await response.json();
-                statusBanner.classList.add('hidden');
-                activeGenerationDataset = data.posts || [];
-                renderInterfaceAssets(boomerFontToggle.checked);
+                
+                if (data.executionId) {
+                    statusMessage.textContent = "⚡ AGENTS DISPATCHED SUCCESSFULLY. PROCESSING...";
+                    pollExecutionStatus(data.executionId);
+                } else {
+                    throw new Error("Missing tracking index parameters.");
+                }
             } catch (err) {
-                statusMessage.textContent = "❌ PIPELINE ERROR: Gateway verification failed.";
-            } finally {
+                statusMessage.textContent = "❌ PIPELINE ERROR: Handshake failed to initiate.";
                 submitBtn.disabled = false; urlInput.disabled = false; submitBtn.textContent = "Generate Posts";
             }
         }
