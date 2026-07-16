@@ -526,7 +526,6 @@
             setTimeout(() => canvas.focus(), 10);
         }
         function updateStack() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); 
             if (towerGameOver) { 
                 ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
                 ctx.fillText("CRASHED! SELECT ANOTHER TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return; 
@@ -548,7 +547,7 @@
             }
         }
 
-        // CYBER RUNNER - HARDWARE OPTIMIZED HIGH-PERFORMANCE RENDERING
+        // CYBER RUNNER ENGINE
         let runnerX = 200; let runnerLane = 1; let runnerObstacles = []; let runnerFrame = 0; let runnerGameOver = false;
         function initDash() {
             score = 0; scoreDisplay.textContent = score; runnerGameOver = false;
@@ -560,13 +559,13 @@
             setTimeout(() => canvas.focus(), 10);
         }
         function updateDash() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); 
-            
             if (runnerGameOver) {
                 ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
                 ctx.fillText("SYSTEM DEFUNCT! CHOOSE TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return;
             }
             runnerFrame++; let currentSpawnInterval = Math.max(12, 30 - Math.floor(score / 200));
+            
+            // Draw matching dark grid lines lane markers
             ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 1;
             for(let i = 0; i <= canvas.height; i += 30) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke(); }
             ctx.strokeStyle = '#312e81'; ctx.lineWidth = 4; [133, 266].forEach(lx => { ctx.beginPath(); ctx.moveTo(lx, 0); ctx.lineTo(lx, canvas.height); ctx.stroke(); });
@@ -580,21 +579,17 @@
                 runnerObstacles.push({ lane: spawnLane, y: -35, speed: 7 + (score / 350), processed: false, wasTargetingPlayer: (spawnLane === runnerLane) }); 
             }
             
-            // EXACT MATCH: Translucent Blue-Glow Space Fighter Casing Structure
-            ctx.shadowBlur = 20; ctx.shadowColor = '#5c92ff'; ctx.fillStyle = '#3b82f6';
-            ctx.beginPath(); ctx.moveTo(runnerX, 240); ctx.lineTo(runnerX - 15, 265); ctx.lineTo(runnerX + 15, 265); ctx.closePath(); ctx.fill();
-            
-            // Inner neon accent element mapping
-            ctx.fillStyle = '#93c5fd'; ctx.beginPath(); ctx.moveTo(runnerX, 246); ctx.lineTo(runnerX - 7, 262); ctx.lineTo(runnerX + 7, 262); ctx.closePath(); ctx.fill(); ctx.shadowBlur = 0;
+            // EXACT MATCH VISUALS: Outer pyramid spaceship frame + cyan core element
+            ctx.shadowBlur = 20; ctx.shadowColor = '#6366f1'; ctx.fillStyle = '#4f46e5';
+            ctx.beginPath(); ctx.moveTo(runnerX, 235); ctx.lineTo(runnerX - 16, 265); ctx.lineTo(runnerX + 16, 265); ctx.closePath(); ctx.fill();
+            ctx.fillStyle = '#06b6d4'; ctx.beginPath(); ctx.moveTo(runnerX, 244); ctx.lineTo(runnerX - 7, 261); ctx.lineTo(runnerX + 7, 261); ctx.closePath(); ctx.fill(); ctx.shadowBlur = 0;
 
             for (let i = runnerObstacles.length - 1; i >= 0; i--) {
                 let obs = runnerObstacles[i]; obs.y += obs.speed; let obsX = (obs.lane * 133) + 66;
                 
-                // EXACT MATCH: Neon Crimson Outer Heat Shield Corona Base
+                // EXACT MATCH VISUALS: White hot density anchor surrounded by intense red glow
                 ctx.shadowBlur = 30; ctx.shadowColor = '#ff3b3b'; ctx.fillStyle = '#ef4444'; 
                 ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 14, 0, Math.PI * 2); ctx.fill();
-                
-                // Pure white hyper-dense compression core dot
                 ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 5, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
                 
                 if (!obs.processed && obs.y > 210 && obs.y < 260 && obs.lane === runnerLane) { 
@@ -606,6 +601,12 @@
                     runnerObstacles.splice(i, 1);
                 }
             }
+            
+            // EXACT MATCH VISUALS: Floating label info capsule at bottom block container
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.85)'; ctx.strokeStyle = 'rgba(51, 65, 85, 0.5)'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.roundRect(40, 272, 320, 22, 12); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#94a3b8'; ctx.font = '10px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText("Avoider Matrix: Move fast or drop points!", canvas.width / 2, 283);
         }
 
         // BRICK BREAKER ENGINE
@@ -619,7 +620,6 @@
             setTimeout(() => canvas.focus(), 10);
         }
         function updateFusion() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); 
             if (fusionGameOver) {
                 ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
                 ctx.fillText("GAME OVER! CHOOSE ANOTHER TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return;
@@ -640,6 +640,7 @@
 
         function runMasterLoop() {
             if (!gameActive) return; 
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // CORE RE-RENDER RE-CLEAR COOPERATIVE ENGINE TO RESOLVE STUTTER 
             if (currentActiveGame === 'stack') updateStack(); else if (currentActiveGame === 'dash') updateDash(); else if (currentActiveGame === 'fusion') updateFusion();
             gameLoopId = requestAnimationFrame(runMasterLoop);
         }
@@ -725,6 +726,7 @@
             return true;
         }
 
+        // COOPERATIVE EXTRACTOR RESOLUTION COMPILER
         function resolveDynamicTextString(item) {
             let runningText = item.isHashtagHidden ? item.cleanText : item.fullText;
             if (item.isEmojiHidden) {
@@ -875,7 +877,6 @@
                 if (!response.ok) throw new Error("Fault.");
                 const data = await response.json();
                 
-                // Fixed: Explicit safety parameters mapping down to incoming payload context configurations
                 const rawOutputText = data.output || data.text || (Array.isArray(data) ? (data[0]?.output || data[0]?.text) : '') || '';
                 if (!rawOutputText) throw new Error("Empty text payload structure returned.");
                 
