@@ -1,5 +1,5 @@
 // api/generate-posts.js
-// 🔒 ALL SENSITIVE BINDING INFORMATION EXTRACTED TO ENCRYPTED VERCEL ECOSYSTEM APPARATUS
+// 🔒 ALL CONFIDENTIAL CREDENTIALS EXTRACTED TO ENCRYPTED VERCEL ECOSYSTEM APPARATUS
 
 export default async function handler(req, res) {
     // Inject dynamic production-grade CORS access criteria headers
@@ -27,6 +27,8 @@ export default async function handler(req, res) {
     try {
         const dateObj = new Date();
         const todayStamp = `${dateObj.getUTCFullYear()}-${String(dateObj.getUTCMonth() + 1).padStart(2, '0')}-${String(dateObj.getUTCDate()).padStart(2, '0')}`;
+        
+        // Unified transit token string to safely validate matching keys
         const computedToken = `${transitSecret}_${todayStamp}`;
 
         const response = await fetch(targetTunnel, {
