@@ -230,16 +230,14 @@
                         <button type="button" id="btn-dash" class="game-tab-btn px-4 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer text-gray-500 hover:text-gray-300">⚡ CYBER RUNNER</button>
                         <button type="button" id="btn-fusion" class="game-tab-btn px-4 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer text-gray-500 hover:text-gray-300">🧩 BRICK BREAKER</button>
                     </div>
-                    <div id="active-tab-title" class="text-xs font-mono font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/40 border border-indigo-900/30 px-3 py-1.5 rounded-xl">🧱 TOWER STACK MATCH</div>
+                    <!-- EXACT MATCH: Right-side visual context tracking badge layout pill -->
+                    <div id="active-tab-title" class="text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/40 border border-indigo-900/30 px-3 py-1.5 rounded-xl">🧱 TOWER STACK MATCH</div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
                     <div class="md:col-span-7 flex flex-col items-center">
                         <div class="relative w-full max-w-[400px] aspect-[4/3] bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col items-center justify-center shadow-inner">
                             <canvas id="arcadeCanvas" width="400" height="300" class="w-full h-full block" tabindex="0"></canvas>
-                            <div id="arcade-controls" class="absolute bottom-2 text-[10px] text-gray-400 font-mono bg-gray-900/90 px-3 py-1 rounded-full pointer-events-none tracking-wide border border-slate-800">
-                                Press SPACE to Drop Block Perfectly
-                            </div>
                         </div>
                     </div>
                     <div class="md:col-span-5 bg-slate-950/80 border border-slate-800/60 p-4 rounded-xl shadow-inner flex flex-col min-h-[300px]">
@@ -545,6 +543,12 @@
                 if (currentBlock.y <= 90) { stackLayers.forEach(l => l.y += 50); stackLayers.shift(); }
                 currentBlock = { x: 0, y: stackLayers[stackLayers.length - 1].y - 25, w: cutWidth, h: 25, dir: 1 }; blockSpeed += 0.35;
             }
+            
+            // Text Label context binding rule
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.85)'; ctx.strokeStyle = 'rgba(51, 65, 85, 0.5)'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.roundRect(100, 272, 200, 22, 12); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#94a3b8'; ctx.font = '10px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText("Press SPACE to Drop Block Perfectly", canvas.width / 2, 283);
         }
 
         // CYBER RUNNER ENGINE
@@ -565,7 +569,6 @@
             }
             runnerFrame++; let currentSpawnInterval = Math.max(12, 30 - Math.floor(score / 200));
             
-            // Draw matching dark grid lines lane markers
             ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 1;
             for(let i = 0; i <= canvas.height; i += 30) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke(); }
             ctx.strokeStyle = '#312e81'; ctx.lineWidth = 4; [133, 266].forEach(lx => { ctx.beginPath(); ctx.moveTo(lx, 0); ctx.lineTo(lx, canvas.height); ctx.stroke(); });
@@ -579,7 +582,7 @@
                 runnerObstacles.push({ lane: spawnLane, y: -35, speed: 7 + (score / 350), processed: false, wasTargetingPlayer: (spawnLane === runnerLane) }); 
             }
             
-            // EXACT MATCH VISUALS: Outer pyramid spaceship frame + cyan core element
+            // EXACT MATCH VISUALS: Player Ship Dual-Tone geometry mapping
             ctx.shadowBlur = 20; ctx.shadowColor = '#6366f1'; ctx.fillStyle = '#4f46e5';
             ctx.beginPath(); ctx.moveTo(runnerX, 235); ctx.lineTo(runnerX - 16, 265); ctx.lineTo(runnerX + 16, 265); ctx.closePath(); ctx.fill();
             ctx.fillStyle = '#06b6d4'; ctx.beginPath(); ctx.moveTo(runnerX, 244); ctx.lineTo(runnerX - 7, 261); ctx.lineTo(runnerX + 7, 261); ctx.closePath(); ctx.fill(); ctx.shadowBlur = 0;
@@ -587,7 +590,7 @@
             for (let i = runnerObstacles.length - 1; i >= 0; i--) {
                 let obs = runnerObstacles[i]; obs.y += obs.speed; let obsX = (obs.lane * 133) + 66;
                 
-                // EXACT MATCH VISUALS: White hot density anchor surrounded by intense red glow
+                // EXACT MATCH VISUALS: White anchor + intensive crimson halo
                 ctx.shadowBlur = 30; ctx.shadowColor = '#ff3b3b'; ctx.fillStyle = '#ef4444'; 
                 ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 14, 0, Math.PI * 2); ctx.fill();
                 ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 5, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
@@ -602,11 +605,11 @@
                 }
             }
             
-            // EXACT MATCH VISUALS: Floating label info capsule at bottom block container
+            // EXACT MATCH: Floating pill badge container set to read "Press SPACE to Drop Block Perfectly" inside Cyber Runner view bounds
             ctx.fillStyle = 'rgba(15, 23, 42, 0.85)'; ctx.strokeStyle = 'rgba(51, 65, 85, 0.5)'; ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.roundRect(40, 272, 320, 22, 12); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.roundRect(100, 272, 200, 22, 12); ctx.fill(); ctx.stroke();
             ctx.fillStyle = '#94a3b8'; ctx.font = '10px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText("Avoider Matrix: Move fast or drop points!", canvas.width / 2, 283);
+            ctx.fillText("Press SPACE to Drop Block Perfectly", canvas.width / 2, 283);
         }
 
         // BRICK BREAKER ENGINE
@@ -640,7 +643,7 @@
 
         function runMasterLoop() {
             if (!gameActive) return; 
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // CORE RE-RENDER RE-CLEAR COOPERATIVE ENGINE TO RESOLVE STUTTER 
+            ctx.clearRect(0, 0, canvas.width, canvas.height); 
             if (currentActiveGame === 'stack') updateStack(); else if (currentActiveGame === 'dash') updateDash(); else if (currentActiveGame === 'fusion') updateFusion();
             gameLoopId = requestAnimationFrame(runMasterLoop);
         }
@@ -726,7 +729,6 @@
             return true;
         }
 
-        // COOPERATIVE EXTRACTOR RESOLUTION COMPILER
         function resolveDynamicTextString(item) {
             let runningText = item.isHashtagHidden ? item.cleanText : item.fullText;
             if (item.isEmojiHidden) {
