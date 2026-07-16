@@ -1,5 +1,5 @@
 // api/generate-posts.js
-// 🔒 COMPLETE RESILIENT ASYNC POLLING ROUTER GATEWAY
+// 🔒 PRODUCTION-GRADE DEEP NESTED OBJECT PARSER PIPELINE
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     }
 
     // ----------------------------------------------------
-    // 🔍 PATH 1: STATUS CHECKS WITH DEEP PARSING (GET)
+    // 🔍 PATH 1: STATUS CHECKS + STABLE COMPILER (GET)
     // ----------------------------------------------------
     if (req.method === 'GET') {
         const { id } = req.query;
@@ -50,39 +50,40 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: "processing" });
                 }
 
-                // Target the absolute final node execution block in the array chain
+                // Extrapolate data using the absolute final node configuration layout key
                 const finalNodeKey = nodeKeys[nodeKeys.length - 1]; 
                 const nodeOutputData = runData[finalNodeKey];
 
                 let finalOutput = "";
 
                 try {
-                    // Safe-navigation array probe across common n8n data export formats
-                    if (nodeOutputData?.[0]?.data?.main?.[0]?.[0]?.json?.output) {
-                        finalOutput = nodeOutputData[0].data.main[0][0].json.output;
+                    // Comprehensive multi-layer array resolution check framework
+                    if (Array.isArray(nodeOutputData) && nodeOutputData[0]?.json?.output) {
+                        finalOutput = nodeOutputData[0].json.output;
+                    } else if (nodeOutputData?.data?.main?.[0]?.[0]?.json?.output) {
+                        finalOutput = nodeOutputData.data.main[0][0].json.output;
                     } else if (nodeOutputData?.[0]?.data?.main?.[0]?.json?.output) {
                         finalOutput = nodeOutputData[0].data.main[0].json.output;
-                    } else if (nodeOutputData?.[0]?.json?.output) {
-                        finalOutput = nodeOutputData[0].json.output;
-                    } else if (nodeOutputData?.[0]?.output) {
-                        finalOutput = nodeOutputData[0].output;
+                    } else if (nodeOutputData?.output) {
+                        finalOutput = nodeOutputData.output;
                     } else {
-                        // Ultimate fallback string stringifier lookup check
-                        const deepSearch = JSON.stringify(nodeOutputData);
-                        const match = deepSearch.match(/"output"\s*:\s*"([\s\S]*?)"(?=,|\})/);
+                        // Regular Expression string stringifier structural extraction fallback
+                        const stringifiedDump = JSON.stringify(nodeOutputData);
+                        const match = stringifiedDump.match(/"output"\s*:\s*"([\s\S]*?)"(?=,|\})/);
                         if (match && match[1]) {
+                            // Unescape newlines and internal quotes correctly
                             finalOutput = JSON.parse(`"${match[1]}"`);
                         }
                     }
                 } catch (parseError) {
-                    console.error("Deep navigation error:", parseError);
+                    console.error("Deep output navigation error:", parseError);
                 }
 
-                if (!finalOutput) {
-                    return res.status(200).json({ status: "processing", message: "Output structure resolving." });
+                if (!finalOutput || typeof finalOutput !== 'string') {
+                    return res.status(200).json({ status: "processing", message: "String serialization in progress." });
                 }
 
-                // Split text across your custom token lines cleanly
+                // Process the raw text and split it across the post split boundaries safely
                 const parsedPosts = finalOutput.split('===NEXT_POST===').map(postText => {
                     const cleanText = postText.replace(/#\w+/g, '').trim();
                     return { 
@@ -105,7 +106,7 @@ export default async function handler(req, res) {
     }
 
     // ----------------------------------------------------
-    // 🚀 PATH 2: START PIPELINE (POST)
+    // 🚀 PATH 2: PIPELINE LAUNCH MANAGER (POST)
     // ----------------------------------------------------
     if (req.method === 'POST') {
         try {
@@ -132,10 +133,9 @@ export default async function handler(req, res) {
             }
 
             if (!response.ok) {
-                throw new Error(`Upstream returned error: ${response.status}`);
+                throw new Error(`Upstream returned error status: ${response.status}`);
             }
             
-            // Return executionId safely
             const executionId = responseData.executionId || responseData.id;
             if (!executionId) {
                 return res.status(500).json({ 
@@ -146,7 +146,7 @@ export default async function handler(req, res) {
 
             return res.status(200).json({ status: "processing", executionId: executionId });
         } catch (err) {
-            console.error("Gateway POST error:", err.message);
+            console.error("Gateway POST error execution block:", err.message);
             return res.status(500).json({ error: "Gateway start failure.", details: err.message });
         }
     }
