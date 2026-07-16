@@ -156,6 +156,24 @@
                     <span>I agree to the Master Access Covenant framework.</span>
                 </label>
             </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl mx-auto items-stretch">
+                <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-5 flex flex-col justify-between transition-all hover:border-slate-700">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-sm font-bold text-white uppercase tracking-wide">Solo Creator</h4>
+                        </div>
+                    </div>
+                    <button type="button" onclick="triggerSecurePaymentRoute('solo')" class="checkout-btn-tier disabled w-full text-center bg-indigo-600 text-white text-xs font-semibold py-2.5 rounded-lg transition-all shadow-md block mt-2 cursor-pointer">Upgrade</button>
+                </div>
+                <div class="bg-indigo-950/20 border border-indigo-500/30 rounded-xl p-5 flex flex-col justify-between transition-all relative overflow-hidden">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-sm font-bold text-indigo-300 uppercase tracking-wide">Agency Plan</h4>
+                        </div>
+                    </div>
+                    <button type="button" onclick="triggerSecurePaymentRoute('agency')" class="checkout-btn-tier disabled w-full text-center bg-gradient-to-r from-indigo-500 to-indigo-600 text-white text-xs font-bold py-2.5 rounded-lg transition-all shadow-md block mt-2 cursor-pointer">Deploy</button>
+                </div>
+            </div>
         </div>
 
         <section id="permanent-arcade-deck" class="mb-6 space-y-4 fade-in">
@@ -177,9 +195,9 @@
 
                 <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
                     <div class="flex flex-wrap gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800/60 w-full sm:w-auto">
-                        <button type="button" id="btn-stack" class="game-tab-btn flex-1 sm:flex-none px-3 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer bg-indigo-600 text-white">🧱 STACK</button>
-                        <button type="button" id="btn-dash" class="game-tab-btn flex-1 sm:flex-none px-3 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer text-gray-500 hover:text-gray-300">⚡ RUNNER</button>
-                        <button type="button" id="btn-fusion" class="game-tab-btn flex-1 sm:flex-none px-3 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer text-gray-500 hover:text-gray-300">🧩 BREAKER</button>
+                        <button type="button" id="btn-stack" class="game-tab-btn flex-1 sm:flex-none px-4 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer bg-indigo-600 text-white">🧱 STACK</button>
+                        <button type="button" id="btn-dash" class="game-tab-btn flex-1 sm:flex-none px-4 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer text-gray-500 hover:text-gray-300">⚡ RUNNER</button>
+                        <button type="button" id="btn-fusion" class="game-tab-btn flex-1 sm:flex-none px-4 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer text-gray-500 hover:text-gray-300">🧩 BREAKER</button>
                     </div>
                 </div>
 
@@ -200,7 +218,7 @@
                 
                 <div class="mt-4 flex flex-col sm:flex-row gap-3 justify-center items-center">
                     <button type="button" id="attempt-sandbox-mode-btn" class="w-full sm:w-auto bg-slate-950 border border-slate-800 text-gray-300 hover:text-white font-mono text-[11px] px-4 py-2.5 rounded-xl transition-all font-bold shadow-md cursor-pointer uppercase tracking-wider">
-                        🎮 Play Sandbox Mode
+                        操控 Play Sandbox Mode
                     </button>
                     <button type="button" id="attempt-free-credit-btn" class="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-mono text-[11px] px-4 py-2.5 rounded-xl transition-all font-black shadow-md cursor-pointer uppercase tracking-wider">
                         🔥 Attempt Credit Trial (5k)
@@ -238,8 +256,9 @@
     </div>
 
     <script>
+        // GOOGLE APPLICATION PARAMETER PASSTHROUGH INDEX
         const GOOGLE_CLIENT_ID = '1065350715296-mjiaqmhjtpdvo58jf71mabrek92rj3jv.apps.googleusercontent.com';
-        
+
         let authenticatedUserContext = null;
         const urlInput = document.getElementById('youtube-url');
         const submitBtn = document.getElementById('submit-btn');
@@ -628,10 +647,9 @@
             }
         }
 
-        // REDIRECT PROXIED SECURE BILLING ENGINE ACTUATORS
         async function triggerSecurePaymentRoute(tierParam) {
             const isTermsAgreed = document.getElementById('global-legal-gate').checked;
-            if(!isTermsAgreed) { alert("Please read and check the agreement framework parameters before checkout."); return; }
+            if(!isTermsAgreed) { alert("Please agree to terms before checkout."); return; }
             
             try {
                 const response = await fetch('/api/billing/checkout', {
