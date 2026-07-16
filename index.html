@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ClipToPost - Category-Defining Creator Engine</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; touch-action: manipulation; }
         .font-mono-engine { font-family: 'Space Grotesk', sans-serif; }
         .grid-bg {
             background-size: 40px 40px;
@@ -28,23 +28,13 @@
         .preview-scroll::-webkit-scrollbar-track { background: #0f172a; }
         .preview-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
 
-        .hook-cutoff-line { position: relative; border-top: 1px dashed #ef4444; margin: 16px 0; opacity: 0.7; }
-        .hook-cutoff-badge {
-            position: absolute; right: 0; top: -10px; background-color: #ef4444; color: white;
-            font-size: 9px; font-family: monospace; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; font-weight: bold;
-        }
-
         .cascade-card { opacity: 0; transform: translateY(20px); animation: cascadeIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
         @keyframes cascadeIn { to { opacity: 1; transform: translateY(0); } }
 
-        .checkout-btn-tier.disabled {
-            background: #475569 !important;
-            opacity: 0.4;
-            cursor: not-allowed !important;
-            pointer-events: none !important;
-        }
-        
         #arcadeCanvas:focus { outline: none !important; }
+        
+        /* Force screen containment on mobile viewports */
+        #arcadeCanvas { touch-action: none; -webkit-tap-highlight-color: transparent; }
     </style>
 </head>
 <body class="bg-slate-950 text-gray-100 min-h-screen grid-bg antialiased selection:bg-indigo-500 selection:text-white bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-950/20 via-slate-950 to-slate-950">
@@ -156,26 +146,9 @@
                     <span>I agree to the Master Access Covenant framework.</span>
                 </label>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl mx-auto items-stretch">
-                <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-5 flex flex-col justify-between transition-all hover:border-slate-700">
-                    <div>
-                        <div class="flex justify-between items-start mb-2">
-                            <h4 class="text-sm font-bold text-white uppercase tracking-wide">Solo Creator</h4>
-                        </div>
-                    </div>
-                    <button type="button" onclick="triggerSecurePaymentRoute('solo')" class="checkout-btn-tier disabled w-full text-center bg-indigo-600 text-white text-xs font-semibold py-2.5 rounded-lg transition-all shadow-md block mt-2 cursor-pointer">Upgrade</button>
-                </div>
-                <div class="bg-indigo-950/20 border border-indigo-500/30 rounded-xl p-5 flex flex-col justify-between transition-all relative overflow-hidden">
-                    <div>
-                        <div class="flex justify-between items-start mb-2">
-                            <h4 class="text-sm font-bold text-indigo-300 uppercase tracking-wide">Agency Plan</h4>
-                        </div>
-                    </div>
-                    <button type="button" onclick="triggerSecurePaymentRoute('agency')" class="checkout-btn-tier disabled w-full text-center bg-gradient-to-r from-indigo-500 to-indigo-600 text-white text-xs font-bold py-2.5 rounded-lg transition-all shadow-md block mt-2 cursor-pointer">Deploy</button>
-                </div>
-            </div>
         </div>
 
+        <!-- ARCADE PANEL -->
         <section id="permanent-arcade-deck" class="mb-6 space-y-4 fade-in">
             <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 md:p-6 relative overflow-hidden shadow-2xl">
                 <div class="w-full flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-slate-800 pb-3 mb-4">
@@ -206,6 +179,9 @@
                         <div class="relative w-full bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col items-center justify-center shadow-inner overflow-hidden" style="aspect-ratio: 4/3;">
                             <canvas id="arcadeCanvas" width="400" height="300" class="absolute top-0 left-0 w-full h-full block" style="object-fit: contain;" tabindex="0"></canvas>
                         </div>
+                        <div class="text-[10px] text-gray-500 font-mono mt-2 text-center select-none uppercase tracking-wide">
+                            💡 Tap Box sides to slide • Swipe left/right for Runner
+                        </div>
                     </div>
                     <div class="md:col-span-5 bg-slate-950/80 border border-slate-800/60 p-4 rounded-xl shadow-inner flex flex-col min-h-[220px] md:min-h-[300px] w-full">
                         <div class="text-xs font-mono font-bold text-gray-400 border-b border-slate-900 pb-2 mb-3 flex items-center justify-between">
@@ -218,13 +194,10 @@
                 
                 <div class="mt-4 flex flex-col sm:flex-row gap-3 justify-center items-center">
                     <button type="button" id="attempt-sandbox-mode-btn" class="w-full sm:w-auto bg-slate-950 border border-slate-800 text-gray-300 hover:text-white font-mono text-[11px] px-4 py-2.5 rounded-xl transition-all font-bold shadow-md cursor-pointer uppercase tracking-wider">
-                        操控 Play Sandbox Mode
+                        🎮 Play Sandbox Mode
                     </button>
                     <button type="button" id="attempt-free-credit-btn" class="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-mono text-[11px] px-4 py-2.5 rounded-xl transition-all font-black shadow-md cursor-pointer uppercase tracking-wider">
                         🔥 Attempt Credit Trial (5k)
-                    </button>
-                    <button type="button" id="brag-btn" class="hidden w-full sm:w-auto flex items-center justify-center gap-1.5 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-mono text-xs px-5 py-2.5 rounded-xl transition-all font-bold shadow-md cursor-pointer uppercase tracking-wide">
-                        ✨ BRAG ON LINKEDIN
                     </button>
                 </div>
             </div>
@@ -256,9 +229,8 @@
     </div>
 
     <script>
-        // GOOGLE APPLICATION PARAMETER PASSTHROUGH INDEX
         const GOOGLE_CLIENT_ID = '1065350715296-mjiaqmhjtpdvo58jf71mabrek92rj3jv.apps.googleusercontent.com';
-
+        
         let authenticatedUserContext = null;
         const urlInput = document.getElementById('youtube-url');
         const submitBtn = document.getElementById('submit-btn');
@@ -270,9 +242,7 @@
         const leaderboardTopDisplay = document.getElementById('leaderboard-top-score');
         const boomerFontToggle = document.getElementById('boomer-font');
         const cleanModeToggle = document.getElementById('clean-mode');
-        const bragBtn = document.getElementById('brag-btn');
         const masterToolbar = document.getElementById('master-toolbar');
-        const copyAllBtn = document.getElementById('copy-all-btn');
         const freeCreditBtn = document.getElementById('attempt-free-credit-btn');
         const sandboxModeBtn = document.getElementById('attempt-sandbox-mode-btn');
         const statusBanner = document.getElementById('pipeline-status-banner');
@@ -281,10 +251,6 @@
         const btnDash = document.getElementById('btn-dash');
         const btnFusion = document.getElementById('btn-fusion');
         const vaultDrawer = document.getElementById('vault-drawer');
-        const vaultItemsContainer = document.getElementById('vault-items-container');
-        const vaultTriggerBtn = document.getElementById('vault-trigger-btn');
-        const vaultCounterBadge = document.getElementById('vault-counter-badge');
-        const closeVaultBtn = document.getElementById('close-vault-btn');
         const filterDouble = document.getElementById('filter-double');
         const filterCaps = document.getElementById('filter-caps');
         const filterBullets = document.getElementById('filter-bullets');
@@ -301,6 +267,10 @@
         let isFreeCreditTrialRunActive = false;
         let screenshake = 0;
         let particles = [];
+
+        // Touch gesture vector states
+        let touchStartStartX = 0;
+        let touchStartStartY = 0;
 
         const TARGET_LEADERBOARD_RECORDS = { stack: 1500, dash: 1200, fusion: 2500 };
         const GLOBAL_CREATORS_LEADERBOARD = [
@@ -351,16 +321,45 @@
             } catch(e) { generatedFingerprint = "fb_" + Math.random().toString(36).substring(2, 10); }
         }
 
+        // ELIMINATE MOBILE INPUT LAG AND BLOCK WEBPAGE SCROLL INTERFERENCES
         canvas.addEventListener('touchstart', (e) => {
-            if(currentActiveGame === 'stack') spaceLatch = true;
-            else {
-                const touchX = e.touches[0].clientX - canvas.getBoundingClientRect().left;
-                const normalizedX = touchX * (400 / canvas.getBoundingClientRect().width);
-                if(normalizedX < 133) { keys[37] = true; keys[39] = false; }
-                else if(normalizedX > 266) { keys[39] = true; keys[37] = false; }
+            e.preventDefault(); // Stop mobile double-tap zoom delay entirely
+            
+            const touchObj = e.touches[0];
+            touchStartStartX = touchObj.clientX;
+            touchStartStartY = touchObj.clientY;
+            
+            const canvasRect = canvas.getBoundingClientRect();
+            const normalizedX = (touchObj.clientX - canvasRect.left) * (400 / canvasRect.width);
+            
+            if (currentActiveGame === 'stack') {
+                spaceLatch = true;
+            } else if (currentActiveGame === 'fusion') {
+                if (normalizedX < 200) { keys[37] = true; keys[39] = false; }
+                else { keys[39] = true; keys[37] = false; }
             }
-        }, { passive: true });
-        canvas.addEventListener('touchend', () => { keys[37] = false; keys[39] = false; });
+        }, { passive: false });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault(); // Lock viewport scrolling while playing
+            if (currentActiveGame !== 'dash') return;
+            
+            const touchObj = e.touches[0];
+            const deltaX = touchObj.clientX - touchStartStartX;
+            
+            // Swipe dynamic evaluation framework
+            if (Math.abs(deltaX) > 30) {
+                if (deltaX > 0) { keys[39] = true; keys[37] = false; } 
+                else { keys[37] = true; keys[39] = false; }
+                // Reset origin reference to register smooth continuous movement
+                touchStartStartX = touchObj.clientX;
+            }
+        }, { passive: false });
+
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            keys[37] = false; keys[39] = false;
+        }, { passive: false });
 
         window.addEventListener('keydown', e => { 
             if(document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
@@ -496,7 +495,11 @@
         }
         function updateFusion() {
             if (fusionGameOver) { ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center'; ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2); return; }
-            if (keys[37] && paddle.x > 0) paddle.x -= paddle.speed; if (keys[39] && paddle.x < canvas.width - paddle.width) paddle.x += paddle.speed;
+            
+            // Touch automated velocity overrides
+            if (keys[37] && paddle.x > 0) paddle.x -= paddle.speed; 
+            if (keys[39] && paddle.x < canvas.width - paddle.width) paddle.x += paddle.speed;
+            
             let baselineSpeedFactor = 1.0; if (isFreeCreditTrialRunActive && score >= 1000) baselineSpeedFactor = 1.45; 
             ball.x += ball.dx * baselineSpeedFactor; ball.y += ball.dy * baselineSpeedFactor; 
             if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) ball.dx *= -1; if (ball.y - ball.radius < 0) ball.dy *= -1;
@@ -523,7 +526,8 @@
         }
 
         function triggerGameSwap(target) {
-            currentActiveGame = target; bragBtn.classList.add('hidden');
+            currentActiveGame = target; 
+            keys = {}; // Flush sticky keyboard maps immediately on swap
             if (target === 'stack') initStack(); else if (target === 'dash') initDash(); else if (target === 'fusion') initFusion();
             gameActive = true; 
         }
@@ -645,21 +649,6 @@
             } finally {
                 submitBtn.disabled = false; urlInput.disabled = false; submitBtn.textContent = "Generate Posts";
             }
-        }
-
-        async function triggerSecurePaymentRoute(tierParam) {
-            const isTermsAgreed = document.getElementById('global-legal-gate').checked;
-            if(!isTermsAgreed) { alert("Please agree to terms before checkout."); return; }
-            
-            try {
-                const response = await fetch('/api/billing/checkout', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tier: tierParam })
-                });
-                const data = await response.json();
-                if(data.redirectUrl) window.location.href = data.redirectUrl;
-            } catch(e) { alert("Billing relay error."); }
         }
 
         submitBtn.addEventListener('click', fireTransformationPipeline);
