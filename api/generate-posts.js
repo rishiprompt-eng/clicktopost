@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        // FIXED: Passes the raw, secure static token without timezone interferences
+        // Passes the raw, secure static token without day-rollover variations
         const response = await fetch(targetTunnel, {
             method: 'POST',
             headers: { 
