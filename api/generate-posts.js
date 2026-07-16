@@ -1,5 +1,5 @@
 // api/generate-posts.js
-// 🔒 TWO-WAY ASYNC POLLING ROUTER GATEWAY + BILLING CRITICAL PROTECTION
+// 🔒 COMPLETE RESILIENT ASYNC POLLING ROUTER GATEWAY
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', true);
@@ -19,11 +19,11 @@ export default async function handler(req, res) {
     }
 
     // ----------------------------------------------------
-    // 🔍 PATH 1: FREE POLLING STATUS CHECKS (GET)
+    // 🔍 PATH 1: STATUS CHECKS WITH DEEP PARSING (GET)
     // ----------------------------------------------------
     if (req.method === 'GET') {
         const { id } = req.query;
-        if (!id) return res.status(400).json({ error: "Missing execution ID parameter." });
+        if (!id) return res.status(400).json({ error: "Missing execution ID." });
 
         try {
             const baseUrl = targetTunnel.split('/webhook')[0];
@@ -43,14 +43,54 @@ export default async function handler(req, res) {
             const execData = await response.json();
             
             if (execData.status === 'success') {
-                const lastNodeData = execData.data.resultData.runData;
-                const nodeKeys = Object.keys(lastNodeData);
-                const finalNodeKey = nodeKeys[nodeKeys.length - 1]; // Pulls data from last Javascript node
-                const finalOutput = lastNodeData[finalNodeKey][0].data.main[0].json.output;
+                const runData = execData.data?.resultData?.runData || {};
+                const nodeKeys = Object.keys(runData);
+                
+                if (nodeKeys.length === 0) {
+                    return res.status(200).json({ status: "processing" });
+                }
 
+                // Target the absolute final node execution block in the array chain
+                const finalNodeKey = nodeKeys[nodeKeys.length - 1]; 
+                const nodeOutputData = runData[finalNodeKey];
+
+                let finalOutput = "";
+
+                try {
+                    // Safe-navigation array probe across common n8n data export formats
+                    if (nodeOutputData?.[0]?.data?.main?.[0]?.[0]?.json?.output) {
+                        finalOutput = nodeOutputData[0].data.main[0][0].json.output;
+                    } else if (nodeOutputData?.[0]?.data?.main?.[0]?.json?.output) {
+                        finalOutput = nodeOutputData[0].data.main[0].json.output;
+                    } else if (nodeOutputData?.[0]?.json?.output) {
+                        finalOutput = nodeOutputData[0].json.output;
+                    } else if (nodeOutputData?.[0]?.output) {
+                        finalOutput = nodeOutputData[0].output;
+                    } else {
+                        // Ultimate fallback string stringifier lookup check
+                        const deepSearch = JSON.stringify(nodeOutputData);
+                        const match = deepSearch.match(/"output"\s*:\s*"([\s\S]*?)"(?=,|\})/);
+                        if (match && match[1]) {
+                            finalOutput = JSON.parse(`"${match[1]}"`);
+                        }
+                    }
+                } catch (parseError) {
+                    console.error("Deep navigation error:", parseError);
+                }
+
+                if (!finalOutput) {
+                    return res.status(200).json({ status: "processing", message: "Output structure resolving." });
+                }
+
+                // Split text across your custom token lines cleanly
                 const parsedPosts = finalOutput.split('===NEXT_POST===').map(postText => {
                     const cleanText = postText.replace(/#\w+/g, '').trim();
-                    return { fullText: postText.trim(), cleanText: cleanText, isEmojiHidden: false, isHashtagHidden: false };
+                    return { 
+                        fullText: postText.trim(), 
+                        cleanText: cleanText, 
+                        isEmojiHidden: false, 
+                        isHashtagHidden: false 
+                    };
                 });
 
                 return res.status(200).json({ status: "completed", posts: parsedPosts });
@@ -65,13 +105,10 @@ export default async function handler(req, res) {
     }
 
     // ----------------------------------------------------
-    // 💰 PATH 2: INITIATE GENERATION + DEDUCT CREDITS (POST)
+    // 🚀 PATH 2: START PIPELINE (POST)
     // ----------------------------------------------------
     if (req.method === 'POST') {
         try {
-            // [BILLING CHECKPOINT]: Confirm user has enough credits before starting n8n
-            // (If you are using a database like Supabase or Firebase, fetch the user record here)
-            
             const response = await fetch(targetTunnel, {
                 method: 'POST',
                 headers: { 
@@ -81,14 +118,35 @@ export default async function handler(req, res) {
                 body: JSON.stringify(req.body)
             });
 
-            if (!response.ok) throw new Error("Upstream rejected start request.");
+            const responseText = await response.text();
+            let responseData;
+
+            try {
+                responseData = JSON.parse(responseText);
+            } catch (jsonErr) {
+                console.warn("n8n responded with non-JSON text payload:", responseText);
+                return res.status(500).json({ 
+                    error: "n8n Webhook node is not set up to return JSON. Check 'Respond to Webhook' configuration.",
+                    rawResponse: responseText 
+                });
+            }
+
+            if (!response.ok) {
+                throw new Error(`Upstream returned error: ${response.status}`);
+            }
             
-            const startData = await response.json();
+            // Return executionId safely
+            const executionId = responseData.executionId || responseData.id;
+            if (!executionId) {
+                return res.status(500).json({ 
+                    error: "n8n did not return an execution ID. Ensure your Webhook response settings match.",
+                    receivedData: responseData 
+                });
+            }
 
-            // [BILLING DEDUCTION]: Update database to deduct 1 credit here now that n8n has successfully started!
-
-            return res.status(200).json({ status: "processing", executionId: startData.executionId });
+            return res.status(200).json({ status: "processing", executionId: executionId });
         } catch (err) {
+            console.error("Gateway POST error:", err.message);
             return res.status(500).json({ error: "Gateway start failure.", details: err.message });
         }
     }
