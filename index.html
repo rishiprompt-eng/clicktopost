@@ -7,8 +7,6 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&family=Space+Grotesk:wght=400;500;700&display=swap');
-
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .font-mono-engine { font-family: 'Space Grotesk', sans-serif; }
         .grid-bg {
@@ -106,7 +104,7 @@
                         <input type="checkbox" id="global-legal-gate" onchange="evaluateInterfaceSecurityGate()" class="rounded border-slate-800 bg-slate-950 text-indigo-600 focus:ring-0 focus:ring-offset-0 mr-3 mt-0.5 w-4 h-4 cursor-pointer">
                         <span>
                             I clarify that I am a sophisticated commercial operator. I explicitly read, understand, and agree to the 
-                            <span class="text-indigo-400 font-bold underline cursor-pointer hover:text-indigo-300" onclick="toggleLegalModal(true)">Master Access Covenant</span>, including the absolute non-refundable credit exchange framework and exclusive binding arbitration seat in Hyderabad, Telangana, India.
+                            <span class="text-indigo-400 font-bold underline cursor-pointer hover:text-indigo-300" onclick="toggleLegalModal(true)">Master Access Covenant</span>, including the absolute non-refundable credit exchange framework and exclusive binding arbitration seat in Hyderabad, India.
                         </span>
                     </label>
                 </div>
@@ -262,6 +260,7 @@
                 <button id="filter-double" class="px-2.5 py-1 bg-slate-950 border border-gray-800 text-gray-400 hover:text-white rounded-lg text-xs font-mono transition-all cursor-pointer">[⌶] Double Space</button>
                 <button id="filter-caps" class="px-2.5 py-1 bg-slate-950 border border-gray-800 text-gray-400 hover:text-white rounded-lg text-xs font-mono transition-all cursor-pointer">[ᴀA] Capitalize Hooks</button>
                 <button id="filter-bullets" class="px-2.5 py-1 bg-slate-950 border border-gray-800 text-gray-400 hover:text-white rounded-lg text-xs font-mono transition-all cursor-pointer">[✓] Bullet Clean</button>
+                <button id="filter-hookfix" class="px-2.5 py-1 bg-indigo-950/60 border border-indigo-800 text-indigo-400 hover:text-white rounded-lg text-xs font-mono transition-all cursor-pointer">✨ Optimize Hooks</button>
             </div>
             <button id="copy-all-btn" class="bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white px-5 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-all shadow-md active:scale-95 text-center">
                 📋 Copy All Variations Bundle
@@ -302,6 +301,7 @@
         </div>
     </div>
 
+    <!-- MASTER AGREEMENT MODAL OVERLAY -->
     <div id="legal-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 99999; overflow-y: auto; padding: 40px 0; box-sizing: border-box;">
         <div style="background: #ffffff; border: 1px solid #e1e4e8; border-radius: 8px; padding: 40px; max-width: 750px; margin: 0 auto; box-shadow: 0 4px 24px rgba(0,0,0,0.15); position: relative; font-family: sans-serif; color: #333333;">
             <button style="position: absolute; top: 20px; right: 20px; background: #f1f3f5; border: none; padding: 8px 14px; border-radius: 4px; font-weight: bold; cursor: pointer; color: #495057;" onclick="toggleLegalModal(false)">✕ Close</button>
@@ -309,16 +309,16 @@
             <div style="background: #f6f8fa; border: 1px solid #d1d5da; padding: 15px; border-radius: 4px; font-size: 11.5px; font-family: monospace; color: #586069; margin-bottom: 25px; line-height: 1.5;">
                 Document Reference: C2P-SERVICES-AGREEMENT-2026-FINAL<br>
                 Effective Date: July 16, 2026<br>
-                Governing Jurisdiction: Hyderabad, Telangana, India (Exclusive Seat)
+                Governing Jurisdiction: Hyderabad, India
             </div>
             <p style="font-size: 13.5px; text-align: justify; line-height: 1.6; margin-bottom: 15px;">This Agreement governs your access to and use of clicktopost.vercel.app (the "Site"), along with all associated backend webhooks, API routing pipelines, n8n workflows, databases, and automated software tools (collectively, the "Platform").</p>
-            <p style="font-size: 13.5px; text-align: justify; line-height: 1.6; margin-bottom: 15px;">By accessing the Site, creating an account using third-party verification profiles, or purchasing a subscription tier, you accept and agree to comply with all sections of this Agreement. If you do not agree to these terms, you are not authorized to use the Platform.</p>
+            <p style="font-size: 13.5px; text-align: justify; line-height: 1.6; margin-bottom: 15px;">By accessing the Site, creating an account using third-party verification profiles, or purchasing a subscription tier, you accept and agree to comply with all sections of this Agreement.</p>
             <h2 style="font-size: 15px; margin-top: 25px; border-bottom: 1px solid #eaecef; padding-bottom: 5px; color: #111; text-transform: uppercase; letter-spacing: 0.5px; font-weight: bold;">Section 1: Mandatory Dispute Resolution and Forum Lock</h2>
-            <p style="font-size: 13.5px; text-align: justify; line-height: 1.6; margin-bottom: 10px;"><strong>1.1 Governing Law and Choice of Forum:</strong> This Agreement is governed by the laws of the Republic of India, without regard to conflict of laws principles. You explicitly agree that any legal claim, dispute, or proceeding arising out of or related to this Platform must be brought exclusively before the competent commercial courts located in Hyderabad, Telangana, India.</p>
-            <p style="font-size: 13.5px; text-align: justify; line-height: 1.6; margin-bottom: 10px;"><strong>1.2 Binding Arbitration Accord:</strong> Any dispute, controversy, or claim arising out of the performance, interpretation, execution, or breach of this Agreement shall be settled exclusively through binding arbitration in Hyderabad, India, in accordance with the Arbitration and Conciliation Act, 1996.</p>
+            <p style="font-size: 13.5px; text-align: justify; line-height: 1.6; margin-bottom: 10px;"><strong>1.1 Governing Law and Choice of Forum:</strong> This Agreement is governed by the laws of the Republic of India. You explicitly agree that any legal claim, dispute, or proceeding arising out of or related to this Platform must be brought exclusively before the competent commercial courts located in Hyderabad, India.</p>
         </div>
     </div>
 
+    <!-- MAIN CONTROL CORE LOGIC -->
     <script>
         const RAZORPAY_SOLO_URL   = 'https://rzp.io/rzp/ERdjInlT';
         const RAZORPAY_AGENCY_URL = 'https://rzp.io/rzp/kK3urmV';
@@ -326,7 +326,6 @@
         const PRODUCTION_SITE_URL = 'https://clicktopost.vercel.app/';
         const GOOGLE_CLIENT_ID = '1065350715296-mjiaqmhjtpdvo58jf71mabrek92rj3jv.apps.googleusercontent.com';
         
-        // 🔒 THE IMMUTABLE PASSWORD HASH ANCHOR
         const IMMUTABLE_BASE_ANCHOR = "c2p_7f9a2e3b1c8d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f";
 
         let authenticatedUserContext = null;
@@ -362,6 +361,7 @@
         const filterDouble = document.getElementById('filter-double');
         const filterCaps = document.getElementById('filter-caps');
         const filterBullets = document.getElementById('filter-bullets');
+        const filterHookFix = document.getElementById('filter-hookfix');
 
         const btnStack = document.getElementById('btn-stack');
         const btnDash = document.getElementById('btn-dash');
@@ -375,6 +375,7 @@
         let isDoubleSpaced = false;
         let isHookCapitalized = false;
         let isBulletCleaned = false;
+        let isHookOptimized = false;
         let isViewingCombinedLeaderboard = false;
         let generatedFingerprint = "pending";
 
@@ -448,14 +449,6 @@
             } catch(e) { generatedFingerprint = "fb_" + Math.random().toString(36).substring(2, 10); }
         }
 
-        // --- ARCADE CONSOLE GAMES ENGINE ---
-        window.addEventListener('keydown', e => { 
-            if(document.activeElement.tagName === 'INPUT') return;
-            if([32, 37, 38, 39, 40].includes(e.keyCode)) e.preventDefault(); 
-            if(e.keyCode === 32 && !keys[32]) spaceLatch = true; keys[e.keyCode] = true; 
-        });
-        window.addEventListener('keyup', e => { keys[e.keyCode] = false; if(e.keyCode === 32) spaceLatch = false; });
-
         const canvas = document.getElementById('arcadeCanvas'); const ctx = canvas.getContext('2d');
 
         function drawLeaderboardStandings(gameKey, renderCombined = false) {
@@ -525,7 +518,7 @@
             }
         }
 
-        // CYBER RUNNER ENGINE
+        // CYBER RUNNER HIGH-CONTRAST GRADIENTS
         let runnerX = 200; let runnerLane = 1; let runnerObstacles = []; let runnerFrame = 0; let runnerGameOver = false;
         function initDash() {
             score = 0; scoreDisplay.textContent = score; runnerGameOver = false;
@@ -553,12 +546,15 @@
                 let spawnLane = Math.floor(Math.random() * 3);
                 runnerObstacles.push({ lane: spawnLane, y: -35, speed: 7 + (score / 350), processed: false, wasTargetingPlayer: (spawnLane === runnerLane) }); 
             }
-            ctx.shadowBlur = 20; ctx.shadowColor = '#818cf8'; ctx.fillStyle = '#6366f1';
+            
+            ctx.shadowBlur = 20; ctx.shadowColor = '#00ffff'; ctx.fillStyle = '#00f5ff';
             ctx.beginPath(); ctx.moveTo(runnerX, 230); ctx.lineTo(runnerX - 18, 265); ctx.lineTo(runnerX + 18, 265); ctx.closePath(); ctx.fill(); ctx.shadowBlur = 0;
 
             for (let i = runnerObstacles.length - 1; i >= 0; i--) {
                 let obs = runnerObstacles[i]; obs.y += obs.speed; let obsX = (obs.lane * 133) + 66;
-                ctx.shadowBlur = 15; ctx.shadowColor = '#f43f5e'; ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 14, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
+                ctx.shadowBlur = 25; ctx.shadowColor = '#ff007f'; ctx.fillStyle = '#ff0055'; 
+                ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 14, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
+                
                 if (!obs.processed && obs.y > 210 && obs.y < 260 && obs.lane === runnerLane) { 
                     obs.processed = true; score -= 10; if (score <= 0) { score = 0; runnerGameOver = true; }
                     scoreDisplay.textContent = score; runnerObstacles.splice(i, 1); continue;
@@ -625,7 +621,7 @@
                 const itemDiv = document.createElement('div');
                 itemDiv.className = "p-3.5 bg-gray-950 border border-gray-800 rounded-xl relative hover:border-gray-700 transition-all flex flex-col justify-between";
                 let preview = text.substring(0, 110) + (text.length > 110 ? '...' : '');
-                itemDiv.innerHTML = `<p class="font-mono text-[11px] text-gray-400 mb-2 leading-relaxed whitespace-pre-wrap select-all">${preview}</p><div class="flex justify-end gap-1.5 pt-2 border-t border-gray-900"><button class="vault-load-btn px-2 py-1 bg-indigo-950/40 text-indigo-400 border border-indigo-900/60 rounded text-[10px] font-mono cursor-pointer transition-all">Load</button><button class="vault-del-btn px-2 py-1 bg-rose-950/40 text-rose-400 border border-rose-900/60 rounded text-[10px] font-mono cursor-pointer transition-all">Delete</button></div>`;
+                itemDiv.innerHTML = `<p class="font-mono text-[11px] text-gray-400 mb-2 leading-relaxed whitespace-pre-wrap select-all">${preview}</p><div class="flex justify-end gap-1.5 pt-2 border-t border-gray-900"><button class="vault-load-btn px-2.5 py-1 bg-indigo-950/40 text-indigo-400 border border-indigo-900/60 rounded text-[10px] font-mono cursor-pointer transition-all">Load</button><button class="vault-del-btn px-2.5 py-1 bg-rose-950/40 text-rose-400 border border-rose-900/60 rounded text-[10px] font-mono cursor-pointer transition-all">Delete</button></div>`;
                 itemDiv.querySelector('.vault-load-btn').addEventListener('click', () => {
                     activeGenerationDataset = [{ fullText: text, cleanText: text, isHashtagHidden: false, isEmojiHidden: false, isHookManuallyOptimized: false }];
                     masterToolbar.classList.remove('hidden'); renderInterfaceAssets(boomerFontToggle.checked); vaultDrawer.classList.add('hidden');
@@ -645,6 +641,16 @@
             if (isHookCapitalized) {
                 let paragraphs = txt.split('\n'); if (paragraphs.length > 0 && paragraphs[0].trim() !== '') { paragraphs[0] = paragraphs[0].toUpperCase(); txt = paragraphs.join('\n'); }
             }
+            if (isHookOptimized) {
+                let segments = txt.split('\n');
+                if (segments.length > 0 && segments[0].trim() !== '') {
+                    let firstLine = segments[0].trim();
+                    if (!firstLine.endsWith('?') && !firstLine.endsWith('.') && !firstLine.endsWith('!')) {
+                        segments[0] = firstLine + ' —';
+                    }
+                    txt = segments.join('\n');
+                }
+            }
             if (cleanModeToggle.checked) {
                 txt = txt.replace(/[\*_`~]/g, '').replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDC00-\uDFFF])/g, '');
             }
@@ -654,6 +660,14 @@
         filterDouble.addEventListener('click', () => { isDoubleSpaced = !isDoubleSpaced; renderInterfaceAssets(boomerFontToggle.checked); });
         filterCaps.addEventListener('click', () => { isHookCapitalized = !isHookCapitalized; renderInterfaceAssets(boomerFontToggle.checked); });
         filterBullets.addEventListener('click', () => { isBulletCleaned = !isBulletCleaned; renderInterfaceAssets(boomerFontToggle.checked); });
+        
+        filterHookFix.addEventListener('click', () => { 
+            isHookOptimized = !isHookOptimized; 
+            filterHookFix.classList.toggle('bg-indigo-600');
+            filterHookFix.classList.toggle('text-white');
+            renderInterfaceAssets(boomerFontToggle.checked); 
+        });
+        
         cleanModeToggle.addEventListener('change', () => renderInterfaceAssets(boomerFontToggle.checked));
 
         function checkUsageLimits() {
@@ -761,26 +775,28 @@
             executeClipboardWrite(masterTextString, () => { alert('All Variants Copied!'); }, () => {});
         });
 
+        // FIXED: THE EXACT SPECIFIED LINKEDIN BRAG TEXT
         bragBtn.addEventListener('click', () => {
             let sMax = parseInt(localStorage.getItem('clipToPost_best_stack') || '0', 10);
             let dMax = parseInt(localStorage.getItem('clipToPost_best_dash') || '0', 10);
             let fMax = parseInt(localStorage.getItem('clipToPost_best_fusion') || '0', 10);
-            let casualBragPayload = `Trap alert! I tried using ClipToPost to repurpose my video content... and I am completely stuck playing the built-in arcade dashboard instead. Current score: ${sMax+dMax+fMax}. Test it out: ${PRODUCTION_SITE_URL}`;
-            executeClipboardWrite(casualBragPayload, () => { alert('Brag string saved to clipboard!'); }, () => {});
+            let combined = sMax + dMax + fMax;
+            
+            let structuredBragPayload = `okay wait... this is actually insane. 💀\n\nI tried using ClipToPost to turn a YouTube video into some LinkedIn posts. The AI literally finished generating 3 variants in under 60 seconds. Fast as hell.\n\nBUT the dev put a live retro arcade game room right inside the loading screen while you wait... and I am completely trapped.\n\nMy productivity is cooked. I'm currently sitting at a ${combined} combined high score (${sMax} Stack / ${dMax} Runner / ${fMax} Breaker).\n\nGo drop a video link in it and see if you can beat me: ${PRODUCTION_SITE_URL}\n\nSeriously, the product build is legendary. Let me know your scores below.`;
+            
+            executeClipboardWrite(structuredBragPayload, () => { alert('Brag text copied to clipboard! Share it on LinkedIn.'); }, () => {});
         });
 
         closeModalBtn.addEventListener('click', () => modal.classList.add('hidden'));
 
         async function fireTransformationPipeline() {
             if (!checkUsageLimits()) return;
-            if (!authenticatedUserContext) { alert('Please sign in via Google Auth to verify your usage allocation identity first.'); return; }
+            if (!authenticatedUserContext) { alert('Please sign in via Google Auth first.'); return; }
             
             const videoUrl = urlInput.value.trim();
-            
-            // 🛡️ FRONTEND SANITIZATION GATE
             const validationSyntax = /(youtube\.com|youtu\.be)/i;
             if (!videoUrl || !validationSyntax.test(videoUrl)) {
-                alert('Security Notice: Input parameter context does not match an actual valid YouTube Link layout string syntax.');
+                alert('Invalid YouTube Link.');
                 return;
             }
             
@@ -788,7 +804,6 @@
             loadingState.classList.remove('hidden'); outputContainer.innerHTML = ''; masterToolbar.classList.add('hidden'); failoverDeck.classList.add('hidden');
             triggerGameSwap('stack');
 
-            // 🌍 DYNAMIC TOKEN GENERATION LOGIC
             const dateObj = new Date();
             const todayStamp = `${dateObj.getUTCFullYear()}-${dateObj.getUTCMonth()}-${dateObj.getUTCDate()}`;
             const computedTransitToken = `${IMMUTABLE_BASE_ANCHOR}_${todayStamp}`;
@@ -812,7 +827,7 @@
                     })
                 });
 
-                if (!response.ok) throw new Error("Network pipeline fault.");
+                if (!response.ok) throw new Error("Fault.");
                 const data = await response.json();
                 const rawOutputText = data.output || data.text || '';
                 const postsArray = rawOutputText.split('===NEXT_POST===').filter(post => post.trim().length > 0);
@@ -849,7 +864,7 @@
             const globalGate = document.getElementById('global-legal-gate');
             if (!globalGate || !globalGate.checked) {
                 event.preventDefault();
-                alert("Security Check: You must review and check the confirmation box acknowledging the platform terms to open checkout.");
+                alert("Please agree to terms.");
                 return false;
             }
             if (tier === 'solo') {
