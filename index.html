@@ -230,7 +230,6 @@
                         <button type="button" id="btn-dash" class="game-tab-btn px-4 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer text-gray-500 hover:text-gray-300">⚡ CYBER RUNNER</button>
                         <button type="button" id="btn-fusion" class="game-tab-btn px-4 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer text-gray-500 hover:text-gray-300">🧩 BRICK BREAKER</button>
                     </div>
-                    <!-- EXACT MATCH: Right-side visual context tracking badge layout pill -->
                     <div id="active-tab-title" class="text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/40 border border-indigo-900/30 px-3 py-1.5 rounded-xl">🧱 TOWER STACK MATCH</div>
                 </div>
 
@@ -238,6 +237,9 @@
                     <div class="md:col-span-7 flex flex-col items-center">
                         <div class="relative w-full max-w-[400px] aspect-[4/3] bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col items-center justify-center shadow-inner">
                             <canvas id="arcadeCanvas" width="400" height="300" class="w-full h-full block" tabindex="0"></canvas>
+                            <div id="arcade-controls" class="absolute bottom-2 text-[10px] text-gray-400 font-mono bg-gray-900/90 px-3 py-1 rounded-full pointer-events-none tracking-wide border border-slate-800">
+                                Press SPACE to Drop Block Perfectly
+                            </div>
                         </div>
                     </div>
                     <div class="md:col-span-5 bg-slate-950/80 border border-slate-800/60 p-4 rounded-xl shadow-inner flex flex-col min-h-[300px]">
@@ -517,6 +519,7 @@
             score = 0; scoreDisplay.textContent = score; towerGameOver = false; spaceLatch = false;
             leaderboardTopDisplay.textContent = TARGET_LEADERBOARD_RECORDS.stack;
             document.getElementById('active-tab-title').textContent = "🧱 TOWER STACK MATCH";
+            document.getElementById('arcade-controls').textContent = "Press SPACE to Drop Block Perfectly";
             currentBestDisplay.textContent = localStorage.getItem('clipToPost_best_stack') || '0';
             stackLayers = [{ x: 125, y: 250, w: 150, h: 25, color: '#6366f1' }];
             currentBlock = { x: 0, y: 225, w: 150, h: 25, dir: 1 }; blockSpeed = 3.8;
@@ -543,12 +546,6 @@
                 if (currentBlock.y <= 90) { stackLayers.forEach(l => l.y += 50); stackLayers.shift(); }
                 currentBlock = { x: 0, y: stackLayers[stackLayers.length - 1].y - 25, w: cutWidth, h: 25, dir: 1 }; blockSpeed += 0.35;
             }
-            
-            // Text Label context binding rule
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.85)'; ctx.strokeStyle = 'rgba(51, 65, 85, 0.5)'; ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.roundRect(100, 272, 200, 22, 12); ctx.fill(); ctx.stroke();
-            ctx.fillStyle = '#94a3b8'; ctx.font = '10px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText("Press SPACE to Drop Block Perfectly", canvas.width / 2, 283);
         }
 
         // CYBER RUNNER ENGINE
@@ -557,6 +554,8 @@
             score = 0; scoreDisplay.textContent = score; runnerGameOver = false;
             leaderboardTopDisplay.textContent = TARGET_LEADERBOARD_RECORDS.dash;
             document.getElementById('active-tab-title').textContent = "⚡ CYBER RUNNER MATCH";
+            // FIXED: Instantly rewrite label overlay layer to prevent legacy hardcoded overrides
+            document.getElementById('arcade-controls').textContent = "Avoider Matrix: Move fast or drop points!";
             currentBestDisplay.textContent = localStorage.getItem('clipToPost_best_dash') || '0';
             runnerLane = 1; runnerX = 200; runnerObstacles = []; runnerFrame = 0;
             drawLeaderboardStandings('dash', isViewingCombinedLeaderboard);
@@ -582,7 +581,7 @@
                 runnerObstacles.push({ lane: spawnLane, y: -35, speed: 7 + (score / 350), processed: false, wasTargetingPlayer: (spawnLane === runnerLane) }); 
             }
             
-            // EXACT MATCH VISUALS: Player Ship Dual-Tone geometry mapping
+            // EXACT MATCH VISUALS: Dual-Tone fighter fuselage setup
             ctx.shadowBlur = 20; ctx.shadowColor = '#6366f1'; ctx.fillStyle = '#4f46e5';
             ctx.beginPath(); ctx.moveTo(runnerX, 235); ctx.lineTo(runnerX - 16, 265); ctx.lineTo(runnerX + 16, 265); ctx.closePath(); ctx.fill();
             ctx.fillStyle = '#06b6d4'; ctx.beginPath(); ctx.moveTo(runnerX, 244); ctx.lineTo(runnerX - 7, 261); ctx.lineTo(runnerX + 7, 261); ctx.closePath(); ctx.fill(); ctx.shadowBlur = 0;
@@ -590,7 +589,7 @@
             for (let i = runnerObstacles.length - 1; i >= 0; i--) {
                 let obs = runnerObstacles[i]; obs.y += obs.speed; let obsX = (obs.lane * 133) + 66;
                 
-                // EXACT MATCH VISUALS: White anchor + intensive crimson halo
+                // EXACT MATCH VISUALS: Dual corona high-contrast orb density mapping
                 ctx.shadowBlur = 30; ctx.shadowColor = '#ff3b3b'; ctx.fillStyle = '#ef4444'; 
                 ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 14, 0, Math.PI * 2); ctx.fill();
                 ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 5, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
@@ -604,12 +603,6 @@
                     runnerObstacles.splice(i, 1);
                 }
             }
-            
-            // EXACT MATCH: Floating pill badge container set to read "Press SPACE to Drop Block Perfectly" inside Cyber Runner view bounds
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.85)'; ctx.strokeStyle = 'rgba(51, 65, 85, 0.5)'; ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.roundRect(100, 272, 200, 22, 12); ctx.fill(); ctx.stroke();
-            ctx.fillStyle = '#94a3b8'; ctx.font = '10px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText("Press SPACE to Drop Block Perfectly", canvas.width / 2, 283);
         }
 
         // BRICK BREAKER ENGINE
@@ -617,6 +610,7 @@
         function initFusion() {
             score = 0; scoreDisplay.textContent = score; fusionGameOver = false;
             leaderboardTopDisplay.textContent = TARGET_LEADERBOARD_RECORDS.fusion; document.getElementById('active-tab-title').textContent = "🧩 BRICK BREAKER MATCH";
+            document.getElementById('arcade-controls').textContent = "Use Arrow Keys to slide the paddle";
             currentBestDisplay.textContent = localStorage.getItem('clipToPost_best_fusion') || '0'; paddle.x = 160; ball.x = 200; ball.y = 150; ball.dx = 4; ball.dy = -4; bricks = [];
             for (let r = 0; r < 3; r++) { for (let c = 0; c < 7; c++) { bricks.push({ x: 25 + c * 52, y: 40 + r * 18, width: 44, height: 12, alive: true }); } }
             drawLeaderboardStandings('fusion', isViewingCombinedLeaderboard);
