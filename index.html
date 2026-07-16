@@ -202,7 +202,6 @@
             </div>
         </main>
 
-        <!-- PERMANENT RETRO CONSOLE ANCHOR DECK -->
         <section id="permanent-arcade-deck" class="mb-6 space-y-4 fade-in">
             <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 relative overflow-hidden shadow-2xl">
                 <div class="w-full flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
@@ -309,16 +308,10 @@
         <div style="background: #ffffff; border: 1px solid #e1e4e8; border-radius: 8px; padding: 40px; max-width: 750px; margin: 0 auto; box-shadow: 0 4px 24px rgba(0,0,0,0.15); position: relative; font-family: sans-serif; color: #333333;">
             <button style="position: absolute; top: 20px; right: 20px; background: #f1f3f5; border: none; padding: 8px 14px; border-radius: 4px; font-weight: bold; cursor: pointer; color: #495057;" onclick="toggleLegalModal(false)">✕ Close</button>
             <h1 style="font-size: 22px; border-bottom: 2px solid #eaecef; padding-bottom: 12px; color: #111; text-align: center; margin-top: 10px; font-weight: bold;">TERMS OF SERVICE AND PLATFORM ACCESS AGREEMENT</h1>
-            <div style="background: #f6f8fa; border: 1px solid #d1d5da; padding: 15px; border-radius: 4px; font-size: 11.5px; font-family: monospace; color: #586069; margin-bottom: 25px; line-height: 1.5;">
-                Document Reference: C2P-SERVICES-AGREEMENT-2026-FINAL<br>
-                Effective Date: July 16, 2026<br>
-                Governing Jurisdiction: Hyderabad, India
-            </div>
             <p style="font-size: 13.5px; text-align: justify; line-height: 1.6; margin-bottom: 10px;"><strong>1.1 Governing Law and Choice of Forum:</strong> This Agreement is governed by the laws of the Republic of India. You explicitly agree that any legal claim, dispute, or proceeding arising out of or related to this Platform must be brought exclusively before the competent commercial courts located in Hyderabad, India.</p>
         </div>
     </div>
 
-    <!-- MAIN CONTROL CORE LOGIC -->
     <script>
         const RAZORPAY_SOLO_URL   = 'https://rzp.io/rzp/ERdjInlT';
         const RAZORPAY_AGENCY_URL = 'https://rzp.io/rzp/kK3urmV';
@@ -424,6 +417,9 @@
             checkUsageLimits();
         }
 
+        const canvas = document.getElementById('arcadeCanvas'); 
+        const ctx = canvas.getContext('2d');
+
         window.addEventListener('load', function () {
             if(GOOGLE_CLIENT_ID !== 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com') {
                 google.accounts.id.initialize({
@@ -435,6 +431,7 @@
                     { theme: "filled_dark", size: "large", width: "240" }
                 );
             }
+            gameActive = true;
             triggerGameSwap('stack');
         });
 
@@ -454,56 +451,22 @@
             } catch(e) { generatedFingerprint = "fb_" + Math.random().toString(36).substring(2, 10); }
         }
 
-        // --- FIXED KEYBOARD INTERCEPTOR GRID ---
+        // --- FILTERED CONSOLE INPUTS HANDLER ---
         window.addEventListener('keydown', e => { 
             if(document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
-            
             if([32, 37, 38, 39, 40].includes(e.keyCode)) {
                 e.preventDefault(); 
                 e.stopPropagation();
             }
-            if(e.keyCode === 32 && !keys[32]) {
-                spaceLatch = true; 
-            }
+            if(e.keyCode === 32 && !keys[32]) spaceLatch = true; 
             keys[e.keyCode] = true; 
         }, { passive: false });
 
         window.addEventListener('keyup', e => { 
             if(document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
-            if([32, 37, 38, 39, 40].includes(e.keyCode)) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
             keys[e.keyCode] = false; 
             if(e.keyCode === 32) spaceLatch = false; 
-        }, { passive: false });
-
-        const canvas = document.getElementById('arcadeCanvas'); const ctx = canvas.getContext('2d');
-
-        canvas.addEventListener('mouseenter', () => canvas.focus());
-        canvas.addEventListener('click', () => canvas.focus());
-
-        function drawLeaderboardStandings(gameKey, renderCombined = false) {
-            const rowBox = document.getElementById('leaderboard-rows-container'); if(!rowBox) return; rowBox.innerHTML = '';
-            let sMax = parseInt(localStorage.getItem('clipToPost_best_stack') || '0', 10);
-            let dMax = parseInt(localStorage.getItem('clipToPost_best_dash') || '0', 10);
-            let fMax = parseInt(localStorage.getItem('clipToPost_best_fusion') || '0', 10);
-            let userCombinedValue = sMax + dMax + fMax;
-
-            let compiledPool = [...GLOBAL_CREATORS_LEADERBOARD].map(item => {
-                return { name: item.name, score: renderCombined ? (item.stack + item.dash + item.fusion) : item[gameKey], isUser: false };
-            });
-            compiledPool.push({ name: "YOU (Operator)", score: renderCombined ? userCombinedValue : parseInt(localStorage.getItem(`clipToPost_best_${gameKey}`) || '0', 10), isUser: true });
-            compiledPool.sort((first, second) => second.score - first.score);
-
-            compiledPool.forEach((p, rankIndex) => {
-                const placementLine = document.createElement('div');
-                const rowStyleClasses = p.isUser ? "bg-indigo-950/50 border border-indigo-500/30 text-indigo-300 font-bold" : "bg-slate-900/30 text-gray-400 border border-transparent";
-                placementLine.className = `flex justify-between items-center p-2.5 rounded-lg ${rowStyleClasses}`;
-                placementLine.innerHTML = `<div class="flex items-center gap-2"><span class="text-gray-600 font-bold w-4">${rankIndex + 1}.</span><span class="truncate max-w-[130px]">${p.name}</span></div><span class="${p.isUser ? 'text-indigo-400' : 'text-slate-200'} font-bold">${p.score}</span>`;
-                rowBox.appendChild(placementLine);
-            });
-        }
+        });
 
         function synchronizeHighScores(gameKey, currentRunScore) {
             if (!isFreeCreditTrialRunActive) {
@@ -515,7 +478,7 @@
                     let currentClicks = parseInt(localStorage.getItem('clipToPost_clicks') || '0', 10);
                     localStorage.setItem('clipToPost_clicks', Math.max(0, currentClicks - 1));
                     localStorage.setItem('clipToPost_trial_consumed_v1', 'true');
-                    alert("🚨 UNBELIEVABLE SKILL! You broke the 5,000 threshold and unlocked +1 Free Generation credit!");
+                    alert("🚨 TARGET ATTAINED! Allocation limits rolled back securely.");
                     resetArcadeUIStatus();
                     checkUsageLimits();
                     return;
@@ -529,7 +492,7 @@
             drawLeaderboardStandings(gameKey, isViewingCombinedLeaderboard);
         }
 
-        // --- TOWER STACK ENGINE ---
+        // TOWER STACK
         let stackLayers = []; let currentBlock = {}; let blockSpeed = 3; let towerGameOver = false;
         function initStack() {
             score = 0; scoreDisplay.textContent = score; towerGameOver = false; spaceLatch = false;
@@ -537,25 +500,21 @@
             document.getElementById('active-tab-title').textContent = "🧱 TOWER STACK MATCH";
             currentBestDisplay.textContent = localStorage.getItem('clipToPost_best_stack') || '0';
             stackLayers = [{ x: 125, y: 250, w: 150, h: 25, color: '#6366f1' }];
-            
-            blockSpeed = isFreeCreditTrialRunActive ? 6.2 : 3.8;
+            blockSpeed = isFreeCreditTrialRunActive ? 6.5 : 3.5;
             currentBlock = { x: 0, y: 225, w: 150, h: 25, dir: 1 };
             drawLeaderboardStandings('stack', isViewingCombinedLeaderboard);
-            setTimeout(() => canvas.focus(), 10);
         }
         function updateStack() {
             if (towerGameOver) { 
                 ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
-                ctx.fillText(isFreeCreditTrialRunActive ? "TRIAL OVER. ACCESS DISCONNECTED." : "CRASHED! SELECT ANOTHER TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return; 
+                ctx.fillText(isFreeCreditTrialRunActive ? "TRIAL REJECTED." : "CRASHED! SELECT ANOTHER TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return; 
             }
-            
             let activeSpeed = blockSpeed;
             if (isFreeCreditTrialRunActive && score >= 1200) {
-                activeSpeed = blockSpeed * Math.pow(1.35, (score - 1000) / 200); 
+                activeSpeed = blockSpeed * Math.pow(1.38, (score - 1000) / 200); 
             } else if (score >= 1200) {
-                activeSpeed = blockSpeed * 1.3; 
+                activeSpeed = blockSpeed * 1.25; 
             }
-
             currentBlock.x += currentBlock.dir * activeSpeed;
             if (currentBlock.x < 0 || currentBlock.x + currentBlock.w > canvas.width) currentBlock.dir *= -1;
             stackLayers.forEach(l => { ctx.fillStyle = l.color; ctx.fillRect(l.x, l.y, l.w, l.h); });
@@ -564,25 +523,17 @@
             if (spaceLatch) {
                 spaceLatch = false; let base = stackLayers[stackLayers.length - 1];
                 let left = Math.max(currentBlock.x, base.x); let right = Math.min(currentBlock.x + currentBlock.w, base.x + base.w);
-                
                 let absoluteMargin = isFreeCreditTrialRunActive && score >= 1200 ? 5 : 0;
                 if (left >= right || (right - left) <= absoluteMargin) { towerGameOver = true; handleTrialRunFailure(); return; }
-                
                 let cutWidth = right - left; let cutX = left;
                 stackLayers.push({ x: cutX, y: currentBlock.y, w: cutWidth, h: 25, color: `hsl(${200 + (stackLayers.length * 15)}, 90%, 60%)` });
                 score += 100; scoreDisplay.textContent = score; synchronizeHighScores('stack', score);
                 if (currentBlock.y <= 90) { stackLayers.forEach(l => l.y += 50); stackLayers.shift(); }
-                currentBlock = { x: 0, y: stackLayers[stackLayers.length - 1].y - 25, w: cutWidth, h: 25, dir: 1 }; 
-                blockSpeed += isFreeCreditTrialRunActive ? 0.65 : 0.35;
+                currentBlock = { x: 0, y: stackLayers[stackLayers.length - 1].y - 25, w: cutWidth, h: 25, dir: 1 }; blockSpeed += isFreeCreditTrialRunActive ? 0.7 : 0.35;
             }
-            
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.85)'; ctx.strokeStyle = 'rgba(51, 65, 85, 0.5)'; ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.roundRect(100, 272, 200, 20, 10); ctx.fill(); ctx.stroke();
-            ctx.fillStyle = '#94a3b8'; ctx.font = '10px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
-            ctx.fillText(isFreeCreditTrialRunActive ? "⚠️ ASYMPTOTIC TRIAL SPEED RUN" : "Press SPACE to Drop Block Perfectly", canvas.width / 2, 282);
         }
 
-        // --- CYBER RUNNER ENGINE ---
+        // CYBER RUNNER
         let runnerX = 200; let runnerLane = 1; let runnerObstacles = []; let runnerFrame = 0; let runnerGameOver = false;
         function initDash() {
             score = 0; scoreDisplay.textContent = score; runnerGameOver = false;
@@ -591,15 +542,13 @@
             currentBestDisplay.textContent = localStorage.getItem('clipToPost_best_dash') || '0';
             runnerLane = 1; runnerX = 200; runnerObstacles = []; runnerFrame = 0;
             drawLeaderboardStandings('dash', isViewingCombinedLeaderboard);
-            setTimeout(() => canvas.focus(), 10);
         }
         function updateDash() {
             if (runnerGameOver) {
                 ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
-                ctx.fillText(isFreeCreditTrialRunActive ? "SHIELD DESTRUCTED. CONSOLE RECOIL." : "SYSTEM DEFUNCT! CHOOSE TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return;
+                ctx.fillText(isFreeCreditTrialRunActive ? "SHIELD DESTRUCTED." : "SYSTEM DEFUNCT! CHOOSE TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return;
             }
             runnerFrame++; 
-            
             let defaultBaseInterval = isFreeCreditTrialRunActive ? 12 : 24;
             let currentSpawnInterval = Math.max(isFreeCreditTrialRunActive ? 4 : 8, defaultBaseInterval - Math.floor(score / 150));
             
@@ -610,18 +559,14 @@
             if (keys[37]) { keys[37] = false; if (runnerLane > 0) runnerLane--; }
             if (keys[39]) { keys[39] = false; if (runnerLane < 2) runnerLane++; }
             let targetX = (runnerLane * 133) + 66; 
-            
             let turnVelocity = isFreeCreditTrialRunActive ? 0.18 : 0.28;
             runnerX += (targetX - runnerX) * turnVelocity; 
 
             if (runnerFrame % currentSpawnInterval === 0) { 
                 let spawnLane = Math.floor(Math.random() * 3);
-                
                 let initialSpeed = isFreeCreditTrialRunActive ? 11 : 6.5;
                 let velocityFactor = isFreeCreditTrialRunActive && score >= 1200 ? Math.pow(1.4, (score / 300)) : (score / 280);
-                let speedPayload = initialSpeed + velocityFactor;
-                
-                runnerObstacles.push({ lane: spawnLane, y: -35, speed: speedPayload, processed: false, wasTargetingPlayer: (spawnLane === runnerLane) }); 
+                runnerObstacles.push({ lane: spawnLane, y: -35, speed: initialSpeed + velocityFactor, processed: false, wasTargetingPlayer: (spawnLane === runnerLane) }); 
             }
             
             ctx.shadowBlur = 20; ctx.shadowColor = '#6366f1'; ctx.fillStyle = '#4f46e5';
@@ -630,15 +575,13 @@
 
             for (let i = runnerObstacles.length - 1; i >= 0; i--) {
                 let obs = runnerObstacles[i]; obs.y += obs.speed; let obsX = (obs.lane * 133) + 66;
-                
                 ctx.shadowBlur = 30; ctx.shadowColor = '#ff3b3b'; ctx.fillStyle = '#ef4444'; 
                 ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 14, 0, Math.PI * 2); ctx.fill();
                 ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 5, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
                 
                 let effectiveRadius = isFreeCreditTrialRunActive && score >= 1200 ? 32 : 14;
                 if (!obs.processed && obs.y > (230 - effectiveRadius) && obs.y < 265 && obs.lane === runnerLane) { 
-                    obs.processed = true; 
-                    score -= isFreeCreditTrialRunActive ? 200 : 10; 
+                    obs.processed = true; score -= isFreeCreditTrialRunActive ? 200 : 10; 
                     if (score <= 0) { score = 0; runnerGameOver = true; handleTrialRunFailure(); }
                     scoreDisplay.textContent = score; runnerObstacles.splice(i, 1); continue;
                 }
@@ -647,49 +590,32 @@
                     runnerObstacles.splice(i, 1);
                 }
             }
-            
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.85)'; ctx.strokeStyle = 'rgba(51, 65, 85, 0.5)'; ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.roundRect(80, 272, 240, 20, 10); ctx.fill(); ctx.stroke();
-            ctx.fillStyle = '#94a3b8'; ctx.font = '10px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText(isFreeCreditTrialRunActive ? "⚠️ DENSITY FIELD ENFORCED" : "Avoider Matrix: Move fast or drop points!", canvas.width / 2, 282);
         }
 
-        // --- BRICK BREAKER ENGINE ---
+        // BRICK BREAKER
         let paddle = { x: 160, y: 270, width: 75, height: 10, speed: 7 }; let ball = { x: 200, y: 150, dx: 3.5, dy: -3.5, radius: 5 }; let bricks = []; let fusionGameOver = false;
         function initFusion() {
             score = 0; scoreDisplay.textContent = score; fusionGameOver = false;
             leaderboardTopDisplay.textContent = isFreeCreditTrialRunActive ? "5000" : TARGET_LEADERBOARD_RECORDS.fusion; document.getElementById('active-tab-title').textContent = "🧩 BRICK BREAKER MATCH";
             currentBestDisplay.textContent = localStorage.getItem('clipToPost_best_fusion') || '0'; 
-            
-            paddle.width = isFreeCreditTrialRunActive ? 35 : 75; 
-            paddle.speed = isFreeCreditTrialRunActive ? 5.0 : 8;
-            ball.x = 200; ball.y = 150; 
-            ball.dx = isFreeCreditTrialRunActive ? 7.0 : 4.2; 
-            ball.dy = isFreeCreditTrialRunActive ? -7.0 : -4.2; 
-            
-            bricks = [];
+            paddle.width = isFreeCreditTrialRunActive ? 35 : 75; paddle.speed = isFreeCreditTrialRunActive ? 5.0 : 8;
+            ball.x = 200; ball.y = 150; ball.dx = isFreeCreditTrialRunActive ? 7.0 : 4.2; ball.dy = isFreeCreditTrialRunActive ? -7.0 : -4.2; bricks = [];
             let rowsCount = isFreeCreditTrialRunActive ? 6 : 3;
             for (let r = 0; r < rowsCount; r++) { for (let c = 0; c < 7; c++) { bricks.push({ x: 25 + c * 52, y: 40 + r * 18, width: 44, height: 12, alive: true }); } }
             drawLeaderboardStandings('fusion', isViewingCombinedLeaderboard);
-            setTimeout(() => canvas.focus(), 10);
         }
         function updateFusion() {
             if (fusionGameOver) {
                 ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
-                ctx.fillText(isFreeCreditTrialRunActive ? "BALL ESCAPED. GAUNTLET DEACTIVATED." : "GAME OVER! CHOOSE ANOTHER TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return;
+                ctx.fillText(isFreeCreditTrialRunActive ? "EXPERT ATTEMPT TERMINATED." : "GAME OVER! CHOOSE ANOTHER TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return;
             }
             if (keys[37] && paddle.x > 0) paddle.x -= paddle.speed; if (keys[39] && paddle.x < canvas.width - paddle.width) paddle.x += paddle.speed;
-            
             let baselineSpeedFactor = 1.0;
-            if (isFreeCreditTrialRunActive && score >= 1000) {
-                baselineSpeedFactor = 1.85; 
-            }
-            
+            if (isFreeCreditTrialRunActive && score >= 1000) baselineSpeedFactor = 1.85; 
             ball.x += ball.dx * baselineSpeedFactor; ball.y += ball.dy * baselineSpeedFactor; 
             if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) ball.dx *= -1; if (ball.y - ball.radius < 0) ball.dy *= -1;
             if (ball.y + ball.radius >= paddle.y && ball.y - ball.radius <= paddle.y + paddle.height && ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) ball.dy = -Math.abs(ball.dy); 
             if (ball.y > canvas.height) { fusionGameOver = true; handleTrialRunFailure(); return; }
-            
             ctx.fillStyle = '#eab308'; ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
             ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2); ctx.fillStyle = '#ffffff'; ctx.fill(); ctx.closePath();
             let activeBricks = false;
@@ -698,14 +624,9 @@
                 if (ball.x > b.x && ball.x < b.x + b.width && ball.y > b.y && ball.y < b.y + b.height) { b.alive = false; ball.dy *= -1; score += 50; scoreDisplay.textContent = score; synchronizeHighScores('fusion', score); }
             });
             if (!activeBricks) bricks.forEach(b => b.alive = true);
-            
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.85)'; ctx.strokeStyle = 'rgba(51, 65, 85, 0.5)'; ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.roundRect(100, 272, 200, 20, 10); ctx.fill(); ctx.stroke();
-            ctx.fillStyle = '#94a3b8'; ctx.font = '10px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText(isFreeCreditTrialRunActive ? "⚠️ ASYMPTOTIC GRID VELOCITY HIGH" : "Use Arrow Keys to Slide the Paddle", canvas.width / 2, 282);
         }
 
-        // --- GLOBAL CONTAINER FLOW RUNNERS ---
+        // --- GLOBAL CONTAINER TICK ENGINE ---
         function runMasterLoop() {
             if (gameActive) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height); 
@@ -717,18 +638,13 @@
         }
 
         function triggerGameSwap(target) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); 
             currentActiveGame = target; 
             bragBtn.classList.add('hidden');
-            
             if (target === 'stack') initStack(); 
             else if (target === 'dash') initDash(); 
             else if (target === 'fusion') initFusion();
-            
-            gameActive = true;
         }
 
-        // --- EXPLICIT BUTTON BINDINGS MAPPED UP ---
         btnStack.addEventListener('click', () => toggleGameTab('stack', btnStack));
         btnDash.addEventListener('click', () => toggleGameTab('dash', btnDash));
         btnFusion.addEventListener('click', () => toggleGameTab('fusion', btnFusion));
@@ -749,18 +665,15 @@
         freeCreditBtn.addEventListener('click', () => {
             let validationFlag = localStorage.getItem('clipToPost_trial_consumed_v1');
             if (validationFlag === "true") {
-                alert("Security Notice: This device has already consumed its single allocated promotional high-score trial. Workspace restricted to standard Sandbox Practice mode.");
+                alert("This device footprint has already consumed its single allocated promotional trial.");
                 return;
             }
-            
             isFreeCreditTrialRunActive = true;
-            freeCreditBtn.textContent = "🔥 DYNAMIC TRIAL ACTIVE";
-            
-            document.getElementById('status-text').textContent = "ARCADE CORE: HIGH-STAKES FREE CREDIT TRIAL RUN";
+            freeCreditBtn.textContent = "🔥 TRIAL RUNNING";
+            document.getElementById('status-text').textContent = "ARCADE CORE: EXTRA-DENSE TRIAL MODE";
             document.getElementById('status-text').className = "text-xs text-amber-400 font-mono tracking-wide uppercase";
             document.getElementById('game-status-dot').className = "relative inline-flex rounded-full h-2 w-2 bg-amber-500";
             document.getElementById('game-pulse').className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75";
-            
             triggerGameSwap(currentActiveGame);
         });
 
@@ -769,7 +682,7 @@
             localStorage.setItem('clipToPost_trial_consumed_v1', 'true');
             isFreeCreditTrialRunActive = false;
             setTimeout(() => {
-                alert("Game Over! The trial has concluded. Your local workspace has been stamped. Returning to Sandbox Practice Mode!");
+                alert("Trial finished! Returning environment metrics to practice settings.");
                 resetArcadeUIStatus();
             }, 100);
         }
@@ -784,7 +697,35 @@
             triggerGameSwap(currentActiveGame);
         }
 
-        updateVaultCounter();
+        function updateVaultCounter() { let vault = JSON.parse(localStorage.getItem('clipToPost_vault') || '[]'); vaultCounterBadge.textContent = vault.length; }
+        function pushToVaultCaches(posts) {
+            let vault = JSON.parse(localStorage.getItem('clipToPost_vault') || '[]');
+            posts.forEach(p => { if(!vault.includes(p)) vault.unshift(p); });
+            if(vault.length > 25) vault = vault.slice(0, 25); localStorage.setItem('clipToPost_vault', JSON.stringify(vault)); updateVaultCounter();
+        }
+
+        function renderVaultArchive() {
+            vaultItemsContainer.innerHTML = ''; 
+            let vault = JSON.parse(localStorage.getItem('clipToPost_vault') || '[]');
+            if(vault.length === 0) { vaultItemsContainer.innerHTML = `<div class="text-xs text-gray-500 font-mono text-center py-10">VAULT SECTOR EMPTY</div>`; return; }
+            vault.forEach((text, idx) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = "p-3.5 bg-gray-950 border border-gray-800 rounded-xl relative hover:border-gray-700 transition-all flex flex-col justify-between";
+                let preview = text.substring(0, 110) + (text.length > 110 ? '...' : '');
+                itemDiv.innerHTML = `<p class="font-mono text-[11px] text-gray-400 mb-2 leading-relaxed whitespace-pre-wrap select-all">${preview}</p><div class="flex justify-end gap-1.5 pt-2 border-t border-gray-900"><button class="vault-load-btn px-2.5 py-1 bg-indigo-950/40 text-indigo-400 border border-indigo-900/60 rounded text-[10px] font-mono cursor-pointer transition-all">Load</button><button class="vault-del-btn px-2.5 py-1 bg-rose-950/40 text-rose-400 border border-rose-900/60 rounded text-[10px] font-mono cursor-pointer transition-all">Delete</button></div>`;
+                
+                // FIXED: Map full content schema correctly upon dynamic item loads
+                itemDiv.querySelector('.vault-load-btn').addEventListener('click', () => {
+                    activeGenerationDataset = [{ fullText: text, cleanText: text, isHashtagHidden: false, isEmojiHidden: false, isHookManuallyOptimized: false }];
+                    masterToolbar.classList.remove('hidden'); 
+                    renderInterfaceAssets(boomerFontToggle.checked); 
+                    vaultDrawer.classList.add('hidden');
+                });
+                itemDiv.querySelector('.vault-del-btn').addEventListener('click', () => { vault.splice(idx, 1); localStorage.setItem('clipToPost_vault', JSON.stringify(vault)); renderVaultArchive(); updateVaultCounter(); });
+                vaultItemsContainer.appendChild(itemDiv);
+            });
+        }
+
         vaultTriggerBtn.addEventListener('click', () => { renderVaultArchive(); vaultDrawer.classList.remove('hidden'); });
         closeVaultBtn.addEventListener('click', () => vaultDrawer.classList.add('hidden'));
 
@@ -814,20 +755,12 @@
         filterDouble.addEventListener('click', () => { isDoubleSpaced = !isDoubleSpaced; renderInterfaceAssets(boomerFontToggle.checked); });
         filterCaps.addEventListener('click', () => { isHookCapitalized = !isHookCapitalized; renderInterfaceAssets(boomerFontToggle.checked); });
         filterBullets.addEventListener('click', () => { isBulletCleaned = !isBulletCleaned; renderInterfaceAssets(boomerFontToggle.checked); });
-        
-        filterHookFix.addEventListener('click', () => { 
-            isHookOptimized = !isHookOptimized; 
-            filterHookFix.classList.toggle('bg-indigo-600');
-            filterHookFix.classList.toggle('text-white');
-            renderInterfaceAssets(boomerFontToggle.checked); 
-        });
-        
+        filterHookFix.addEventListener('click', () => { isHookOptimized = !isHookOptimized; filterHookFix.classList.toggle('bg-indigo-600'); filterHookFix.classList.toggle('text-white'); renderInterfaceAssets(boomerFontToggle.checked); });
         cleanModeToggle.addEventListener('change', () => renderInterfaceAssets(boomerFontToggle.checked));
 
         function checkUsageLimits() {
             const usageCount = parseInt(localStorage.getItem('clipToPost_clicks') || '0', 10);
             const remaining = Math.max(0, 3 - usageCount); creditCounter.textContent = remaining;
-
             if (usageCount >= 3) {
                 urlInput.disabled = true; submitBtn.disabled = true; submitBtn.textContent = "Cap Reached";
                 warningBanner.classList.remove('hidden'); return false;
@@ -849,8 +782,7 @@
                 const card = document.createElement('div');
                 const typographyClass = useBoomerFont ? "text-2xl font-bold text-white tracking-wide" : "text-base md:text-md font-light text-gray-200 leading-relaxed";
                 card.className = "bg-gray-900/40 backdrop-blur-md border border-gray-800 rounded-2xl p-6 shadow-xl relative flex flex-col justify-between transition-all hover:border-gray-700/50 cascade-card";
-                
-                const targetText = resolveDynamicTextString(item);
+                let targetText = resolveDynamicTextString(item);
                 card.innerHTML = `
                     <div class="flex flex-wrap justify-between items-start gap-3 mb-4 border-b border-gray-800/50 pb-3">
                         <div class="flex flex-wrap items-center gap-2"><span class="text-xs text-indigo-400 font-mono font-bold uppercase">Asset Variant ${index + 1}</span></div>
@@ -866,17 +798,13 @@
                     </div>
                 `;
                 card.querySelector('.whitespace-pre-wrap').textContent = targetText;
-                card.querySelector('.copy-btn').addEventListener('click', () => {
-                    executeClipboardWrite(targetText, () => { alert('Text copied!'); }, () => {});
-                });
-                
+                card.querySelector('.copy-btn').addEventListener('click', () => { executeClipboardWrite(targetText, () => { alert('Text copied!'); }, () => {}); });
                 card.querySelector('.mobile-preview-btn').addEventListener('click', () => {
                     let textBlocks = targetText.split('\n');
                     modalHookZone.textContent = textBlocks[0] || '';
                     modalBodyZone.textContent = textBlocks.slice(1).join('\n') || '';
                     modal.classList.remove('hidden');
                 });
-
                 card.querySelector('.hashtag-toggle-btn').addEventListener('click', (e) => {
                     item.isHashtagHidden = !item.isHashtagHidden;
                     e.target.textContent = item.isHashtagHidden ? "👔 Add Tags" : "👔 Strip Tags";
@@ -887,7 +815,6 @@
                     e.target.textContent = item.isEmojiHidden ? "🎨 Add Emojis" : "🎨 Strip Emojis";
                     card.querySelector('.whitespace-pre-wrap').textContent = resolveDynamicTextString(item);
                 });
-
                 outputContainer.appendChild(card);
             });
         }
@@ -895,17 +822,12 @@
         async function fireTransformationPipeline() {
             if (!checkUsageLimits()) return;
             if (!authenticatedUserContext) { alert('Please sign in via Google Auth first.'); return; }
-            
             const videoUrl = urlInput.value.trim();
             const validationSyntax = /(youtube\.com|youtu\.be)/i;
-            if (!videoUrl || !validationSyntax.test(videoUrl)) {
-                alert('Invalid YouTube Link.');
-                return;
-            }
+            if (!videoUrl || !validationSyntax.test(videoUrl)) { alert('Invalid YouTube Link.'); return; }
             
             submitBtn.disabled = true; urlInput.disabled = true;
             outputContainer.innerHTML = ''; masterToolbar.classList.add('hidden'); failoverDeck.classList.add('hidden');
-            
             document.activeElement.blur();
             
             isFreeCreditTrialRunActive = false;
@@ -922,10 +844,7 @@
             try {
                 const response = await fetch(N8N_WEBHOOK_URL, {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'X-ClipToPost-Secret': computedTransitToken
-                    },
+                    headers: { 'Content-Type': 'application/json', 'X-ClipToPost-Secret': computedTransitToken },
                     body: JSON.stringify({ 
                         youtubeUrl: videoUrl, 
                         engineMode: document.querySelector('input[name="engine-mode"]:checked').value,
@@ -940,10 +859,8 @@
 
                 if (!response.ok) throw new Error("Fault.");
                 const data = await response.json();
-                
                 const rawOutputText = data.output || data.text || (Array.isArray(data) ? (data[0]?.output || data[0]?.text) : '') || '';
                 if (!rawOutputText) throw new Error("Empty text payload structure returned.");
-                
                 const postsArray = rawOutputText.split('===NEXT_POST===').filter(post => post.trim().length > 0);
                 
                 localStorage.setItem('clipToPost_clicks', parseInt(localStorage.getItem('clipToPost_clicks') || '0', 10) + 1);
@@ -960,10 +877,7 @@
                     };
                 });
                 masterToolbar.classList.remove('hidden'); renderInterfaceAssets(boomerFontToggle.checked);
-            } catch (err) { 
-                console.error(err);
-                failoverDeck.classList.remove('hidden'); 
-            }
+            } catch (err) { console.error(err); failoverDeck.classList.remove('hidden'); }
             finally {
                 resetArcadeUIStatus();
                 submitBtn.disabled = false; urlInput.disabled = false;
@@ -973,41 +887,27 @@
 
         submitBtn.addEventListener('click', fireTransformationPipeline);
         constructDeviceFingerprint().then(() => { updateVaultCounter(); gameActive = true; runMasterLoop(); });
-        synchronizeHighScores('stack', 0);
+        closeModalBtn.addEventListener('click', () => modal.classList.add('hidden'));
     </script>
     <script>
         function evaluateInterfaceSecurityGate() {
             const globalGate = document.getElementById('global-legal-gate');
             const tierButtons = document.querySelectorAll('.checkout-btn-tier');
-            if (globalGate && globalGate.checked) {
-                tierButtons.forEach(btn => btn.classList.remove('disabled'));
-            } else {
-                tierButtons.forEach(btn => btn.classList.add('disabled'));
-            }
+            if (globalGate && globalGate.checked) { tierButtons.forEach(btn => btn.classList.remove('disabled')); } 
+            else { tierButtons.forEach(btn => btn.classList.add('disabled')); }
         }
         function routeToGateway(event, tier) {
             const globalGate = document.getElementById('global-legal-gate');
-            if (!globalGate || !globalGate.checked) {
-                event.preventDefault();
-                alert("Please agree to terms.");
-                return false;
-            }
-            if (tier === 'solo') {
-                event.preventDefault();
-                window.location.href = RAZORPAY_SOLO_URL;
-            } else if (tier === 'agency') {
-                event.preventDefault();
-                window.location.href = RAZORPAY_AGENCY_URL;
-            }
+            if (!globalGate || !globalGate.checked) { event.preventDefault(); alert("Please agree to terms."); return false; }
+            if (tier === 'solo') { event.preventDefault(); window.location.href = RAZORPAY_SOLO_URL; } 
+            else if (tier === 'agency') { event.preventDefault(); window.location.href = RAZORPAY_AGENCY_URL; }
         }
         function toggleLegalModal(show) {
             const modalView = document.getElementById('legal-modal');
             if (modalView) modalView.style.display = show ? 'block' : 'none';
             document.body.style.overflow = show ? 'hidden' : 'auto';
         }
-        document.addEventListener("DOMContentLoaded", () => {
-            evaluateInterfaceSecurityGate();
-        });
+        document.addEventListener("DOMContentLoaded", () => { evaluateInterfaceSecurityGate(); });
     </script>
 </body>
 </html>
