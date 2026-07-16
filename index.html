@@ -49,12 +49,12 @@
 </head>
 <body class="bg-slate-950 text-gray-100 min-h-screen grid-bg antialiased selection:bg-indigo-500 selection:text-white bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-950/20 via-slate-950 to-slate-950">
 
-    <div class="max-w-4xl mx-auto px-4 py-12">
-        <header class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-10 pb-6 border-b border-slate-900 fade-in">
+    <div class="max-w-4xl mx-auto px-4 py-6 md:py-12">
+        <header class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8 pb-6 border-b border-slate-900 fade-in">
             <div>
-                <h1 class="text-4xl md:text-5xl font-black tracking-tight text-white">ClipToPost</h1>
+                <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white text-center sm:text-left">ClipToPost</h1>
             </div>
-            <div class="flex items-center gap-3">
+            <div class="flex flex-wrap items-center justify-center gap-3">
                 <div id="user-profile-badge" class="hidden flex items-center gap-2 bg-slate-900/60 border border-slate-800 px-3 py-1.5 rounded-xl">
                     <img id="user-avatar" src="" class="w-5 h-5 rounded-full border border-indigo-500/50" alt="Avatar">
                     <span id="user-name-label" class="text-xs font-mono text-gray-300 truncate max-w-[100px]">Operator</span>
@@ -64,6 +64,10 @@
                 </button>
             </div>
         </header>
+
+        <div id="pipeline-status-banner" class="hidden mb-6 p-4 rounded-xl font-mono text-xs text-center border fade-in bg-indigo-950/40 border-indigo-500/30 text-indigo-300">
+            <span class="inline-block animate-pulse mr-2">⚡</span> <span id="pipeline-status-message">Initializing Core Pipeline...</span>
+        </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 fade-in text-xs font-mono">
             <div class="bg-slate-900/40 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between shadow-sm">
@@ -84,7 +88,7 @@
             </div>
         </div>
 
-        <main class="bg-slate-900/40 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 shadow-2xl glow-effect mb-6 fade-in">
+        <main class="bg-slate-900/40 backdrop-blur-xl border border-slate-800 rounded-2xl p-4 md:p-6 shadow-2xl glow-effect mb-6 fade-in">
             <div id="authentication-barrier" class="mb-6 p-6 bg-slate-950/80 border border-slate-800 rounded-2xl shadow-inner text-center">
                 <span class="text-xl block mb-2">🔒</span>
                 <h3 class="text-base font-bold text-white mb-1">Verify Your Creator Identity</h3>
@@ -101,40 +105,40 @@
                         id="youtube-url" 
                         required
                         placeholder="Paste YouTube Video URL link here..." 
-                        class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-base text-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 transition-all shadow-inner placeholder-gray-600"
+                        class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3.5 text-sm md:text-base text-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 transition-all shadow-inner placeholder-gray-600"
                     >
                     <button 
                         type="button" 
                         id="submit-btn"
-                        class="bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-semibold px-8 py-3.5 rounded-xl text-base transition-all shadow-lg shadow-indigo-600/10 active:scale-[0.98] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                        class="bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-semibold px-6 py-3.5 rounded-xl text-sm md:text-base transition-all shadow-lg shadow-indigo-600/10 active:scale-[0.98] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                     >
                         Generate Posts (<span id="credit-counter">3</span> Left)
                     </button>
                 </div>
 
-                <div class="pt-2 border-t border-slate-800/60 flex flex-wrap items-center justify-between gap-4">
-                    <div class="flex flex-wrap gap-2">
+                <div class="pt-2 border-t border-slate-800/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div class="flex flex-wrap gap-2 justify-center sm:justify-start">
                         <label class="cursor-pointer relative select-none">
                             <input type="radio" name="engine-mode" value="fast" checked class="sr-only">
-                            <div class="px-4 py-2 border border-slate-800 rounded-xl text-xs font-medium bg-slate-950 text-gray-400 hover:text-gray-200 transition-all tracking-wide">
-                                ⚡ FAST PASS (Under 10s)
+                            <div class="px-3 py-1.5 border border-slate-800 rounded-xl text-[11px] font-medium bg-slate-950 text-gray-400 hover:text-gray-200 transition-all tracking-wide">
+                                ⚡ FAST PASS
                             </div>
                         </label>
                         <label class="cursor-pointer relative select-none">
                             <input type="radio" name="engine-mode" value="deep" class="sr-only">
-                            <div class="px-4 py-2 border border-slate-800 rounded-xl text-xs font-medium bg-slate-950 text-gray-400 hover:text-gray-200 transition-all tracking-wide">
-                                🧠 HNW OPERATOR MODE (Zero Fluff)
+                            <div class="px-3 py-1.5 border border-slate-800 rounded-xl text-[11px] font-medium bg-slate-950 text-gray-400 hover:text-gray-200 transition-all tracking-wide">
+                                🧠 OPERATOR MODE
                             </div>
                         </label>
                     </div>
-                    <div class="flex items-center gap-4">
+                    <div class="flex items-center justify-center gap-4">
                         <label class="flex items-center gap-2 text-xs text-gray-400 cursor-pointer select-none">
                             <input type="checkbox" id="clean-mode" class="rounded border-slate-800 bg-slate-950 text-indigo-600 focus:ring-0 focus:ring-offset-0">
-                            👔 EXECUTIVE PROSE
+                            👔 PROSE
                         </label>
                         <label class="flex items-center gap-2 text-xs text-gray-400 cursor-pointer select-none">
                             <input type="checkbox" id="boomer-font" class="rounded border-slate-800 bg-slate-950 text-indigo-600 focus:ring-0 focus:ring-offset-0">
-                            🔍 Large Text Mode
+                            🔍 LARGE
                         </label>
                     </div>
                 </div>
@@ -143,44 +147,20 @@
 
         <div id="rate-limit-warning" class="hidden mb-6 p-6 bg-slate-950/80 border border-indigo-900/50 rounded-2xl shadow-inner fade-in">
             <div class="text-center max-w-2xl mx-auto mb-6">
-                <span class="inline-block px-3 py-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-[10px] font-mono rounded-full uppercase tracking-wider mb-3">⚡ Evaluation Limit Hit</span>
+                <span class="inline-block px-3 py-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-[10px] font-mono rounded-full uppercase tracking-wider mb-3">⚡ Limit Hit</span>
                 <h3 class="text-xl md:text-2xl font-black text-white mb-2">Free Allotment Exhausted</h3>
-                <p class="text-xs text-gray-400 max-w-md mx-auto mb-4">This account has consumed all free testing cycles. Select a membership blueprint below to restore access.</p>
             </div>
             <div class="p-4 bg-slate-950 border border-slate-800/80 rounded-xl max-w-xl mx-auto mb-6 text-left shadow-inner">
                 <label class="flex items-start cursor-pointer text-xs font-mono text-gray-400 select-none">
                     <input type="checkbox" id="global-legal-gate" onchange="evaluateInterfaceSecurityGate()" class="rounded border-slate-800 bg-slate-950 text-indigo-600 focus:ring-0 focus:ring-offset-0 mr-3 mt-0.5 w-4 h-4 cursor-pointer">
-                    <span>
-                        I clarify that I am a sophisticated commercial operator. I explicitly read, understand, and agree to the 
-                        <span class="text-indigo-400 font-bold underline cursor-pointer hover:text-indigo-300" onclick="toggleLegalModal(true)">Master Access Covenant</span>, including the absolute arbitration seat in Hyderabad, India.
-                    </span>
+                    <span>I agree to the Master Access Covenant framework in Hyderabad, India.</span>
                 </label>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl mx-auto items-stretch">
-                <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-5 flex flex-col justify-between transition-all hover:border-slate-700">
-                    <div>
-                        <div class="flex justify-between items-start mb-2">
-                            <h4 class="text-sm font-bold text-white uppercase tracking-wide">Solo Creator</h4>
-                            <div class="text-right"><span class="text-lg font-black text-indigo-400 font-mono">₹699</span></div>
-                        </div>
-                    </div>
-                    <a id="checkout-link-creator" href="#" onclick="routeToGateway(event, 'solo')" class="checkout-btn-tier disabled w-full text-center bg-indigo-600 text-white text-xs font-semibold py-2.5 rounded-lg transition-all shadow-md block mt-2 cursor-pointer">Upgrade</a>
-                </div>
-                <div class="bg-indigo-950/20 border border-indigo-500/30 rounded-xl p-5 flex flex-col justify-between transition-all relative overflow-hidden">
-                    <div>
-                        <div class="flex justify-between items-start mb-2">
-                            <h4 class="text-sm font-bold text-indigo-300 uppercase tracking-wide">Agency Plan</h4>
-                            <div class="text-right"><span class="text-lg font-black text-indigo-400 font-mono">₹2,499</span></div>
-                        </div>
-                    </div>
-                    <a id="checkout-link-agency" href="#" onclick="routeToGateway(event, 'agency')" class="checkout-btn-tier disabled w-full text-center bg-gradient-to-r from-indigo-500 to-indigo-600 text-white text-xs font-bold py-2.5 rounded-lg transition-all shadow-md block mt-2 cursor-pointer">Deploy</a>
-                </div>
             </div>
         </div>
 
         <section id="permanent-arcade-deck" class="mb-6 space-y-4 fade-in">
-            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 relative overflow-hidden shadow-2xl">
-                <div class="w-full flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 md:p-6 relative overflow-hidden shadow-2xl">
+                <div class="w-full flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-slate-800 pb-3 mb-4">
                     <div class="flex items-center gap-2">
                         <span class="flex h-2 w-2 relative">
                             <span id="game-pulse" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
@@ -188,7 +168,7 @@
                         </span>
                         <div id="status-text" class="text-xs text-indigo-400 font-mono tracking-wide uppercase">ARCADE CORE: SANDBOX PRACTICE MODE</div>
                     </div>
-                    <div class="text-[11px] text-gray-400 font-mono tracking-wider flex items-center gap-3">
+                    <div class="text-[11px] text-gray-400 font-mono tracking-wider flex items-center gap-3 justify-between sm:justify-end">
                         <div>SCORE: <span id="game-score" class="text-white font-bold">0</span></div>
                         <div class="text-indigo-400 border-l border-slate-800 pl-3">BEST: <span id="current-game-best" class="font-bold">0</span></div>
                         <div class="text-amber-400 border-l border-slate-800 pl-3">TARGET: <span id="leaderboard-top-score" class="font-bold">1500</span></div>
@@ -196,37 +176,37 @@
                 </div>
 
                 <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
-                    <div class="flex gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800/60">
-                        <button type="button" id="btn-stack" class="game-tab-btn px-4 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer bg-indigo-600 text-white">🧱 TOWER STACK</button>
-                        <button type="button" id="btn-dash" class="game-tab-btn px-4 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer text-gray-500 hover:text-gray-300">⚡ CYBER RUNNER</button>
-                        <button type="button" id="btn-fusion" class="game-tab-btn px-4 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer text-gray-500 hover:text-gray-300">🧩 BRICK BREAKER</button>
+                    <div class="flex flex-wrap gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800/60 w-full sm:w-auto">
+                        <button type="button" id="btn-stack" class="game-tab-btn flex-1 sm:flex-none px-3 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer bg-indigo-600 text-white">🧱 STACK</button>
+                        <button type="button" id="btn-dash" class="game-tab-btn flex-1 sm:flex-none px-3 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer text-gray-500 hover:text-gray-300">⚡ RUNNER</button>
+                        <button type="button" id="btn-fusion" class="game-tab-btn flex-1 sm:flex-none px-3 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer text-gray-500 hover:text-gray-300">🧩 BREAKER</button>
                     </div>
-                    <div id="active-tab-title" class="text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/40 border border-indigo-900/30 px-3 py-1.5 rounded-xl">🧱 TOWER STACK MATCH</div>
+                    <div id="active-tab-title" class="hidden sm:block text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/40 border border-indigo-900/30 px-3 py-1.5 rounded-xl">🧱 TOWER STACK MATCH</div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-                    <div class="md:col-span-7 flex flex-col items-center">
-                        <div class="relative w-full max-w-[400px] aspect-[4/3] bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col items-center justify-center shadow-inner">
-                            <canvas id="arcadeCanvas" width="400" height="300" class="w-full h-full block" tabindex="0"></canvas>
+                    <div class="md:col-span-7 flex flex-col items-center w-full">
+                        <div class="relative w-full bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col items-center justify-center shadow-inner overflow-hidden" style="aspect-ratio: 4/3;">
+                            <canvas id="arcadeCanvas" width="400" height="300" class="absolute top-0 left-0 w-full h-full block" style="object-fit: contain;" tabindex="0"></canvas>
                         </div>
                     </div>
-                    <div class="md:col-span-5 bg-slate-950/80 border border-slate-800/60 p-4 rounded-xl shadow-inner flex flex-col min-h-[300px]">
+                    <div class="md:col-span-5 bg-slate-950/80 border border-slate-800/60 p-4 rounded-xl shadow-inner flex flex-col min-h-[220px] md:min-h-[300px] w-full">
                         <div class="text-xs font-mono font-bold text-gray-400 border-b border-slate-900 pb-2 mb-3 flex items-center justify-between">
                             <span>🏆 GLOBAL RANKINGS</span>
-                            <button type="button" id="toggle-combined-leaderboard" class="text-[10px] text-indigo-400 font-bold uppercase bg-indigo-950/60 px-2 py-0.5 border border-indigo-900/30 rounded-md cursor-pointer hover:bg-indigo-900/80 transition-colors">Show Combined</button>
+                            <button type="button" id="toggle-combined-leaderboard" class="text-[10px] text-indigo-400 font-bold uppercase bg-indigo-950/60 px-2 py-0.5 border border-indigo-900/30 rounded-md cursor-pointer hover:bg-indigo-900/80 transition-colors">Combined</button>
                         </div>
                         <div id="leaderboard-rows-container" class="space-y-1.5 text-xs font-mono flex-1 overflow-y-auto pr-1"></div>
                     </div>
                 </div>
                 
                 <div class="mt-4 flex flex-col sm:flex-row gap-3 justify-center items-center">
-                    <button type="button" id="attempt-sandbox-mode-btn" class="bg-slate-950 border border-slate-800 text-gray-300 hover:text-white font-mono text-[11px] px-4 py-2.5 rounded-xl transition-all font-bold shadow-md cursor-pointer uppercase tracking-wider">
-                        🎮 Play Practice Sandbox Mode
+                    <button type="button" id="attempt-sandbox-mode-btn" class="w-full sm:w-auto bg-slate-950 border border-slate-800 text-gray-300 hover:text-white font-mono text-[11px] px-4 py-2.5 rounded-xl transition-all font-bold shadow-md cursor-pointer uppercase tracking-wider">
+                        操控 Play Sandbox Mode
                     </button>
-                    <button type="button" id="attempt-free-credit-btn" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-mono text-[11px] px-4 py-2.5 rounded-xl transition-all font-black shadow-md cursor-pointer uppercase tracking-wider">
-                        🔥 Attempt Free Generation Trial (Target 5,000)
+                    <button type="button" id="attempt-free-credit-btn" class="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-mono text-[11px] px-4 py-2.5 rounded-xl transition-all font-black shadow-md cursor-pointer uppercase tracking-wider">
+                        🔥 Attempt Credit Trial (5k)
                     </button>
-                    <button type="button" id="brag-btn" class="hidden flex items-center gap-1.5 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-mono text-xs px-5 py-2.5 rounded-xl transition-all font-bold shadow-md cursor-pointer uppercase tracking-wide">
+                    <button type="button" id="brag-btn" class="hidden w-full sm:w-auto flex items-center justify-center gap-1.5 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-mono text-xs px-5 py-2.5 rounded-xl transition-all font-bold shadow-md cursor-pointer uppercase tracking-wide">
                         ✨ BRAG ON LINKEDIN
                     </button>
                 </div>
@@ -237,11 +217,10 @@
             <div class="flex flex-wrap items-center gap-3">
                 <span class="text-xs font-mono text-gray-400 block sm:inline">⚡ FORMAT FILTERS:</span>
                 <button id="filter-double" class="px-2.5 py-1 bg-slate-950 border border-gray-800 text-gray-400 hover:text-white rounded-lg text-xs font-mono transition-all cursor-pointer">[⌶] Double Space</button>
-                <button id="filter-caps" class="px-2.5 py-1 bg-slate-950 border border-gray-800 text-gray-400 hover:text-white rounded-lg text-xs font-mono transition-all cursor-pointer">[A/a] Capitalize Hooks</button>
+                <button id="filter-caps" class="px-2.5 py-1 bg-slate-950 border border-gray-800 text-gray-400 hover:text-white rounded-lg text-xs font-mono transition-all cursor-pointer">[A/a] Caps Hooks</button>
                 <button id="filter-bullets" class="px-2.5 py-1 bg-slate-950 border border-gray-800 text-gray-400 hover:text-white rounded-lg text-xs font-mono transition-all cursor-pointer">[✓] Bullet Clean</button>
-                <button id="filter-hookfix" class="px-2.5 py-1 bg-indigo-950/60 border border-indigo-800 text-indigo-400 hover:text-white rounded-lg text-xs font-mono transition-all cursor-pointer">✨ Optimize Hooks</button>
             </div>
-            <button id="copy-all-btn" class="bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white px-5 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-all shadow-md active:scale-95 text-center">
+            <button id="copy-all-btn" class="w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white px-5 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-all shadow-md active:scale-95 text-center">
                 📋 Copy All Variations Bundle
             </button>
         </div>
@@ -252,7 +231,7 @@
     <div id="vault-drawer" class="hidden fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex justify-end transition-all">
         <div class="bg-slate-900 border-l border-slate-800 w-full max-w-md h-full flex flex-col p-6 shadow-2xl overflow-hidden">
             <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-4">
-                <div class="font-mono text-sm font-bold text-indigo-400 flex items-center gap-2">💾 CONTEXT LOCK VAULT STORAGE</div>
+                <div class="font-mono text-sm font-bold text-indigo-400 flex items-center gap-2">💾 VAULT ARCHIVE MEMORY</div>
                 <button id="close-vault-btn" class="text-gray-400 hover:text-white font-bold text-base cursor-pointer">✕</button>
             </div>
             <div id="vault-items-container" class="flex-1 overflow-y-auto space-y-4 preview-scroll text-sm font-light text-gray-300 pr-2"></div>
@@ -270,7 +249,6 @@
                     <div class="w-10 h-10 rounded-full bg-gray-200 border border-gray-300 flex items-center justify-center text-gray-400 font-bold text-sm select-none">👤</div>
                     <div>
                         <div class="font-bold text-[14px] text-gray-900 leading-tight">Elite Content Creator</div>
-                        <div class="text-[12px] text-gray-500 leading-tight">Ghostwriter & Builder Engine</div>
                     </div>
                 </div>
                 <div id="modal-hook-zone" class="whitespace-pre-wrap leading-[1.4] tracking-normal break-words font-sans text-[14px] text-gray-900"></div>
@@ -284,14 +262,17 @@
         <div style="background: #ffffff; border: 1px solid #e1e4e8; border-radius: 8px; padding: 40px; max-width: 750px; margin: 0 auto; box-shadow: 0 4px 24px rgba(0,0,0,0.15); position: relative; font-family: sans-serif; color: #333333;">
             <button style="position: absolute; top: 20px; right: 20px; background: #f1f3f5; border: none; padding: 8px 14px; border-radius: 4px; font-weight: bold; cursor: pointer; color: #495057;" onclick="toggleLegalModal(false)">✕ Close</button>
             <h1 style="font-size: 22px; border-bottom: 2px solid #eaecef; padding-bottom: 12px; color: #111; text-align: center; margin-top: 10px; font-weight: bold;">TERMS OF SERVICE AND PLATFORM ACCESS AGREEMENT</h1>
-            <p style="font-size: 13.5px; text-align: justify; line-height: 1.6; margin-bottom: 10px;"><strong>1.1 Governing Law and Choice of Forum:</strong> This Agreement is governed by the laws of the Republic of India. You explicitly agree that any legal claim, dispute, or proceeding arising out of or related to this Platform must be brought exclusively before the competent commercial courts located in Hyderabad, India.</p>
+            <p style="font-size: 13.5px; text-align: justify; line-height: 1.6; margin-bottom: 10px;"><strong>1.1 Governing Law:</strong> Locked seat jurisdiction in Hyderabad, India.</p>
         </div>
     </div>
 
     <script>
         const RAZORPAY_SOLO_URL   = 'https://rzp.io/rzp/ERdjInlT';
         const RAZORPAY_AGENCY_URL = 'https://rzp.io/rzp/kK3urmV';
-        const N8N_WEBHOOK_URL = 'https://imperfect-sustained-jump.ngrok-free.dev/webhook/repurpose-video';
+        
+        // TIED TO YOUR NEW UNLIMITED FREE CLOUDFLARE QUICK TUNNEL
+        const N8N_WEBHOOK_URL = 'https://journal-counties-clips-comparative.trycloudflare.com/webhook/repurpose-video';
+        
         const PRODUCTION_SITE_URL = 'https://clicktopost.vercel.app/';
         const GOOGLE_CLIENT_ID = '1065350715296-mjiaqmhjtpdvo58jf71mabrek92rj3jv.apps.googleusercontent.com';
         
@@ -314,9 +295,10 @@
         const bragBtn = document.getElementById('brag-btn');
         const masterToolbar = document.getElementById('master-toolbar');
         const copyAllBtn = document.getElementById('copy-all-btn');
-        const failoverDeck = document.getElementById('failover-deck');
         const freeCreditBtn = document.getElementById('attempt-free-credit-btn');
         const sandboxModeBtn = document.getElementById('attempt-sandbox-mode-btn');
+        const statusBanner = document.getElementById('pipeline-status-banner');
+        const statusMessage = document.getElementById('pipeline-status-message');
         
         const modal = document.getElementById('preview-modal');
         const modalHookZone = document.getElementById('modal-hook-zone');
@@ -332,7 +314,6 @@
         const filterDouble = document.getElementById('filter-double');
         const filterCaps = document.getElementById('filter-caps');
         const filterBullets = document.getElementById('filter-bullets');
-        const filterHookFix = document.getElementById('filter-hookfix');
 
         const btnStack = document.getElementById('btn-stack');
         const btnDash = document.getElementById('btn-dash');
@@ -346,7 +327,6 @@
         let isDoubleSpaced = false;
         let isHookCapitalized = false;
         let isBulletCleaned = false;
-        let isHookOptimized = false;
         let isViewingCombinedLeaderboard = false;
         let generatedFingerprint = "pending";
 
@@ -429,6 +409,18 @@
                 generatedFingerprint = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
             } catch(e) { generatedFingerprint = "fb_" + Math.random().toString(36).substring(2, 10); }
         }
+
+        canvas.addEventListener('touchstart', (e) => {
+            if(currentActiveGame === 'stack') spaceLatch = true;
+            else {
+                const touchX = e.touches[0].clientX - canvas.getBoundingClientRect().left;
+                const normalizedX = touchX * (400 / canvas.getBoundingClientRect().width);
+                if(normalizedX < 133) { keys[37] = true; keys[39] = false; }
+                else if(normalizedX > 266) { keys[39] = true; keys[37] = false; }
+            }
+        }, { passive: true });
+
+        canvas.addEventListener('touchend', () => { keys[37] = false; keys[39] = false; });
 
         window.addEventListener('keydown', e => { 
             if(document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
@@ -519,14 +511,14 @@
         }
 
         // TOWER STACK
-        let stackLayers = []; let currentBlock = {}; let blockSpeed = 5.5; let towerGameOver = false;
+        let stackLayers = []; let currentBlock = {}; let blockSpeed = 3.8; let towerGameOver = false;
         function initStack() {
             score = 0; scoreDisplay.textContent = score; towerGameOver = false; spaceLatch = false;
             leaderboardTopDisplay.textContent = isFreeCreditTrialRunActive ? "5000" : TARGET_LEADERBOARD_RECORDS.stack;
             document.getElementById('active-tab-title').textContent = "🧱 TOWER STACK MATCH";
             currentBestDisplay.textContent = localStorage.getItem('clipToPost_best_stack') || '0';
             stackLayers = [{ x: 125, y: 250, w: 150, h: 25, color: '#6366f1' }];
-            blockSpeed = isFreeCreditTrialRunActive ? 7.5 : 5.5; // Accelerated engaging baseline
+            blockSpeed = isFreeCreditTrialRunActive ? 5.0 : 3.8; 
             currentBlock = { x: 0, y: 225, w: 150, h: 25, dir: 1 };
             drawLeaderboardStandings('stack', isViewingCombinedLeaderboard);
         }
@@ -537,9 +529,9 @@
             }
             let activeSpeed = blockSpeed;
             if (isFreeCreditTrialRunActive && score >= 1200) {
-                activeSpeed = blockSpeed * Math.pow(1.38, (score - 1000) / 200); 
+                activeSpeed = blockSpeed * Math.pow(1.22, (score - 1000) / 200); 
             } else if (score >= 1200) {
-                activeSpeed = blockSpeed * 1.35; 
+                activeSpeed = blockSpeed * 1.20; 
             }
             currentBlock.x += currentBlock.dir * activeSpeed;
             if (currentBlock.x < 0 || currentBlock.x + currentBlock.w > canvas.width) currentBlock.dir *= -1;
@@ -555,11 +547,11 @@
                 stackLayers.push({ x: cutX, y: currentBlock.y, w: cutWidth, h: 25, color: `hsl(${200 + (stackLayers.length * 15)}, 90%, 60%)` });
                 score += 100; scoreDisplay.textContent = score; synchronizeHighScores('stack', score);
                 
-                screenshake = 10; // Trigger Juiced shake
+                screenshake = 10; 
                 spawnExplosion(cutX + cutWidth/2, currentBlock.y, '#ec4899');
 
                 if (currentBlock.y <= 90) { stackLayers.forEach(l => l.y += 50); stackLayers.shift(); }
-                currentBlock = { x: 0, y: stackLayers[stackLayers.length - 1].y - 25, w: cutWidth, h: 25, dir: 1 }; blockSpeed += isFreeCreditTrialRunActive ? 0.7 : 0.45;
+                currentBlock = { x: 0, y: stackLayers[stackLayers.length - 1].y - 25, w: cutWidth, h: 25, dir: 1 }; blockSpeed += isFreeCreditTrialRunActive ? 0.45 : 0.28;
             }
             
             ctx.fillStyle = 'rgba(15, 23, 42, 0.85)'; ctx.strokeStyle = 'rgba(51, 65, 85, 0.5)'; ctx.lineWidth = 1;
@@ -581,11 +573,11 @@
         function updateDash() {
             if (runnerGameOver) {
                 ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
-                ctx.fillText(isFreeCreditTrialRunActive ? "SHIELD DESTRUCTED." : "SYSTEM DEFUNCT! CHOOSE TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return;
+                ctx.fillText(isFreeCreditTrialRunActive ? "SHIELD DESTRUCTED." : "CRASHED! CHOOSE TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return;
             }
             runnerFrame++; 
-            let defaultBaseInterval = isFreeCreditTrialRunActive ? 10 : 16;
-            let currentSpawnInterval = Math.max(isFreeCreditTrialRunActive ? 3 : 6, defaultBaseInterval - Math.floor(score / 120));
+            let defaultBaseInterval = isFreeCreditTrialRunActive ? 15 : 22; 
+            let currentSpawnInterval = Math.max(isFreeCreditTrialRunActive ? 5 : 9, defaultBaseInterval - Math.floor(score / 150));
             
             ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 1;
             for(let i = 0; i <= canvas.height; i += 30) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke(); }
@@ -594,13 +586,13 @@
             if (keys[37]) { keys[37] = false; if (runnerLane > 0) runnerLane--; }
             if (keys[39]) { keys[39] = false; if (runnerLane < 2) runnerLane++; }
             let targetX = (runnerLane * 133) + 66; 
-            let turnVelocity = isFreeCreditTrialRunActive ? 0.22 : 0.35;
+            let turnVelocity = isFreeCreditTrialRunActive ? 0.18 : 0.28;
             runnerX += (targetX - runnerX) * turnVelocity; 
 
             if (runnerFrame % currentSpawnInterval === 0) { 
                 let spawnLane = Math.floor(Math.random() * 3);
-                let initialSpeed = isFreeCreditTrialRunActive ? 12 : 8.5; // High base engaging velocity
-                let velocityFactor = isFreeCreditTrialRunActive && score >= 1200 ? Math.pow(1.45, (score / 250)) : (score / 200);
+                let initialSpeed = isFreeCreditTrialRunActive ? 8.5 : 5.5; 
+                let velocityFactor = isFreeCreditTrialRunActive && score >= 1200 ? Math.pow(1.30, (score / 250)) : (score / 250);
                 runnerObstacles.push({ lane: spawnLane, y: -35, speed: initialSpeed + velocityFactor, processed: false, wasTargetingPlayer: (spawnLane === runnerLane) }); 
             }
             
@@ -635,8 +627,8 @@
             score = 0; scoreDisplay.textContent = score; fusionGameOver = false;
             leaderboardTopDisplay.textContent = isFreeCreditTrialRunActive ? "5000" : TARGET_LEADERBOARD_RECORDS.fusion; document.getElementById('active-tab-title').textContent = "🧩 BRICK BREAKER MATCH";
             currentBestDisplay.textContent = localStorage.getItem('clipToPost_best_fusion') || '0'; 
-            paddle.width = isFreeCreditTrialRunActive ? 35 : 75; paddle.speed = isFreeCreditTrialRunActive ? 6.0 : 10;
-            ball.x = 200; ball.y = 150; ball.dx = isFreeCreditTrialRunActive ? 7.5 : 5.5; ball.dy = isFreeCreditTrialRunActive ? -7.5 : -5.5; bricks = [];
+            paddle.width = isFreeCreditTrialRunActive ? 35 : 75; paddle.speed = isFreeCreditTrialRunActive ? 5.5 : 8.5;
+            ball.x = 200; ball.y = 150; ball.dx = isFreeCreditTrialRunActive ? 5.0 : 3.5; ball.dy = isFreeCreditTrialRunActive ? -5.0 : -3.5; bricks = [];
             let rowsCount = isFreeCreditTrialRunActive ? 6 : 3;
             for (let r = 0; r < rowsCount; r++) { for (let c = 0; c < 7; c++) { bricks.push({ x: 25 + c * 52, y: 40 + r * 18, width: 44, height: 12, alive: true }); } }
             drawLeaderboardStandings('fusion', isViewingCombinedLeaderboard);
@@ -648,7 +640,7 @@
             }
             if (keys[37] && paddle.x > 0) paddle.x -= paddle.speed; if (keys[39] && paddle.x < canvas.width - paddle.width) paddle.x += paddle.speed;
             let baselineSpeedFactor = 1.0;
-            if (isFreeCreditTrialRunActive && score >= 1000) baselineSpeedFactor = 1.95; 
+            if (isFreeCreditTrialRunActive && score >= 1000) baselineSpeedFactor = 1.45; 
             ball.x += ball.dx * baselineSpeedFactor; ball.y += ball.dy * baselineSpeedFactor; 
             if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) ball.dx *= -1; if (ball.y - ball.radius < 0) ball.dy *= -1;
             if (ball.y + ball.radius >= paddle.y && ball.y - ball.radius <= paddle.y + paddle.height && ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) {
@@ -677,7 +669,7 @@
                 let dx = (Math.random() - 0.5) * screenshake;
                 let dy = (Math.random() - 0.5) * screenshake;
                 ctx.translate(dx, dy);
-                screenshake *= 0.9; // Smooth continuous linear layout reduction
+                screenshake *= 0.9; 
                 if (screenshake < 0.5) screenshake = 0;
             }
             ctx.clearRect(0, 0, canvas.width, canvas.height); 
@@ -763,26 +755,12 @@
             if (isHookCapitalized) {
                 let paragraphs = txt.split('\n'); if (paragraphs.length > 0 && paragraphs[0].trim() !== '') { paragraphs[0] = paragraphs[0].toUpperCase(); txt = paragraphs.join('\n'); }
             }
-            if (isHookOptimized) {
-                let segments = txt.split('\n');
-                if (segments.length > 0 && segments[0].trim() !== '') {
-                    let firstLine = segments[0].trim();
-                    if (!firstLine.endsWith('?') && !firstLine.endsWith('.') && !firstLine.endsWith('!')) {
-                        segments[0] = firstLine + ' —';
-                    }
-                    txt = segments.join('\n');
-                }
-            }
-            if (cleanModeToggle.checked) {
-                txt = txt.replace(/[\*_`~]/g, '').replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDC00-\uDFFF])/g, '');
-            }
             return txt;
         }
 
         filterDouble.addEventListener('click', () => { isDoubleSpaced = !isDoubleSpaced; renderInterfaceAssets(boomerFontToggle.checked); });
         filterCaps.addEventListener('click', () => { isHookCapitalized = !isHookCapitalized; renderInterfaceAssets(boomerFontToggle.checked); });
         filterBullets.addEventListener('click', () => { isBulletCleaned = !isBulletCleaned; renderInterfaceAssets(boomerFontToggle.checked); });
-        filterHookFix.addEventListener('click', () => { isHookOptimized = !isHookOptimized; filterHookFix.classList.toggle('bg-indigo-600'); filterHookFix.classList.toggle('text-white'); renderInterfaceAssets(boomerFontToggle.checked); });
         cleanModeToggle.addEventListener('change', () => renderInterfaceAssets(boomerFontToggle.checked));
 
         function checkUsageLimits() {
@@ -809,11 +787,26 @@
                 const card = document.createElement('div');
                 const typographyClass = useBoomerFont ? "text-2xl font-bold text-white tracking-wide" : "text-base md:text-md font-light text-gray-200 leading-relaxed";
                 card.className = "bg-gray-900/40 backdrop-blur-md border border-gray-800 rounded-2xl p-6 shadow-xl relative flex flex-col justify-between transition-all hover:border-gray-700/50 cascade-card";
+                
                 let targetText = resolveDynamicTextString(item);
+                let paragraphSplits = targetText.split('\n');
+                let extractedFirstLine = paragraphSplits[0] || '';
+                let isHookCharacterCountSnappy = extractedFirstLine.length <= 140;
+                
+                let hookDiagnosticBadgeMarkup = isHookCharacterCountSnappy 
+                    ? `<span class="px-2.5 py-0.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-mono rounded-md font-bold uppercase tracking-wide">✅ HOOK OPTIMAL</span>`
+                    : `<span class="px-2.5 py-0.5 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[10px] font-mono rounded-md font-bold uppercase tracking-wide">⚠️ HOOK TRUNCATED</span>`;
+
                 card.innerHTML = `
-                    <div class="flex flex-wrap justify-between items-start gap-3 mb-4 border-b border-gray-800/50 pb-3">
-                        <div class="flex flex-wrap items-center gap-2"><span class="text-xs text-indigo-400 font-mono font-bold uppercase">Asset Variant ${index + 1}</span></div>
-                        <button class="mobile-preview-btn text-xs font-mono text-gray-400 hover:text-indigo-400 transition-all bg-gray-950 px-2.5 py-1 rounded-md border border-gray-800/80">📱 Mobile View</button>
+                    <div class="flex flex-wrap justify-between items-center gap-3 mb-4 border-b border-gray-800/50 pb-3">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-indigo-400 font-mono font-bold uppercase">Asset Variant ${index + 1}</span>
+                            ${hookDiagnosticBadgeMarkup}
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="hook-optimize-fix-btn text-[10px] font-mono text-indigo-400 hover:text-white transition-all bg-indigo-950/40 px-2 py-1 rounded-md border border-indigo-900/60 font-bold uppercase">[✨ Hook Fix]</button>
+                            <button class="mobile-preview-btn text-xs font-mono text-gray-400 hover:text-indigo-400 transition-all bg-gray-950 px-2.5 py-1 rounded-md border border-gray-800/80">📱 Mobile View</button>
+                        </div>
                     </div>
                     <div class="whitespace-pre-wrap ${typographyClass} mb-6 select-text"></div>
                     <div class="flex flex-wrap gap-4 justify-between items-center pt-2 border-t border-t-gray-800/40">
@@ -824,14 +817,34 @@
                         <button class="copy-btn bg-gray-950 border border-gray-800 text-gray-300 px-4 py-2 rounded-xl text-xs font-medium transition-all">Copy Text Asset</button>
                     </div>
                 `;
+                
                 card.querySelector('.whitespace-pre-wrap').textContent = targetText;
                 card.querySelector('.copy-btn').addEventListener('click', () => { executeClipboardWrite(targetText, () => { alert('Text copied!'); }, () => {}); });
+                
+                card.querySelector('.hook-optimize-fix-btn').addEventListener('click', () => {
+                    let lines = item.fullText.split('\n');
+                    if(lines.length > 0 && lines[0].trim() !== '') {
+                        let headerHook = lines[0].trim();
+                        if (!headerHook.endsWith('—') && !headerHook.endsWith('?') && !headerHook.endsWith('!')) {
+                            lines[0] = headerHook.toUpperCase() + ' —';
+                        } else {
+                            lines[0] = headerHook.toUpperCase();
+                        }
+                        item.fullText = lines.join('\n');
+                        let reTrimmed = item.fullText.trim();
+                        let tagIdx = reTrimmed.search(/#[a-zA-Z0-9]+/);
+                        item.cleanText = tagIdx !== -1 ? reTrimmed.substring(0, tagIdx).trim() : reTrimmed;
+                        renderInterfaceAssets(boomerFontToggle.checked);
+                    }
+                });
+
                 card.querySelector('.mobile-preview-btn').addEventListener('click', () => {
                     let textBlocks = targetText.split('\n');
                     modalHookZone.textContent = textBlocks[0] || '';
                     modalBodyZone.textContent = textBlocks.slice(1).join('\n') || '';
                     modal.classList.remove('hidden');
                 });
+                
                 card.querySelector('.hashtag-toggle-btn').addEventListener('click', (e) => {
                     item.isHashtagHidden = !item.isHashtagHidden;
                     e.target.textContent = item.isHashtagHidden ? "👔 Add Tags" : "👔 Strip Tags";
@@ -854,23 +867,28 @@
             if (!videoUrl || !validationSyntax.test(videoUrl)) { alert('Invalid YouTube Link.'); return; }
             
             submitBtn.disabled = true; urlInput.disabled = true;
+            submitBtn.textContent = "Processing...";
             outputContainer.innerHTML = ''; masterToolbar.classList.add('hidden'); failoverDeck.classList.add('hidden');
-            document.activeElement.blur();
             
+            statusBanner.classList.remove('hidden', 'bg-rose-950/40', 'border-rose-500/30', 'text-rose-300');
+            statusBanner.classList.add('bg-indigo-950/40', 'border-indigo-500/30', 'text-indigo-300');
+            statusMessage.textContent = "CONNECTING TO PIPELINE HOST ENGINE... PLEASE ENJOY GAME STANDARDS BELOW.";
+            
+            document.activeElement.blur();
             isFreeCreditTrialRunActive = false;
-            document.getElementById('status-text').textContent = "ORCHESTRATING PIPELINE RUN...";
-            document.getElementById('status-text').className = "text-xs text-emerald-400 font-mono tracking-wide uppercase";
-            document.getElementById('game-status-dot').className = "relative inline-flex rounded-full h-2 w-2 bg-emerald-500";
-            document.getElementById('game-pulse').className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75";
             triggerGameSwap('stack');
 
             const dateObj = new Date();
             const todayStamp = `${dateObj.getUTCFullYear()}-${dateObj.getUTCMonth()}-${dateObj.getUTCDate()}`;
             const computedTransitToken = `${IMMUTABLE_BASE_ANCHOR}_${todayStamp}`;
 
+            const networkController = new AbortController();
+            const fallbackTimeoutId = setTimeout(() => networkController.abort(), 90000);
+
             try {
                 const response = await fetch(N8N_WEBHOOK_URL, {
                     method: 'POST',
+                    signal: networkController.signal,
                     headers: { 'Content-Type': 'application/json', 'X-ClipToPost-Secret': computedTransitToken },
                     body: JSON.stringify({ 
                         youtubeUrl: videoUrl, 
@@ -884,8 +902,13 @@
                     })
                 });
 
-                if (!response.ok) throw new Error("Fault.");
+                clearTimeout(fallbackTimeoutId);
+
+                if (!response.ok) throw new Error("Server rejected transcription sync variables framework.");
+                
+                statusMessage.textContent = "COMPILING AI ENGAGEMENT COPIES... DOWNLOADING STRUCTURAL BUNDLES.";
                 const data = await response.json();
+                
                 const rawOutputText = data.output || data.text || (Array.isArray(data) ? (data[0]?.output || data[0]?.text) : '') || '';
                 if (!rawOutputText) throw new Error("Empty text payload structure returned.");
                 const postsArray = rawOutputText.split('===NEXT_POST===').filter(post => post.trim().length > 0);
@@ -903,11 +926,26 @@
                         isEmojiHidden: false 
                     };
                 });
-                masterToolbar.classList.remove('hidden'); renderInterfaceAssets(boomerFontToggle.checked);
-            } catch (err) { console.error(err); failoverDeck.classList.remove('hidden'); }
+                
+                statusBanner.classList.add('hidden');
+                masterToolbar.classList.remove('hidden'); 
+                renderInterfaceAssets(boomerFontToggle.checked);
+            } catch (err) { 
+                console.error(err);
+                statusBanner.classList.remove('bg-indigo-950/40', 'border-indigo-500/30', 'text-indigo-300');
+                statusBanner.classList.add('bg-rose-950/40', 'border-rose-400/30', 'text-rose-400');
+                
+                if (err.name === 'AbortError') {
+                    statusMessage.textContent = "❌ BACKEND TIMEOUT: Server took too long to reply. Please check if your ngrok webhook link is active and rerun.";
+                } else {
+                    statusMessage.textContent = `❌ CONNECTION ERROR: Unable to contact your server. Confirm your backend n8n instance is open.`;
+                }
+                failoverDeck.classList.remove('hidden'); 
+            }
             finally {
                 resetArcadeUIStatus();
                 submitBtn.disabled = false; urlInput.disabled = false;
+                submitBtn.textContent = "Generate Posts";
                 checkUsageLimits(); updateVaultCounter();
             }
         }
