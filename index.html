@@ -234,7 +234,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
                     <div class="md:col-span-7 flex flex-col items-center">
                         <div class="relative w-full max-w-[400px] aspect-[4/3] bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col items-center justify-center shadow-inner">
-                            <canvas id="arcadeCanvas" width="400" height="300" class="w-full h-full block"></canvas>
+                            <canvas id="arcadeCanvas" width="400" height="300" class="w-full h-full block" tabIndex="1"></canvas>
                             <div id="arcade-controls" class="absolute bottom-2 text-[10px] text-gray-400 font-mono bg-gray-900/90 px-3 py-1 rounded-full pointer-events-none tracking-wide border border-slate-800">
                                 Press SPACE to Drop Block Perfectly
                             </div>
@@ -301,7 +301,6 @@
         </div>
     </div>
 
-    <!-- MASTER AGREEMENT MODAL OVERLAY -->
     <div id="legal-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 99999; overflow-y: auto; padding: 40px 0; box-sizing: border-box;">
         <div style="background: #ffffff; border: 1px solid #e1e4e8; border-radius: 8px; padding: 40px; max-width: 750px; margin: 0 auto; box-shadow: 0 4px 24px rgba(0,0,0,0.15); position: relative; font-family: sans-serif; color: #333333;">
             <button style="position: absolute; top: 20px; right: 20px; background: #f1f3f5; border: none; padding: 8px 14px; border-radius: 4px; font-weight: bold; cursor: pointer; color: #495057;" onclick="toggleLegalModal(false)">✕ Close</button>
@@ -318,7 +317,6 @@
         </div>
     </div>
 
-    <!-- MAIN CONTROL CORE LOGIC -->
     <script>
         const RAZORPAY_SOLO_URL   = 'https://rzp.io/rzp/ERdjInlT';
         const RAZORPAY_AGENCY_URL = 'https://rzp.io/rzp/kK3urmV';
@@ -449,6 +447,31 @@
             } catch(e) { generatedFingerprint = "fb_" + Math.random().toString(36).substring(2, 10); }
         }
 
+        // --- GLOBAL KEYBOARD FIX LISTENER ---
+        window.addEventListener('keydown', e => { 
+            // If the user is actively typing in the link input bar, do not intercept typing!
+            if(document.activeElement.tagName === 'INPUT') return;
+            
+            // Capture game keys and forcefully prevent page scroll or space latch failures
+            if([32, 37, 38, 39, 40].includes(e.keyCode)) {
+                e.preventDefault(); 
+            }
+            if(e.keyCode === 32 && !keys[32]) {
+                spaceLatch = true; 
+            }
+            keys[e.keyCode] = true; 
+        }, { passive: false }); // Force block synchronous scroll triggers
+
+        window.addEventListener('keyup', e => { 
+            keys[e.keyCode] = false; 
+            if(e.keyCode === 32) spaceLatch = false; 
+        });
+
+        // Ensure canvas automatically requests click focus when a game tab is loaded
+        document.getElementById('arcadeCanvas').addEventListener('mouseenter', () => {
+            document.getElementById('arcadeCanvas').focus();
+        });
+
         const canvas = document.getElementById('arcadeCanvas'); const ctx = canvas.getContext('2d');
 
         function drawLeaderboardStandings(gameKey, renderCombined = false) {
@@ -495,6 +518,7 @@
             stackLayers = [{ x: 125, y: 250, w: 150, h: 25, color: '#6366f1' }];
             currentBlock = { x: 0, y: 225, w: 150, h: 25, dir: 1 }; blockSpeed = 3.8;
             drawLeaderboardStandings('stack', isViewingCombinedLeaderboard);
+            canvas.focus(); // Force container focus window
         }
         function updateStack() {
             if (towerGameOver) { 
@@ -518,7 +542,7 @@
             }
         }
 
-        // CYBER RUNNER HIGH-CONTRAST GRADIENTS
+        // CYBER RUNNER HIGH-CONTRAST NEON ARRAYS
         let runnerX = 200; let runnerLane = 1; let runnerObstacles = []; let runnerFrame = 0; let runnerGameOver = false;
         function initDash() {
             score = 0; scoreDisplay.textContent = score; runnerGameOver = false;
@@ -527,6 +551,7 @@
             currentBestDisplay.textContent = localStorage.getItem('clipToPost_best_dash') || '0';
             runnerLane = 1; runnerX = 200; runnerObstacles = []; runnerFrame = 0;
             drawLeaderboardStandings('dash', isViewingCombinedLeaderboard);
+            canvas.focus();
         }
         function updateDash() {
             if (runnerGameOver) {
@@ -574,6 +599,7 @@
             currentBestDisplay.textContent = localStorage.getItem('clipToPost_best_fusion') || '0'; paddle.x = 160; ball.x = 200; ball.y = 150; ball.dx = 4; ball.dy = -4; bricks = [];
             for (let r = 0; r < 3; r++) { for (let c = 0; c < 7; c++) { bricks.push({ x: 25 + c * 52, y: 40 + r * 18, width: 44, height: 12, alive: true }); } }
             drawLeaderboardStandings('fusion', isViewingCombinedLeaderboard);
+            canvas.focus();
         }
         function updateFusion() {
             if (fusionGameOver) {
@@ -621,7 +647,7 @@
                 const itemDiv = document.createElement('div');
                 itemDiv.className = "p-3.5 bg-gray-950 border border-gray-800 rounded-xl relative hover:border-gray-700 transition-all flex flex-col justify-between";
                 let preview = text.substring(0, 110) + (text.length > 110 ? '...' : '');
-                itemDiv.innerHTML = `<p class="font-mono text-[11px] text-gray-400 mb-2 leading-relaxed whitespace-pre-wrap select-all">${preview}</p><div class="flex justify-end gap-1.5 pt-2 border-t border-gray-900"><button class="vault-load-btn px-2.5 py-1 bg-indigo-950/40 text-indigo-400 border border-indigo-900/60 rounded text-[10px] font-mono cursor-pointer transition-all">Load</button><button class="vault-del-btn px-2.5 py-1 bg-rose-950/40 text-rose-400 border border-rose-900/60 rounded text-[10px] font-mono cursor-pointer transition-all">Delete</button></div>`;
+                itemDiv.innerHTML = `<p class="font-mono text-[11px] text-gray-400 mb-2 leading-relaxed whitespace-pre-wrap select-all">${preview}</p><div class="flex justify-end gap-1.5 pt-2 border-t border-gray-900"><button class="vault-load-btn px-2 py-1 bg-indigo-950/40 text-indigo-400 border border-indigo-900/60 rounded text-[10px] font-mono cursor-pointer transition-all">Load</button><button class="vault-del-btn px-2 py-1 bg-rose-950/40 text-rose-400 border border-rose-900/60 rounded text-[10px] font-mono cursor-pointer transition-all">Delete</button></div>`;
                 itemDiv.querySelector('.vault-load-btn').addEventListener('click', () => {
                     activeGenerationDataset = [{ fullText: text, cleanText: text, isHashtagHidden: false, isEmojiHidden: false, isHookManuallyOptimized: false }];
                     masterToolbar.classList.remove('hidden'); renderInterfaceAssets(boomerFontToggle.checked); vaultDrawer.classList.add('hidden');
@@ -775,7 +801,7 @@
             executeClipboardWrite(masterTextString, () => { alert('All Variants Copied!'); }, () => {});
         });
 
-        // FIXED: THE EXACT SPECIFIED LINKEDIN BRAG TEXT
+        // RESTORED: EXPERT LINKEDIN SEED TEXT COPY ACCORD
         bragBtn.addEventListener('click', () => {
             let sMax = parseInt(localStorage.getItem('clipToPost_best_stack') || '0', 10);
             let dMax = parseInt(localStorage.getItem('clipToPost_best_dash') || '0', 10);
