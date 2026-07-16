@@ -32,8 +32,6 @@
         @keyframes cascadeIn { to { opacity: 1; transform: translateY(0); } }
 
         #arcadeCanvas:focus { outline: none !important; }
-        
-        /* Force screen containment on mobile viewports */
         #arcadeCanvas { touch-action: none; -webkit-tap-highlight-color: transparent; }
     </style>
 </head>
@@ -148,7 +146,6 @@
             </div>
         </div>
 
-        <!-- ARCADE PANEL -->
         <section id="permanent-arcade-deck" class="mb-6 space-y-4 fade-in">
             <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 md:p-6 relative overflow-hidden shadow-2xl">
                 <div class="w-full flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-slate-800 pb-3 mb-4">
@@ -180,7 +177,7 @@
                             <canvas id="arcadeCanvas" width="400" height="300" class="absolute top-0 left-0 w-full h-full block" style="object-fit: contain;" tabindex="0"></canvas>
                         </div>
                         <div class="text-[10px] text-gray-500 font-mono mt-2 text-center select-none uppercase tracking-wide">
-                            💡 Tap Box sides to slide • Swipe left/right for Runner
+                            💡 Tap to stack • Drag finger left/right for Runner & Breaker
                         </div>
                     </div>
                     <div class="md:col-span-5 bg-slate-950/80 border border-slate-800/60 p-4 rounded-xl shadow-inner flex flex-col min-h-[220px] md:min-h-[300px] w-full">
@@ -230,7 +227,7 @@
 
     <script>
         const GOOGLE_CLIENT_ID = '1065350715296-mjiaqmhjtpdvo58jf71mabrek92rj3jv.apps.googleusercontent.com';
-        
+
         let authenticatedUserContext = null;
         const urlInput = document.getElementById('youtube-url');
         const submitBtn = document.getElementById('submit-btn');
@@ -243,6 +240,7 @@
         const boomerFontToggle = document.getElementById('boomer-font');
         const cleanModeToggle = document.getElementById('clean-mode');
         const masterToolbar = document.getElementById('master-toolbar');
+        const copyAllBtn = document.getElementById('copy-all-btn');
         const freeCreditBtn = document.getElementById('attempt-free-credit-btn');
         const sandboxModeBtn = document.getElementById('attempt-sandbox-mode-btn');
         const statusBanner = document.getElementById('pipeline-status-banner');
@@ -268,7 +266,7 @@
         let screenshake = 0;
         let particles = [];
 
-        // Touch gesture vector states
+        // Drag/Swipe Tracking Vectors
         let touchStartStartX = 0;
         let touchStartStartY = 0;
 
@@ -321,38 +319,36 @@
             } catch(e) { generatedFingerprint = "fb_" + Math.random().toString(36).substring(2, 10); }
         }
 
-        // ELIMINATE MOBILE INPUT LAG AND BLOCK WEBPAGE SCROLL INTERFERENCES
+        // UNIFIED INSTANT TOUCH CONTROLLER: REMOVES LATENCY INTERFERENCES
         canvas.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // Stop mobile double-tap zoom delay entirely
-            
+            e.preventDefault();
             const touchObj = e.touches[0];
             touchStartStartX = touchObj.clientX;
             touchStartStartY = touchObj.clientY;
             
-            const canvasRect = canvas.getBoundingClientRect();
-            const normalizedX = (touchObj.clientX - canvasRect.left) * (400 / canvasRect.width);
-            
             if (currentActiveGame === 'stack') {
-                spaceLatch = true;
-            } else if (currentActiveGame === 'fusion') {
-                if (normalizedX < 200) { keys[37] = true; keys[39] = false; }
-                else { keys[39] = true; keys[37] = false; }
+                spaceLatch = true; // Instant trigger drop block tracking hook
             }
         }, { passive: false });
 
         canvas.addEventListener('touchmove', (e) => {
-            e.preventDefault(); // Lock viewport scrolling while playing
-            if (currentActiveGame !== 'dash') return;
-            
+            e.preventDefault();
             const touchObj = e.touches[0];
-            const deltaX = touchObj.clientX - touchStartStartX;
+            const canvasRect = canvas.getBoundingClientRect();
             
-            // Swipe dynamic evaluation framework
-            if (Math.abs(deltaX) > 30) {
-                if (deltaX > 0) { keys[39] = true; keys[37] = false; } 
-                else { keys[37] = true; keys[39] = false; }
-                // Reset origin reference to register smooth continuous movement
-                touchStartStartX = touchObj.clientX;
+            // Universal Drag Tracking Protocol for Runner and Breaker modes
+            if (currentActiveGame === 'dash') {
+                const deltaX = touchObj.clientX - touchStartStartX;
+                if (Math.abs(deltaX) > 20) {
+                    if (deltaX > 0) { keys[39] = true; keys[37] = false; } 
+                    else { keys[37] = true; keys[39] = false; }
+                    touchStartStartX = touchObj.clientX; // Shift vector index origin smoothly
+                }
+            } else if (currentActiveGame === 'fusion') {
+                // Precise continuous slide mapping tracking parameter formula loop
+                const touchXRelative = touchObj.clientX - canvasRect.left;
+                const targetPaddleX = touchXRelative * (400 / canvasRect.width) - (paddle.width / 2);
+                paddle.x = Math.max(0, Math.min(400 - paddle.width, targetPaddleX));
             }
         }, { passive: false });
 
@@ -405,13 +401,13 @@
             drawLeaderboardStandings(gameKey, isViewingCombinedLeaderboard);
         }
 
-        // TOWER STACK
-        let stackLayers = []; let currentBlock = {}; let blockSpeed = 3.8; let towerGameOver = false;
+        // TOWER STACK 
+        let stackLayers = []; let currentBlock = {}; let blockSpeed = 6.5; let towerGameOver = false; // FIXED: Baseline vector seed boosted from 3.8 to 6.5 for responsive handling
         function initStack() {
             score = 0; scoreDisplay.textContent = score; towerGameOver = false; spaceLatch = false;
             leaderboardTopDisplay.textContent = isFreeCreditTrialRunActive ? "5000" : TARGET_LEADERBOARD_RECORDS.stack;
             stackLayers = [{ x: 125, y: 250, w: 150, h: 25, color: '#6366f1' }];
-            blockSpeed = isFreeCreditTrialRunActive ? 5.0 : 3.8; currentBlock = { x: 0, y: 225, w: 150, h: 25, dir: 1 };
+            blockSpeed = isFreeCreditTrialRunActive ? 8.5 : 6.5; currentBlock = { x: 0, y: 225, w: 150, h: 25, dir: 1 };
             drawLeaderboardStandings('stack', isViewingCombinedLeaderboard);
         }
         function updateStack() {
@@ -430,7 +426,7 @@
                 score += 100; scoreDisplay.textContent = score; synchronizeHighScores('stack', score);
                 screenshake = 10; spawnExplosion(cutX + cutWidth/2, currentBlock.y, '#ec4899');
                 if (currentBlock.y <= 90) { stackLayers.forEach(l => l.y += 50); stackLayers.shift(); }
-                currentBlock = { x: 0, y: stackLayers[stackLayers.length - 1].y - 25, w: cutWidth, h: 25, dir: 1 }; blockSpeed += isFreeCreditTrialRunActive ? 0.45 : 0.28;
+                currentBlock = { x: 0, y: stackLayers[stackLayers.length - 1].y - 25, w: cutWidth, h: 25, dir: 1 }; blockSpeed += isFreeCreditTrialRunActive ? 0.45 : 0.35;
             }
         }
 
@@ -444,8 +440,8 @@
         }
         function updateDash() {
             if (runnerGameOver) { ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center'; ctx.fillText("SYSTEM DEFUNCT!", canvas.width / 2, canvas.height / 2); return; }
-            runnerFrame++; let defaultBaseInterval = isFreeCreditTrialRunActive ? 15 : 25; 
-            let currentSpawnInterval = Math.max(isFreeCreditTrialRunActive ? 5 : 10, defaultBaseInterval - Math.floor(score / 150));
+            runnerFrame++; let defaultBaseInterval = isFreeCreditTrialRunActive ? 12 : 18; // Increased frequency cadence parameters
+            let currentSpawnInterval = Math.max(isFreeCreditTrialRunActive ? 4 : 7, defaultBaseInterval - Math.floor(score / 150));
             
             ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 1; for(let i = 0; i <= canvas.height; i += 30) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke(); }
             ctx.strokeStyle = '#312e81'; ctx.lineWidth = 4; [133, 266].forEach(lx => { ctx.beginPath(); ctx.moveTo(lx, 0); ctx.lineTo(lx, canvas.height); ctx.stroke(); });
@@ -456,7 +452,7 @@
 
             if (runnerFrame % currentSpawnInterval === 0) { 
                 let spawnLane = Math.floor(Math.random() * 3);
-                let initialSpeed = isFreeCreditTrialRunActive ? 8.5 : 2.5; 
+                let initialSpeed = isFreeCreditTrialRunActive ? 10.5 : 5.8; // FIXED: Drop velocity speed boosted from 2.5 to 5.8 for an actual challenge challenge loops
                 let velocityFactor = isFreeCreditTrialRunActive && score >= 1200 ? Math.pow(1.30, (score / 250)) : (score / 250);
                 runnerObstacles.push({ lane: spawnLane, y: -35, speed: initialSpeed + velocityFactor, processed: false, wasTargetingPlayer: (spawnLane === runnerLane) }); 
             }
@@ -488,15 +484,15 @@
         function initFusion() {
             score = 0; scoreDisplay.textContent = score; fusionGameOver = false;
             leaderboardTopDisplay.textContent = isFreeCreditTrialRunActive ? "5000" : TARGET_LEADERBOARD_RECORDS.fusion; 
-            paddle.width = isFreeCreditTrialRunActive ? 35 : 75; paddle.speed = isFreeCreditTrialRunActive ? 5.5 : 8.5;
-            ball.x = 200; ball.y = 150; ball.dx = isFreeCreditTrialRunActive ? 5.0 : 3.5; ball.dy = isFreeCreditTrialRunActive ? -5.0 : -3.5; bricks = [];
+            paddle.width = isFreeCreditTrialRunActive ? 35 : 75; paddle.speed = isFreeCreditTrialRunActive ? 6.5 : 9.5;
+            ball.x = 200; ball.y = 150; ball.dx = isFreeCreditTrialRunActive ? 6.0 : 4.5; ball.dy = isFreeCreditTrialRunActive ? -6.0 : -4.5; bricks = [];
             let rowsCount = isFreeCreditTrialRunActive ? 6 : 3; for (let r = 0; r < rowsCount; r++) { for (let c = 0; c < 7; c++) { bricks.push({ x: 25 + c * 52, y: 40 + r * 18, width: 44, height: 12, alive: true }); } }
             drawLeaderboardStandings('fusion', isViewingCombinedLeaderboard);
         }
         function updateFusion() {
             if (fusionGameOver) { ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center'; ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2); return; }
             
-            // Touch automated velocity overrides
+            // Desktop keyboard tracking fallback overrides
             if (keys[37] && paddle.x > 0) paddle.x -= paddle.speed; 
             if (keys[39] && paddle.x < canvas.width - paddle.width) paddle.x += paddle.speed;
             
@@ -526,8 +522,7 @@
         }
 
         function triggerGameSwap(target) {
-            currentActiveGame = target; 
-            keys = {}; // Flush sticky keyboard maps immediately on swap
+            currentActiveGame = target; keys = {}; 
             if (target === 'stack') initStack(); else if (target === 'dash') initDash(); else if (target === 'fusion') initFusion();
             gameActive = true; 
         }
@@ -577,7 +572,7 @@
 
         function resolveDynamicTextString(item) {
             let runningText = item.isHashtagHidden ? item.cleanText : item.fullText;
-            if (item.isEmojiHidden) runningText = runningText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|[\u2011-\u26FF])/g, '');
+            if (item.isEmojiHidden) runningText = runningText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF])/g, '');
             return applyTransformers(runningText.trim());
         }
 
