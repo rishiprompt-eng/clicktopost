@@ -4,24 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ClipToPost - Category-Defining Creator Engine</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&family=Space+Grotesk:wght=400;500;700&display=swap');
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        
-        .font-mono-engine {
-            font-family: 'Space Grotesk', sans-serif;
-        }
-
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-mono-engine { font-family: 'Space Grotesk', sans-serif; }
         .grid-bg {
             background-size: 40px 40px;
             background-image: linear-gradient(to right, rgba(99, 102, 241, 0.03) 1px, transparent 1px),
                               linear-gradient(to bottom, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
         }
-
         .glow-effect { box-shadow: 0 0 40px rgba(99, 102, 241, 0.15); }
         .fade-in { animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
@@ -36,54 +30,41 @@
         .preview-scroll::-webkit-scrollbar-track { background: #0f172a; }
         .preview-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
 
-        .hook-cutoff-line {
-            position: relative;
-            border-top: 1px dashed #ef4444;
-            margin: 16px 0;
-            opacity: 0.7;
-        }
+        .hook-cutoff-line { position: relative; border-top: 1px dashed #ef4444; margin: 16px 0; opacity: 0.7; }
         .hook-cutoff-badge {
-            position: absolute;
-            right: 0;
-            top: -10px;
-            background-color: #ef4444;
-            color: white;
-            font-size: 9px;
-            font-family: monospace;
-            padding: 2px 6px;
-            border-radius: 4px;
-            text-transform: uppercase;
-            font-weight: bold;
+            position: absolute; right: 0; top: -10px; background-color: #ef4444; color: white;
+            font-size: 9px; font-family: monospace; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; font-weight: bold;
         }
 
         .cascade-card { opacity: 0; transform: translateY(20px); animation: cascadeIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
         @keyframes cascadeIn { to { opacity: 1; transform: translateY(0); } }
 
-        .copy-flash-pulse { animation: flashPulse 0.35s ease-out; }
-        @keyframes flashPulse { 
-            0% { border-color: rgba(99,102,241,0.2); box-shadow: 0 0 0 0 rgba(99,102,241,0.5); }
-            50% { border-color: #6366f1; box-shadow: 0 0 25px 4px rgba(99,102,241,0.4); }
-            100% { border-color: rgba(31,41,55,1); box-shadow: 0 0 0 0 rgba(99,102,241,0); }
+        .checkout-btn-tier.disabled {
+            background: #475569 !important;
+            opacity: 0.4;
+            cursor: not-allowed !important;
+            pointer-events: none !important;
         }
     </style>
 </head>
 <body class="bg-slate-950 text-gray-100 min-h-screen grid-bg antialiased selection:bg-indigo-500 selection:text-white bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-950/20 via-slate-950 to-slate-950">
 
     <div class="max-w-4xl mx-auto px-4 py-12">
-        
         <header class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-10 pb-6 border-b border-slate-900 fade-in">
-            <div class="text-center sm:text-left">
-                <h1 class="text-4xl md:text-5xl font-black tracking-tight text-white">
-                    ClipToPost
-                </h1>
+            <div>
+                <h1 class="text-4xl md:text-5xl font-black tracking-tight text-white">ClipToPost</h1>
             </div>
-            
-            <button id="vault-trigger-btn" class="flex items-center gap-2 px-4 py-2 bg-slate-900/60 border border-slate-800 hover:border-slate-700 rounded-xl text-xs font-mono font-medium tracking-wide transition-all cursor-pointer">
-                📁 MY VAULT ARCHIVE (<span id="vault-counter-badge" class="text-indigo-400 font-bold">0</span>)
-            </button>
+            <div class="flex items-center gap-3">
+                <div id="user-profile-badge" class="hidden flex items-center gap-2 bg-slate-900/60 border border-slate-800 px-3 py-1.5 rounded-xl">
+                    <img id="user-avatar" src="" class="w-5 h-5 rounded-full border border-indigo-500/50" alt="Avatar">
+                    <span id="user-name-label" class="text-xs font-mono text-gray-300 truncate max-w-[100px]">Operator</span>
+                </div>
+                <button id="vault-trigger-btn" class="flex items-center gap-2 px-4 py-2 bg-slate-900/60 border border-slate-800 hover:border-slate-700 rounded-xl text-xs font-mono font-medium tracking-wide transition-all cursor-pointer">
+                    📁 MY VAULT ARCHIVE (<span id="vault-counter-badge" class="text-indigo-400 font-bold">0</span>)
+                </button>
+            </div>
         </header>
 
-        <!-- High Scores Stats Dashboard -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 fade-in text-xs font-mono">
             <div class="bg-slate-900/40 border border-slate-800/80 p-3 rounded-xl flex flex-col justify-between shadow-sm">
                 <span class="text-gray-500">🧱 TOWER MAX</span>
@@ -104,18 +85,77 @@
         </div>
 
         <main class="bg-slate-900/40 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 shadow-2xl glow-effect mb-6 fade-in">
-            <div id="rate-limit-warning" class="hidden mb-6 p-6 bg-indigo-950/40 border border-indigo-500/30 rounded-2xl fade-in">
-                <div class="text-center max-w-md mx-auto">
-                    <span class="text-2xl block mb-2">🛑</span>
-                    <h3 class="text-lg font-bold text-white mb-1">Free Generation Limit Reached</h3>
-                    <p class="text-xs text-gray-400 mb-4">You've consumed your 3 free credits. Upgrade now to get unlimited pipeline generations and unlock executive copywriting formats.</p>
-                    <a href="https://clicktopost.vercel.app/" class="inline-block bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-mono text-xs font-bold px-6 py-2.5 rounded-xl transition-all shadow-md active:scale-95">
-                        ⚡ UNLOCK UNLIMITED ACCELERATION
-                    </a>
+            <div id="authentication-barrier" class="mb-6 p-6 bg-slate-950/80 border border-slate-800 rounded-2xl shadow-inner text-center">
+                <span class="text-xl block mb-2">🔒</span>
+                <h3 class="text-base font-bold text-white mb-1">Verify Your Creator Identity</h3>
+                <p class="text-xs text-gray-400 max-w-sm mx-auto mb-4">Verify your account access with Google Secure Sign-in to safely open balance allocations.</p>
+                <div class="flex justify-center">
+                    <div id="google-auth-btn-render-target"></div>
                 </div>
             </div>
 
-            <div class="space-y-4">
+            <div id="rate-limit-warning" class="hidden mb-6 p-6 bg-slate-950/80 border border-indigo-900/50 rounded-2xl shadow-inner fade-in">
+                <div class="text-center max-w-2xl mx-auto mb-6">
+                    <span class="inline-block px-3 py-1 bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-[10px] font-mono rounded-full uppercase tracking-wider mb-3">⚡ Evaluation Limit Hit</span>
+                    <h3 class="text-xl md:text-2xl font-black text-white mb-2">Free Allotment Exhausted</h3>
+                    <p class="text-xs text-gray-400 max-w-md mx-auto mb-4">This account has consumed all free testing cycles. Select a membership blueprint below to restore access.</p>
+                </div>
+
+                <div class="p-4 bg-slate-950 border border-slate-800/80 rounded-xl max-w-xl mx-auto mb-6 text-left shadow-inner">
+                    <label class="flex items-start cursor-pointer text-xs font-mono text-gray-400 select-none">
+                        <input type="checkbox" id="global-legal-gate" onchange="evaluateInterfaceSecurityGate()" class="rounded border-slate-800 bg-slate-950 text-indigo-600 focus:ring-0 focus:ring-offset-0 mr-3 mt-0.5 w-4 h-4 cursor-pointer">
+                        <span>
+                            I clarify that I am a sophisticated commercial operator. I explicitly read, understand, and agree to the 
+                            <span class="text-indigo-400 font-bold underline cursor-pointer hover:text-indigo-300" onclick="toggleLegalModal(true)">Master Access Covenant</span>, including the absolute non-refundable credit exchange framework and exclusive binding arbitration seat in Hyderabad, Telangana, India.
+                        </span>
+                    </label>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl mx-auto items-stretch">
+                    <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-5 flex flex-col justify-between transition-all hover:border-slate-700">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-sm font-bold text-white uppercase tracking-wide">Solo Creator</h4>
+                                <div class="text-right">
+                                    <span class="text-lg font-black text-indigo-400 font-mono">₹699</span>
+                                    <span class="text-[10px] text-gray-500 block">/ month</span>
+                                </div>
+                            </div>
+                            <ul class="space-y-2 my-4 text-[11px] text-gray-400 font-light">
+                                <li class="flex items-center gap-2">🔹 <strong>60 video generations</strong> per billing cycle</li>
+                                <li class="flex items-center gap-2">🔹 Custom Hook Fold-Line Button</li>
+                                <li class="flex items-center gap-2">🔹 Expanded Vault Memory Access</li>
+                            </ul>
+                        </div>
+                        <a id="checkout-link-creator" href="#" onclick="routeToGateway(event, 'solo')" class="checkout-btn-tier disabled w-full text-center bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold py-2.5 rounded-lg transition-all shadow-md block mt-2 cursor-pointer">
+                            Upgrade to Creator (60 Limit)
+                        </a>
+                    </div>
+
+                    <div class="bg-indigo-950/20 border border-indigo-500/30 rounded-xl p-5 flex flex-col justify-between transition-all relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-indigo-600 text-white text-[8px] font-bold font-mono px-2 py-0.5 uppercase tracking-wide rounded-bl shadow-sm">PRO</div>
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-sm font-bold text-indigo-300 uppercase tracking-wide">Asymmetric Agency</h4>
+                                <div class="text-right">
+                                    <span class="text-lg font-black text-indigo-400 font-mono">₹2,499</span>
+                                    <span class="text-[10px] text-gray-500 block">/ month</span>
+                                </div>
+                            </div>
+                            <ul class="space-y-2 my-4 text-[11px] text-gray-400 font-light">
+                                <li class="flex items-center gap-2">🔹 <strong>300 video generations</strong> per billing cycle</li>
+                                <li class="flex items-center gap-2">🔹 Priority High-Traffic Balance Routing</li>
+                                <li class="flex items-center gap-2">🔹 Multi-User Seats & CSV Bulk Export</li>
+                            </ul>
+                        </div>
+                        <a id="checkout-link-agency" href="#" onclick="routeToGateway(event, 'agency')" class="checkout-btn-tier disabled w-full text-center bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-400 hover:to-indigo-500 text-white text-xs font-bold py-2.5 rounded-lg transition-all shadow-md block mt-2 cursor-pointer">
+                            Deploy Agency Tier (300 Limit)
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="interactive-generation-deck" class="opacity-30 pointer-events-none space-y-4 transition-opacity duration-300">
                 <div class="flex flex-col sm:flex-row gap-3">
                     <input 
                         type="url" 
@@ -148,7 +188,6 @@
                             </div>
                         </label>
                     </div>
-                    
                     <div class="flex items-center gap-4">
                         <label class="flex items-center gap-2 text-xs text-gray-400 cursor-pointer select-none">
                             <input type="checkbox" id="clean-mode" class="rounded border-slate-800 bg-slate-950 text-indigo-600 focus:ring-0 focus:ring-offset-0">
@@ -168,10 +207,8 @@
             <span class="text-xs text-gray-500">Optimizing core balance networks. Please re-trigger your generation request...</span>
         </div>
 
-        <!-- Unified Interactive Arcade Console HUD Layout Frame Block -->
         <section id="loading-state" class="hidden space-y-4 mb-6 fade-in">
             <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 relative overflow-hidden shadow-2xl">
-                
                 <div class="w-full flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
                     <div class="flex items-center gap-2">
                         <span class="flex h-2 w-2 relative">
@@ -196,9 +233,7 @@
                     <div id="active-tab-title" class="text-xs font-mono font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950/40 border border-indigo-900/30 px-3 py-1.5 rounded-xl">🧱 TOWER STACK MATCH</div>
                 </div>
 
-                <!-- Dual Column Grid Blueprint -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-                    <!-- Column 1: Game Screen (7 spans) -->
                     <div class="md:col-span-7 flex flex-col items-center">
                         <div class="relative w-full max-w-[400px] aspect-[4/3] bg-slate-950 border border-slate-800/80 rounded-xl flex flex-col items-center justify-center shadow-inner">
                             <canvas id="arcadeCanvas" width="400" height="300" class="w-full h-full block"></canvas>
@@ -207,25 +242,20 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Column 2: Leaderboard HUD (5 spans) -->
                     <div class="md:col-span-5 bg-slate-950/80 border border-slate-800/60 p-4 rounded-xl shadow-inner flex flex-col min-h-[300px]">
                         <div class="text-xs font-mono font-bold text-gray-400 border-b border-slate-900 pb-2 mb-3 flex items-center justify-between">
                             <span>🏆 GLOBAL RANKINGS</span>
                             <button type="button" id="toggle-combined-leaderboard" class="text-[10px] text-indigo-400 font-bold uppercase bg-indigo-950/60 px-2 py-0.5 border border-indigo-900/30 rounded-md cursor-pointer hover:bg-indigo-900/80 transition-colors">Show Combined</button>
                         </div>
-                        <div id="leaderboard-rows-container" class="space-y-1.5 text-xs font-mono flex-1 overflow-y-auto pr-1">
-                            <!-- Populated dynamically via JS state hooks -->
-                        </div>
+                        <div id="leaderboard-rows-container" class="space-y-1.5 text-xs font-mono flex-1 overflow-y-auto pr-1"></div>
                     </div>
                 </div>
-                
                 <button id="brag-btn" class="hidden mt-4 flex items-center gap-1.5 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-mono text-xs px-5 py-2 rounded-xl transition-all font-bold shadow-md cursor-pointer mx-auto uppercase tracking-wide">
                     ✨ BRAG ON LINKEDIN
                 </button>
             </div>
         </section>
 
-        <!-- Formatting Filters Switchboard Toolbar Panel -->
         <div id="master-toolbar" class="hidden flex flex-col gap-3 sm:flex-row justify-between sm:items-center mb-6 fade-in bg-slate-900/40 backdrop-blur-md border border-slate-800 p-4 rounded-xl shadow-lg">
             <div class="flex flex-wrap items-center gap-3">
                 <span class="text-xs font-mono text-gray-400 block sm:inline">⚡ FORMAT FILTERS:</span>
@@ -241,7 +271,6 @@
         <section id="output-container" class="space-y-6"></section>
     </div>
 
-    <!-- Storage Drawer Sector -->
     <div id="vault-drawer" class="hidden fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex justify-end transition-all">
         <div class="bg-slate-900 border-l border-slate-800 w-full max-w-md h-full flex flex-col p-6 shadow-2xl overflow-hidden">
             <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-4">
@@ -252,7 +281,6 @@
         </div>
     </div>
 
-    <!-- Phone Simulator Preview Modal Box -->
     <div id="preview-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 fade-in">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-sm overflow-hidden flex flex-col max-h-[90vh] shadow-2xl">
             <div class="p-4 border-b border-slate-900 flex justify-between items-center bg-slate-950">
@@ -274,9 +302,34 @@
         </div>
     </div>
 
+    <div id="legal-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 99999; overflow-y: auto; padding: 40px 0; box-sizing: border-box;">
+        <div style="background: #ffffff; border: 1px solid #e1e4e8; border-radius: 8px; padding: 40px; max-width: 750px; margin: 0 auto; box-shadow: 0 4px 24px rgba(0,0,0,0.15); position: relative; font-family: sans-serif; color: #333333;">
+            <button style="position: absolute; top: 20px; right: 20px; background: #f1f3f5; border: none; padding: 8px 14px; border-radius: 4px; font-weight: bold; cursor: pointer; color: #495057;" onclick="toggleLegalModal(false)">✕ Close</button>
+            <h1 style="font-size: 22px; border-bottom: 2px solid #eaecef; padding-bottom: 12px; color: #111; text-align: center; margin-top: 10px; font-weight: bold;">TERMS OF SERVICE AND PLATFORM ACCESS AGREEMENT</h1>
+            <div style="background: #f6f8fa; border: 1px solid #d1d5da; padding: 15px; border-radius: 4px; font-size: 11.5px; font-family: monospace; color: #586069; margin-bottom: 25px; line-height: 1.5;">
+                Document Reference: C2P-SERVICES-AGREEMENT-2026-FINAL<br>
+                Effective Date: July 16, 2026<br>
+                Governing Jurisdiction: Hyderabad, Telangana, India (Exclusive Seat)
+            </div>
+            <p style="font-size: 13.5px; text-align: justify; line-height: 1.6; margin-bottom: 15px;">This Agreement governs your access to and use of clicktopost.vercel.app (the "Site"), along with all associated backend webhooks, API routing pipelines, n8n workflows, databases, and automated software tools (collectively, the "Platform").</p>
+            <p style="font-size: 13.5px; text-align: justify; line-height: 1.6; margin-bottom: 15px;">By accessing the Site, creating an account using third-party verification profiles, or purchasing a subscription tier, you accept and agree to comply with all sections of this Agreement. If you do not agree to these terms, you are not authorized to use the Platform.</p>
+            <h2 style="font-size: 15px; margin-top: 25px; border-bottom: 1px solid #eaecef; padding-bottom: 5px; color: #111; text-transform: uppercase; letter-spacing: 0.5px; font-weight: bold;">Section 1: Mandatory Dispute Resolution and Forum Lock</h2>
+            <p style="font-size: 13.5px; text-align: justify; line-height: 1.6; margin-bottom: 10px;"><strong>1.1 Governing Law and Choice of Forum:</strong> This Agreement is governed by the laws of the Republic of India, without regard to conflict of laws principles. You explicitly agree that any legal claim, dispute, or proceeding arising out of or related to this Platform must be brought exclusively before the competent commercial courts located in Hyderabad, Telangana, India.</p>
+            <p style="font-size: 13.5px; text-align: justify; line-height: 1.6; margin-bottom: 10px;"><strong>1.2 Binding Arbitration Accord:</strong> Any dispute, controversy, or claim arising out of the performance, interpretation, execution, or breach of this Agreement shall be settled exclusively through binding arbitration in Hyderabad, India, in accordance with the Arbitration and Conciliation Act, 1996.</p>
+        </div>
+    </div>
+
     <script>
+        const RAZORPAY_SOLO_URL   = 'https://rzp.io/rzp/ERdjInlT';
+        const RAZORPAY_AGENCY_URL = 'https://rzp.io/rzp/kK3urmV';
         const N8N_WEBHOOK_URL = 'https://imperfect-sustained-jump.ngrok-free.dev/webhook/repurpose-video';
         const PRODUCTION_SITE_URL = 'https://clicktopost.vercel.app/';
+        const GOOGLE_CLIENT_ID = '1065350715296-mjiaqmhjtpdvo58jf71mabrek92rj3jv.apps.googleusercontent.com';
+        
+        // 🔒 THE IMMUTABLE PASSWORD HASH ANCHOR
+        const IMMUTABLE_BASE_ANCHOR = "c2p_7f9a2e3b1c8d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f";
+
+        let authenticatedUserContext = null;
 
         const urlInput = document.getElementById('youtube-url');
         const submitBtn = document.getElementById('submit-btn');
@@ -288,7 +341,6 @@
         const scoreDisplay = document.getElementById('game-score');
         const currentBestDisplay = document.getElementById('current-game-best');
         const leaderboardTopDisplay = document.getElementById('leaderboard-top-score');
-        const controlsHint = document.getElementById('arcade-controls');
         const boomerFontToggle = document.getElementById('boomer-font');
         const cleanModeToggle = document.getElementById('clean-mode');
         const bragBtn = document.getElementById('brag-btn');
@@ -324,6 +376,7 @@
         let isHookCapitalized = false;
         let isBulletCleaned = false;
         let isViewingCombinedLeaderboard = false;
+        let generatedFingerprint = "pending";
 
         const TARGET_LEADERBOARD_RECORDS = { stack: 1500, dash: 1200, fusion: 2500 };
 
@@ -335,96 +388,111 @@
             { name: "Ship 30 Captain", stack: 700, dash: 450, fusion: 1100 }
         ];
 
-        function executeClipboardWrite(text, onSuccess, onError) {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(onSuccess).catch(onError);
-            } else {
-                onError();
-            }
+        function parseGoogleIdentityToken(token) {
+            try {
+                let base64Url = token.split(".")[1];
+                let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+                return JSON.parse(decodeURIComponent(atob(base64).split("").map(c => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2)).join("")));
+            } catch (err) { return null; }
         }
 
+        function onGoogleIdentityAuthSuccess(response) {
+            const claims = parseGoogleIdentityToken(response.credential);
+            if (!claims) return;
+            
+            authenticatedUserContext = {
+                uid: claims.sub,
+                email: claims.email,
+                name: claims.name,
+                picture: claims.picture,
+                rawIdentityJwt: response.credential
+            };
+
+            document.getElementById('authentication-barrier').classList.add('hidden');
+            const generationDeck = document.getElementById('interactive-generation-deck');
+            generationDeck.classList.remove('opacity-30', 'pointer-events-none');
+
+            document.getElementById('user-avatar').setAttribute('src', authenticatedUserContext.picture);
+            document.getElementById('user-name-label').textContent = authenticatedUserContext.name;
+            document.getElementById('user-profile-badge').classList.remove('hidden');
+
+            checkUsageLimits();
+        }
+
+        window.addEventListener('load', function () {
+            if(GOOGLE_CLIENT_ID !== 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com') {
+                google.accounts.id.initialize({
+                    client_id: GOOGLE_CLIENT_ID,
+                    callback: onGoogleIdentityAuthSuccess
+                });
+                google.accounts.id.renderButton(
+                    document.getElementById("google-auth-btn-render-target"),
+                    { theme: "filled_dark", size: "large", width: "240" }
+                );
+            }
+        });
+
+        async function constructDeviceFingerprint() {
+            try {
+                const canvasEngine = document.createElement('canvas');
+                const canvasCtx = canvasEngine.getContext('2d');
+                canvasCtx.textBaseline = "top"; canvasCtx.font = "14px 'Arial'"; canvasCtx.fillStyle = "#f60";
+                canvasCtx.fillRect(125,1,62,20); canvasCtx.fillStyle = "#069";
+                canvasCtx.fillText("ClipToPost_Core_Secure_Token_V3", 2, 15);
+                const baselineDataUri = canvasEngine.toDataURL();
+                
+                const rawFeaturesString = [baselineDataUri, navigator.userAgent, screen.width + "x" + screen.height, new Date().getTimezoneOffset(), navigator.hardwareConcurrency || 4].join('||');
+                const dataBuffer = new TextEncoder().encode(rawFeaturesString);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
+                generatedFingerprint = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+            } catch(e) { generatedFingerprint = "fb_" + Math.random().toString(36).substring(2, 10); }
+        }
+
+        // --- ARCADE CONSOLE GAMES ENGINE ---
         window.addEventListener('keydown', e => { 
             if(document.activeElement.tagName === 'INPUT') return;
             if([32, 37, 38, 39, 40].includes(e.keyCode)) e.preventDefault(); 
-            if(e.keyCode === 32 && !keys[32]) spaceLatch = true;
-            keys[e.keyCode] = true; 
+            if(e.keyCode === 32 && !keys[32]) spaceLatch = true; keys[e.keyCode] = true; 
         });
-        window.addEventListener('keyup', e => { 
-            keys[e.keyCode] = false; 
-            if(e.keyCode === 32) spaceLatch = false;
-        });
+        window.addEventListener('keyup', e => { keys[e.keyCode] = false; if(e.keyCode === 32) spaceLatch = false; });
 
-        const canvas = document.getElementById('arcadeCanvas');
-        const ctx = canvas.getContext('2d');
+        const canvas = document.getElementById('arcadeCanvas'); const ctx = canvas.getContext('2d');
 
         function drawLeaderboardStandings(gameKey, renderCombined = false) {
-            const rowBox = document.getElementById('leaderboard-rows-container');
-            if(!rowBox) return;
-            rowBox.innerHTML = '';
-            
+            const rowBox = document.getElementById('leaderboard-rows-container'); if(!rowBox) return; rowBox.innerHTML = '';
             let sMax = parseInt(localStorage.getItem('clipToPost_best_stack') || '0', 10);
             let dMax = parseInt(localStorage.getItem('clipToPost_best_dash') || '0', 10);
             let fMax = parseInt(localStorage.getItem('clipToPost_best_fusion') || '0', 10);
             let userCombinedValue = sMax + dMax + fMax;
 
             let compiledPool = [...GLOBAL_CREATORS_LEADERBOARD].map(item => {
-                return {
-                    name: item.name,
-                    score: renderCombined ? (item.stack + item.dash + item.fusion) : item[gameKey],
-                    isUser: false
-                };
+                return { name: item.name, score: renderCombined ? (item.stack + item.dash + item.fusion) : item[gameKey], isUser: false };
             });
-
-            compiledPool.push({
-                name: "YOU (Operator)",
-                score: renderCombined ? userCombinedValue : parseInt(localStorage.getItem(`clipToPost_best_${gameKey}`) || '0', 10),
-                isUser: true
-            });
-
+            compiledPool.push({ name: "YOU (Operator)", score: renderCombined ? userCombinedValue : parseInt(localStorage.getItem(`clipToPost_best_${gameKey}`) || '0', 10), isUser: true });
             compiledPool.sort((first, second) => second.score - first.score);
 
             compiledPool.forEach((p, rankIndex) => {
                 const placementLine = document.createElement('div');
                 const rowStyleClasses = p.isUser ? "bg-indigo-950/50 border border-indigo-500/30 text-indigo-300 font-bold" : "bg-slate-900/30 text-gray-400 border border-transparent";
-                
                 placementLine.className = `flex justify-between items-center p-2.5 rounded-lg ${rowStyleClasses}`;
-                placementLine.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <span class="text-gray-600 font-bold w-4">${rankIndex + 1}.</span>
-                        <span class="truncate max-w-[130px]">${p.name}</span>
-                    </div>
-                    <span class="${p.isUser ? 'text-indigo-400' : 'text-slate-200'} font-bold">${p.score}</span>
-                `;
+                placementLine.innerHTML = `<div class="flex items-center gap-2"><span class="text-gray-600 font-bold w-4">${rankIndex + 1}.</span><span class="truncate max-w-[130px]">${p.name}</span></div><span class="${p.isUser ? 'text-indigo-400' : 'text-slate-200'} font-bold">${p.score}</span>`;
                 rowBox.appendChild(placementLine);
             });
         }
 
-        document.getElementById('toggle-combined-leaderboard').addEventListener('click', () => {
-            isViewingCombinedLeaderboard = !isViewingCombinedLeaderboard;
-            document.getElementById('toggle-combined-leaderboard').textContent = isViewingCombinedLeaderboard ? "Show Match" : "Show Combined";
-            drawLeaderboardStandings(currentActiveGame, isViewingCombinedLeaderboard);
-        });
-
         function synchronizeHighScores(gameKey, currentRunScore) {
-            let historicalRecord = parseInt(localStorage.getItem(`clipToPost_best_${gameKey}`) || '0', 10);
-            if (currentRunScore > historicalRecord) {
+            if (currentRunScore > parseInt(localStorage.getItem(`clipToPost_best_${gameKey}`) || '0', 10)) {
                 localStorage.setItem(`clipToPost_best_${gameKey}`, currentRunScore);
             }
-            
-            let sMax = parseInt(localStorage.getItem('clipToPost_best_stack') || '0', 10);
-            let dMax = parseInt(localStorage.getItem('clipToPost_best_dash') || '0', 10);
-            let fMax = parseInt(localStorage.getItem('clipToPost_best_fusion') || '0', 10);
-            
-            document.getElementById('best-stack').textContent = sMax;
-            document.getElementById('best-dash').textContent = dMax;
-            document.getElementById('best-fusion').textContent = fMax;
-            document.getElementById('best-combined').textContent = sMax + dMax + fMax;
-            
+            document.getElementById('best-stack').textContent = localStorage.getItem('clipToPost_best_stack') || '0';
+            document.getElementById('best-dash').textContent = localStorage.getItem('clipToPost_best_dash') || '0';
+            document.getElementById('best-fusion').textContent = localStorage.getItem('clipToPost_best_fusion') || '0';
+            document.getElementById('best-combined').textContent = parseInt(localStorage.getItem('clipToPost_best_stack') || '0',10) + parseInt(localStorage.getItem('clipToPost_best_dash') || '0',10) + parseInt(localStorage.getItem('clipToPost_best_fusion') || '0',10);
             currentBestDisplay.textContent = localStorage.getItem(`clipToPost_best_${gameKey}`) || '0';
             drawLeaderboardStandings(gameKey, isViewingCombinedLeaderboard);
         }
 
-        // --- GAME 1 ENGINE: TOWER STACK ---
+        // TOWER STACK ENGINE
         let stackLayers = []; let currentBlock = {}; let blockSpeed = 3; let towerGameOver = false;
         function initStack() {
             score = 0; scoreDisplay.textContent = score; towerGameOver = false; spaceLatch = false;
@@ -432,72 +500,32 @@
             document.getElementById('active-tab-title').textContent = "🧱 TOWER STACK MATCH";
             currentBestDisplay.textContent = localStorage.getItem('clipToPost_best_stack') || '0';
             stackLayers = [{ x: 125, y: 250, w: 150, h: 25, color: '#6366f1' }];
-            currentBlock = { x: 0, y: 225, w: 150, h: 25, dir: 1 };
-            blockSpeed = 3.8;
+            currentBlock = { x: 0, y: 225, w: 150, h: 25, dir: 1 }; blockSpeed = 3.8;
             drawLeaderboardStandings('stack', isViewingCombinedLeaderboard);
         }
         function updateStack() {
             if (towerGameOver) { 
                 ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
-                ctx.fillText("CRASHED! SELECT ANOTHER TAB TO RESET", canvas.width / 2, canvas.height / 2); 
-                bragBtn.classList.remove('hidden'); return; 
+                ctx.fillText("CRASHED! SELECT ANOTHER TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return; 
             }
-            
             currentBlock.x += currentBlock.dir * blockSpeed;
             if (currentBlock.x < 0 || currentBlock.x + currentBlock.w > canvas.width) currentBlock.dir *= -1;
-
             stackLayers.forEach(l => { ctx.fillStyle = l.color; ctx.fillRect(l.x, l.y, l.w, l.h); });
             ctx.fillStyle = '#ec4899'; ctx.fillRect(currentBlock.x, currentBlock.y, currentBlock.w, currentBlock.h);
 
             if (spaceLatch) {
-                spaceLatch = false; 
-                let base = stackLayers[stackLayers.length - 1];
-                
-                let left = Math.max(currentBlock.x, base.x);
-                let right = Math.min(currentBlock.x + currentBlock.w, base.x + base.w);
-                
+                spaceLatch = false; let base = stackLayers[stackLayers.length - 1];
+                let left = Math.max(currentBlock.x, base.x); let right = Math.min(currentBlock.x + currentBlock.w, base.x + base.w);
                 if (left >= right) { towerGameOver = true; return; }
-
-                let cutWidth = right - left;
-                let cutX = left;
-
-                stackLayers.push({ 
-                    x: cutX, 
-                    y: currentBlock.y, 
-                    w: cutWidth, 
-                    h: 25, 
-                    color: `hsl(${200 + (stackLayers.length * 15)}, 90%, 60%)` 
-                });
-                
-                score += 100; 
-                scoreDisplay.textContent = score;
-                synchronizeHighScores('stack', score);
-
-                if (currentBlock.y <= 90) {
-                    stackLayers.forEach(l => l.y += 50); 
-                    stackLayers.shift(); 
-                    currentBlock = { 
-                        x: 0, 
-                        y: stackLayers[stackLayers.length - 1].y - 25, 
-                        w: cutWidth, 
-                        h: 25, 
-                        dir: 1 
-                    };
-                } else {
-                    currentBlock = { 
-                        x: 0, 
-                        y: stackLayers[stackLayers.length - 1].y - 25, 
-                        w: cutWidth, 
-                        h: 25, 
-                        dir: 1 
-                    };
-                }
-                
-                blockSpeed += 0.35;
+                let cutWidth = right - left; let cutX = left;
+                stackLayers.push({ x: cutX, y: currentBlock.y, w: cutWidth, h: 25, color: `hsl(${200 + (stackLayers.length * 15)}, 90%, 60%)` });
+                score += 100; scoreDisplay.textContent = score; synchronizeHighScores('stack', score);
+                if (currentBlock.y <= 90) { stackLayers.forEach(l => l.y += 50); stackLayers.shift(); }
+                currentBlock = { x: 0, y: stackLayers[stackLayers.length - 1].y - 25, w: cutWidth, h: 25, dir: 1 }; blockSpeed += 0.35;
             }
         }
 
-        // --- GAME 2 ENGINE: CYBER RUNNER ---
+        // CYBER RUNNER ENGINE
         let runnerX = 200; let runnerLane = 1; let runnerObstacles = []; let runnerFrame = 0; let runnerGameOver = false;
         function initDash() {
             score = 0; scoreDisplay.textContent = score; runnerGameOver = false;
@@ -510,315 +538,140 @@
         function updateDash() {
             if (runnerGameOver) {
                 ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
-                ctx.fillText("SYSTEM DEFUNCT! CHOOSE TAB TO RESET", canvas.width / 2, canvas.height / 2);
-                bragBtn.classList.remove('hidden'); return;
+                ctx.fillText("SYSTEM DEFUNCT! CHOOSE TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return;
             }
-
-            runnerFrame++;
-            let currentSpawnInterval = Math.max(12, 30 - Math.floor(score / 200));
-
+            runnerFrame++; let currentSpawnInterval = Math.max(12, 30 - Math.floor(score / 200));
             ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 1;
             for(let i = 0; i <= canvas.height; i += 30) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke(); }
-            ctx.strokeStyle = '#312e81'; ctx.lineWidth = 4;
-            [133, 266].forEach(lx => { ctx.beginPath(); ctx.moveTo(lx, 0); ctx.lineTo(lx, canvas.height); ctx.stroke(); });
+            ctx.strokeStyle = '#312e81'; ctx.lineWidth = 4; [133, 266].forEach(lx => { ctx.beginPath(); ctx.moveTo(lx, 0); ctx.lineTo(lx, canvas.height); ctx.stroke(); });
 
             if (keys[37]) { keys[37] = false; if (runnerLane > 0) runnerLane--; }
             if (keys[39]) { keys[39] = false; if (runnerLane < 2) runnerLane++; }
-
-            let targetX = (runnerLane * 133) + 66;
-            runnerX += (targetX - runnerX) * 0.28; 
+            let targetX = (runnerLane * 133) + 66; runnerX += (targetX - runnerX) * 0.28; 
 
             if (runnerFrame % currentSpawnInterval === 0) { 
                 let spawnLane = Math.floor(Math.random() * 3);
-                runnerObstacles.push({ 
-                    lane: spawnLane, 
-                    y: -35, 
-                    speed: 7 + (score / 350), 
-                    processed: false, 
-                    wasTargetingPlayer: (spawnLane === runnerLane) 
-                }); 
+                runnerObstacles.push({ lane: spawnLane, y: -35, speed: 7 + (score / 350), processed: false, wasTargetingPlayer: (spawnLane === runnerLane) }); 
             }
-
-            ctx.shadowBlur = 20; ctx.shadowColor = '#818cf8';
-            ctx.fillStyle = '#6366f1';
-            ctx.beginPath();
-            ctx.moveTo(runnerX, 230);
-            ctx.lineTo(runnerX - 18, 265);
-            ctx.lineTo(runnerX + 18, 265);
-            ctx.closePath(); ctx.fill();
-            ctx.fillStyle = '#38bdf8';
-            ctx.beginPath();
-            ctx.moveTo(runnerX, 238);
-            ctx.lineTo(runnerX - 6, 252);
-            ctx.lineTo(runnerX + 6, 252);
-            ctx.closePath(); ctx.fill();
-            ctx.shadowBlur = 0;
+            ctx.shadowBlur = 20; ctx.shadowColor = '#818cf8'; ctx.fillStyle = '#6366f1';
+            ctx.beginPath(); ctx.moveTo(runnerX, 230); ctx.lineTo(runnerX - 18, 265); ctx.lineTo(runnerX + 18, 265); ctx.closePath(); ctx.fill(); ctx.shadowBlur = 0;
 
             for (let i = runnerObstacles.length - 1; i >= 0; i--) {
-                let obs = runnerObstacles[i];
-                obs.y += obs.speed;
-                let obsX = (obs.lane * 133) + 66;
-
-                ctx.shadowBlur = 15; ctx.shadowColor = '#f43f5e';
-                ctx.fillStyle = '#ef4444';
-                ctx.beginPath();
-                ctx.arc(obsX, obs.y + 12, 14, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.fillStyle = '#ffffff';
-                ctx.beginPath();
-                ctx.arc(obsX, obs.y + 12, 6, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.shadowBlur = 0;
-
+                let obs = runnerObstacles[i]; obs.y += obs.speed; let obsX = (obs.lane * 133) + 66;
+                ctx.shadowBlur = 15; ctx.shadowColor = '#f43f5e'; ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 14, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
                 if (!obs.processed && obs.y > 210 && obs.y < 260 && obs.lane === runnerLane) { 
-                    obs.processed = true;
-                    score -= 10; 
-                    if (score <= 0) { score = 0; runnerGameOver = true; }
-                    scoreDisplay.textContent = score;
-                    runnerObstacles.splice(i, 1);
-                    continue;
+                    obs.processed = true; score -= 10; if (score <= 0) { score = 0; runnerGameOver = true; }
+                    scoreDisplay.textContent = score; runnerObstacles.splice(i, 1); continue;
                 }
-
                 if (!obs.processed && obs.y > canvas.height - 20) {
-                    obs.processed = true;
-                    if (obs.wasTargetingPlayer && obs.lane !== runnerLane && !runnerGameOver) { 
-                        score += 20; 
-                        scoreDisplay.textContent = score; 
-                        synchronizeHighScores('dash', score);
-                    }
+                    obs.processed = true; if (obs.wasTargetingPlayer && obs.lane !== runnerLane && !runnerGameOver) { score += 20; scoreDisplay.textContent = score; synchronizeHighScores('dash', score); }
                     runnerObstacles.splice(i, 1);
                 }
             }
         }
 
-        // --- GAME 3 ENGINE: BRICK BREAKER ---
+        // BRICK BREAKER ENGINE
         let paddle = { x: 160, y: 270, width: 75, height: 10, speed: 7 }; let ball = { x: 200, y: 150, dx: 3.5, dy: -3.5, radius: 5 }; let bricks = []; let fusionGameOver = false;
         function initFusion() {
             score = 0; scoreDisplay.textContent = score; fusionGameOver = false;
-            leaderboardTopDisplay.textContent = TARGET_LEADERBOARD_RECORDS.fusion;
-            document.getElementById('active-tab-title').textContent = "🧩 BRICK BREAKER MATCH";
-            currentBestDisplay.textContent = localStorage.getItem('clipToPost_best_fusion') || '0';
-            paddle.x = 160; ball.x = 200; ball.y = 150; ball.dx = 4; ball.dy = -4;
-            controlsHint.textContent = "Use ← → Arrows to Slide Paddle"; bricks = [];
-            for (let r = 0; r < 3; r++) {
-                for (let c = 0; c < 7; c++) { bricks.push({ x: 25 + c * 52, y: 40 + r * 18, width: 44, height: 12, alive: true }); }
-            }
+            leaderboardTopDisplay.textContent = TARGET_LEADERBOARD_RECORDS.fusion; document.getElementById('active-tab-title').textContent = "🧩 BRICK BREAKER MATCH";
+            currentBestDisplay.textContent = localStorage.getItem('clipToPost_best_fusion') || '0'; paddle.x = 160; ball.x = 200; ball.y = 150; ball.dx = 4; ball.dy = -4; bricks = [];
+            for (let r = 0; r < 3; r++) { for (let c = 0; c < 7; c++) { bricks.push({ x: 25 + c * 52, y: 40 + r * 18, width: 44, height: 12, alive: true }); } }
             drawLeaderboardStandings('fusion', isViewingCombinedLeaderboard);
         }
         function updateFusion() {
             if (fusionGameOver) {
                 ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
-                ctx.fillText("GAME OVER! CHOOSE ANOTHER TAB TO RESET", canvas.width / 2, canvas.height / 2);
-                bragBtn.classList.remove('hidden'); return;
+                ctx.fillText("GAME OVER! CHOOSE ANOTHER TAB TO RESET", canvas.width / 2, canvas.height / 2); bragBtn.classList.remove('hidden'); return;
             }
-
-            if (keys[37] && paddle.x > 0) paddle.x -= paddle.speed;
-            if (keys[39] && paddle.x < canvas.width - paddle.width) paddle.x += paddle.speed;
-            ball.x += ball.dx; ball.y += ball.dy;
-            if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) ball.dx *= -1; 
-            if (ball.y - ball.radius < 0) ball.dy *= -1;
-            
-            if (ball.y + ball.radius >= paddle.y && ball.y - ball.radius <= paddle.y + paddle.height && ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) {
-                ball.dy = -Math.abs(ball.dy); 
-            }
+            if (keys[37] && paddle.x > 0) paddle.x -= paddle.speed; if (keys[39] && paddle.x < canvas.width - paddle.width) paddle.x += paddle.speed;
+            ball.x += ball.dx; ball.y += ball.dy; if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) ball.dx *= -1; if (ball.y - ball.radius < 0) ball.dy *= -1;
+            if (ball.y + ball.radius >= paddle.y && ball.y - ball.radius <= paddle.y + paddle.height && ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) ball.dy = -Math.abs(ball.dy); 
             if (ball.y > canvas.height) { fusionGameOver = true; bragBtn.classList.remove('hidden'); return; }
-            
             ctx.fillStyle = '#eab308'; ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
             ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2); ctx.fillStyle = '#ffffff'; ctx.fill(); ctx.closePath();
-            
             let activeBricks = false;
             bricks.forEach(b => {
                 if (!b.alive) return; activeBricks = true; ctx.fillStyle = '#ec4899'; ctx.fillRect(b.x, b.y, b.width, b.height);
-                if (ball.x > b.x && ball.x < b.x + b.width && ball.y > b.y && ball.y < b.y + b.height) { 
-                    b.alive = false; ball.dy *= -1; score += 50; 
-                    scoreDisplay.textContent = score; 
-                    synchronizeHighScores('fusion', score);
-                }
+                if (ball.x > b.x && ball.x < b.x + b.width && ball.y > b.y && ball.y < b.y + b.height) { b.alive = false; ball.dy *= -1; score += 50; scoreDisplay.textContent = score; synchronizeHighScores('fusion', score); }
             });
             if (!activeBricks) bricks.forEach(b => b.alive = true);
         }
 
         function runMasterLoop() {
-            if (!gameActive) return; 
-            ctx.fillStyle = '#020617'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left';
-            if (currentActiveGame === 'stack') updateStack();
-            else if (currentActiveGame === 'dash') updateDash();
-            else if (currentActiveGame === 'fusion') updateFusion();
+            if (!gameActive) return; ctx.fillStyle = '#020617'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            if (currentActiveGame === 'stack') updateStack(); else if (currentActiveGame === 'dash') updateDash(); else if (currentActiveGame === 'fusion') updateFusion();
             gameLoopId = requestAnimationFrame(runMasterLoop);
         }
 
         function triggerGameSwap(target) {
-            gameActive = false; 
-            if (gameLoopId) { cancelAnimationFrame(gameLoopId); gameLoopId = null; }
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            currentActiveGame = target;
-            bragBtn.classList.add('hidden');
-            
-            document.querySelectorAll('.game-tab-btn').forEach(b => b.className = "game-tab-btn px-4 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer text-gray-500 hover:text-gray-300");
-            const activeBtn = document.getElementById(`btn-${target}`);
-            activeBtn.className = "game-tab-btn px-4 py-1.5 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer bg-indigo-600 text-white shadow-sm";
-            
-            if (target === 'stack') initStack();
-            else if (target === 'dash') initDash();
-            else if (target === 'fusion') initFusion();
-            
-            gameActive = true; 
-            runMasterLoop();
+            gameActive = false; if (gameLoopId) { cancelAnimationFrame(gameLoopId); gameLoopId = null; }
+            ctx.clearRect(0, 0, canvas.width, canvas.height); currentActiveGame = target; bragBtn.classList.add('hidden');
+            if (target === 'stack') initStack(); else if (target === 'dash') initDash(); else if (target === 'fusion') initFusion();
+            gameActive = true; runMasterLoop();
         }
 
-        btnStack.addEventListener('click', () => triggerGameSwap('stack'));
-        btnDash.addEventListener('click', () => triggerGameSwap('dash'));
-        btnFusion.addEventListener('click', () => triggerGameSwap('fusion'));
-
-        function updateVaultCounter() {
-            let vault = JSON.parse(localStorage.getItem('clipToPost_vault') || '[]');
-            vaultCounterBadge.textContent = vault.length;
-        }
-
+        function updateVaultCounter() { let vault = JSON.parse(localStorage.getItem('clipToPost_vault') || '[]'); vaultCounterBadge.textContent = vault.length; }
         function pushToVaultCaches(posts) {
             let vault = JSON.parse(localStorage.getItem('clipToPost_vault') || '[]');
-            posts.forEach(p => {
-                if(!vault.includes(p)) vault.unshift(p);
-            });
-            if(vault.length > 25) vault = vault.slice(0, 25); 
-            localStorage.setItem('clipToPost_vault', JSON.stringify(vault));
-            updateVaultCounter();
+            posts.forEach(p => { if(!vault.includes(p)) vault.unshift(p); });
+            if(vault.length > 25) vault = vault.slice(0, 25); localStorage.setItem('clipToPost_vault', JSON.stringify(vault)); updateVaultCounter();
         }
 
         function renderVaultArchive() {
-            vaultItemsContainer.innerHTML = '';
-            let vault = JSON.parse(localStorage.getItem('clipToPost_vault') || '[]');
-            
-            if(vault.length === 0) {
-                vaultItemsContainer.innerHTML = `<div class="text-xs text-gray-500 font-mono text-center py-10">VAULT SECTOR EMPTY</div>`;
-                return;
-            }
-
+            vaultItemsContainer.innerHTML = ''; let vault = JSON.parse(localStorage.getItem('clipToPost_vault') || '[]');
+            if(vault.length === 0) { vaultItemsContainer.innerHTML = `<div class="text-xs text-gray-500 font-mono text-center py-10">VAULT SECTOR EMPTY</div>`; return; }
             vault.forEach((text, idx) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = "p-3.5 bg-gray-950 border border-gray-800 rounded-xl relative hover:border-gray-700 transition-all flex flex-col justify-between";
-                
                 let preview = text.substring(0, 110) + (text.length > 110 ? '...' : '');
-                
-                itemDiv.innerHTML = `
-                    <p class="font-mono text-[11px] text-gray-400 mb-2 leading-relaxed whitespace-pre-wrap select-all">${preview}</p>
-                    <div class="flex justify-end gap-1.5 pt-2 border-t border-gray-900">
-                        <button class="vault-load-btn px-2 py-1 bg-indigo-950/40 text-indigo-400 border border-indigo-900/60 rounded text-[10px] font-mono cursor-pointer transition-all hover:bg-indigo-900/40">Load</button>
-                        <button class="vault-del-btn px-2 py-1 bg-rose-950/40 text-rose-400 border border-rose-900/60 rounded text-[10px] font-mono cursor-pointer transition-all hover:bg-rose-900/40">Delete</button>
-                    </div>
-                `;
-
+                itemDiv.innerHTML = `<p class="font-mono text-[11px] text-gray-400 mb-2 leading-relaxed whitespace-pre-wrap select-all">${preview}</p><div class="flex justify-end gap-1.5 pt-2 border-t border-gray-900"><button class="vault-load-btn px-2 py-1 bg-indigo-950/40 text-indigo-400 border border-indigo-900/60 rounded text-[10px] font-mono cursor-pointer transition-all">Load</button><button class="vault-del-btn px-2 py-1 bg-rose-950/40 text-rose-400 border border-rose-900/60 rounded text-[10px] font-mono cursor-pointer transition-all">Delete</button></div>`;
                 itemDiv.querySelector('.vault-load-btn').addEventListener('click', () => {
-                    activeGenerationDataset = [{
-                        fullText: text,
-                        cleanText: text,
-                        isHashtagHidden: false, isEmojiHidden: false, isHookManuallyOptimized: false
-                    }];
-                    masterToolbar.classList.remove('hidden');
-                    renderInterfaceAssets(boomerFontToggle.checked);
-                    vaultDrawer.classList.add('hidden');
+                    activeGenerationDataset = [{ fullText: text, cleanText: text, isHashtagHidden: false, isEmojiHidden: false, isHookManuallyOptimized: false }];
+                    masterToolbar.classList.remove('hidden'); renderInterfaceAssets(boomerFontToggle.checked); vaultDrawer.classList.add('hidden');
                 });
-
-                itemDiv.querySelector('.vault-del-btn').addEventListener('click', () => {
-                    vault.splice(idx, 1);
-                    localStorage.setItem('clipToPost_vault', JSON.stringify(vault));
-                    renderVaultArchive(); updateVaultCounter();
-                });
-
+                itemDiv.querySelector('.vault-del-btn').addEventListener('click', () => { vault.splice(idx, 1); localStorage.setItem('clipToPost_vault', JSON.stringify(vault)); renderVaultArchive(); updateVaultCounter(); });
                 vaultItemsContainer.appendChild(itemDiv);
             });
         }
 
-        vaultTriggerBtn.addEventListener('click', () => {
-            renderVaultArchive();
-            vaultDrawer.classList.remove('hidden');
-        });
+        vaultTriggerBtn.addEventListener('click', () => { renderVaultArchive(); vaultDrawer.classList.remove('hidden'); });
         closeVaultBtn.addEventListener('click', () => vaultDrawer.classList.add('hidden'));
 
         function applyTransformers(baseText) {
             let txt = baseText;
-            
-            if (isBulletCleaned) {
-                txt = txt.replace(/^[ \t]*[—\-\u2014\u2013•*][ \t]*/gm, '• ');
-            }
-            if (isDoubleSpaced) {
-                txt = txt.split('\n').filter(l => l.trim() !== '').join('\n\n');
-            }
+            if (isBulletCleaned) txt = txt.replace(/^[ \t]*[—\-\u2014\u2013•*][ \t]*/gm, '• ');
+            if (isDoubleSpaced) txt = txt.split('\n').filter(l => l.trim() !== '').join('\n\n');
             if (isHookCapitalized) {
-                let paragraphs = txt.split('\n');
-                if (paragraphs.length > 0 && paragraphs[0].trim() !== '') {
-                    paragraphs[0] = paragraphs[0].toUpperCase();
-                    txt = paragraphs.join('\n');
-                }
+                let paragraphs = txt.split('\n'); if (paragraphs.length > 0 && paragraphs[0].trim() !== '') { paragraphs[0] = paragraphs[0].toUpperCase(); txt = paragraphs.join('\n'); }
             }
-            
             if (cleanModeToggle.checked) {
-                txt = txt.replace(/[\*_`~]/g, '')
-                         .replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDC00-\uDFFF])/g, '');
+                txt = txt.replace(/[\*_`~]/g, '').replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDC00-\uDFFF])/g, '');
             }
             return txt;
         }
 
-        filterDouble.addEventListener('click', () => {
-            isDoubleSpaced = !isDoubleSpaced;
-            filterDouble.className = isDoubleSpaced ? "px-2.5 py-1 bg-indigo-950 border border-indigo-500 text-indigo-400 rounded-lg text-xs font-mono transition-all cursor-pointer" : "px-2.5 py-1 bg-gray-950 border border-gray-800 text-gray-400 hover:text-white rounded-lg text-xs font-mono transition-all cursor-pointer";
-            renderInterfaceAssets(boomerFontToggle.checked);
-        });
-        filterCaps.addEventListener('click', () => {
-            isHookCapitalized = !isHookCapitalized;
-            filterCaps.className = isHookCapitalized ? "px-2.5 py-1 bg-indigo-950 border border-indigo-500 text-indigo-400 rounded-lg text-xs font-mono transition-all cursor-pointer" : "px-2.5 py-1 bg-gray-950 border border-gray-800 text-gray-400 hover:text-white rounded-lg text-xs font-mono transition-all cursor-pointer";
-            renderInterfaceAssets(boomerFontToggle.checked);
-        });
-        filterBullets.addEventListener('click', () => {
-            isBulletCleaned = !isBulletCleaned;
-            filterBullets.className = isBulletCleaned ? "px-2.5 py-1 bg-indigo-950 border border-indigo-500 text-indigo-400 rounded-lg text-xs font-mono transition-all cursor-pointer" : "px-2.5 py-1 bg-gray-950 border border-gray-800 text-gray-400 hover:text-white rounded-lg text-xs font-mono transition-all cursor-pointer";
-            renderInterfaceAssets(boomerFontToggle.checked);
-        });
-
+        filterDouble.addEventListener('click', () => { isDoubleSpaced = !isDoubleSpaced; renderInterfaceAssets(boomerFontToggle.checked); });
+        filterCaps.addEventListener('click', () => { isHookCapitalized = !isHookCapitalized; renderInterfaceAssets(boomerFontToggle.checked); });
+        filterBullets.addEventListener('click', () => { isBulletCleaned = !isBulletCleaned; renderInterfaceAssets(boomerFontToggle.checked); });
         cleanModeToggle.addEventListener('change', () => renderInterfaceAssets(boomerFontToggle.checked));
 
-        // HARD FIXED TO 3 TOTAL ALLOTED GENERATIONS TOTAL
         function checkUsageLimits() {
             const usageCount = parseInt(localStorage.getItem('clipToPost_clicks') || '0', 10);
-            const remaining = Math.max(0, 3 - usageCount);
-            
-            creditCounter.textContent = remaining;
+            const remaining = Math.max(0, 3 - usageCount); creditCounter.textContent = remaining;
 
             if (usageCount >= 3) {
-                urlInput.disabled = true; 
-                submitBtn.disabled = true;
-                submitBtn.textContent = "Cap Reached";
-                warningBanner.classList.remove('hidden'); 
-                return false;
+                urlInput.disabled = true; submitBtn.disabled = true; submitBtn.textContent = "Cap Reached";
+                warningBanner.classList.remove('hidden'); return false;
             }
             return true;
         }
 
         function resolveDynamicTextString(item) {
             let runningText = item.isHashtagHidden ? item.cleanText : item.fullText;
-            
-            if (item.isHookManuallyOptimized) {
-                let lines = runningText.split('\n');
-                let foundCoreIndex = -1;
-                for (let i = 0; i < lines.length; i++) {
-                    let cleanL = lines[i].toLowerCase();
-                    if (cleanL.includes('framework') || cleanL.includes('protocol') || cleanL.includes('tactical') || cleanL.includes('architecture') || cleanL.includes('shift required')) {
-                        foundCoreIndex = i;
-                        break;
-                    }
-                }
-                if (foundCoreIndex !== -1 && foundCoreIndex > 2) {
-                    let strategicPayload = lines.slice(foundCoreIndex, foundCoreIndex + 5).join('\n');
-                    let legacyNoise = lines.slice(0, foundCoreIndex).join('\n');
-                    runningText = `${strategicPayload}\n\n---\n\n${legacyNoise}\n\n${lines.slice(foundCoreIndex + 5).join('\n')}`;
-                }
-            }
-            
             if (item.isEmojiHidden) {
-                runningText = runningText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDC00-\uDFFF])/g, '').replace(/\s+—/g, ' —');
+                runningText = runningText.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDC00-\uDFFF])/g, '');
             }
-            runningText = runningText.replace(/[\*_]/g, '');
             return applyTransformers(runningText.trim());
         }
 
@@ -827,224 +680,194 @@
             activeGenerationDataset.forEach((item, index) => {
                 const card = document.createElement('div');
                 const typographyClass = useBoomerFont ? "text-2xl font-bold text-white tracking-wide" : "text-base md:text-md font-light text-gray-200 leading-relaxed";
-                const bgClass = useBoomerFont ? "bg-black border-4 border-white rounded-none p-8" : "bg-gray-900/40 backdrop-blur-md border border-gray-800 rounded-2xl p-6";
-
-                card.className = `${bgClass} shadow-xl relative flex flex-col justify-between transition-all hover:border-gray-700/50 cascade-card`;
-                card.style.animationDelay = `${index * 120}ms`; 
-
+                card.className = "bg-gray-900/40 backdrop-blur-md border border-gray-800 rounded-2xl p-6 shadow-xl relative flex flex-col justify-between transition-all hover:border-gray-700/50 cascade-card";
+                
                 const targetText = resolveDynamicTextString(item);
-                const charCount = targetText.length;
-
-                const linesArray = targetText.split('\n');
-                let truthIndex = -1;
-                for(let k=0; k<linesArray.length; k++) {
-                    if(linesArray[k].toLowerCase().replace(/\s+/g,'').includes('thetruth?')) { truthIndex = k; break; }
-                }
-                
-                let isHookSafe = (truthIndex !== -1 && truthIndex <= 4);
-                if (item.isHookManuallyOptimized) isHookSafe = true;
-                
-                let ratingBadgeHtml = "";
-                let optimizeButtonHtml = "";
-
-                if (isHookSafe) {
-                    ratingBadgeHtml = `<span class="text-[10px] font-mono px-2 py-0.5 bg-emerald-950/60 border border-emerald-800/60 text-emerald-400 rounded-md">⚡ HOOK OPTIMAL</span>`;
-                } else {
-                    ratingBadgeHtml = `<span class="text-[10px] font-mono px-2 py-0.5 bg-rose-950/60 border border-rose-900/60 text-rose-400 rounded-md">⚠️ HOOK TRUNCATION RISK</span>`;
-                    optimizeButtonHtml = `<button class="optimize-hook-btn px-2.5 py-1 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-lg text-xs font-mono transition-all cursor-pointer animate-pulse whitespace-nowrap">✨ Optimize Hook Above Fold</button>`;
-                }
-
                 card.innerHTML = `
                     <div class="flex flex-wrap justify-between items-start gap-3 mb-4 border-b border-gray-800/50 pb-3">
-                        <div class="flex flex-wrap items-center gap-2">
-                            <span class="text-xs text-indigo-400 font-mono font-bold uppercase tracking-wider">Asset Variant ${index + 1}</span>
-                            <span class="text-[11px] font-mono px-2 py-0.5 bg-gray-950 border border-gray-800 rounded-md ${charCount > 3000 ? 'text-rose-400 border-rose-900' : 'text-gray-500'}">
-                                📏 ${charCount} Chars
-                            </span>
-                            ${ratingBadgeHtml}
-                        </div>
-                        <div class="flex items-center gap-2 ml-auto">
-                            ${optimizeButtonHtml}
-                            <button class="mobile-preview-btn text-xs font-mono text-gray-400 hover:text-indigo-400 transition-all cursor-pointer flex items-center gap-1 bg-gray-950 px-2.5 py-1 rounded-md border border-gray-800/80 hover:border-gray-700">
-                                📱 Mobile View
-                            </button>
-                        </div>
+                        <div class="flex flex-wrap items-center gap-2"><span class="text-xs text-indigo-400 font-mono font-bold uppercase">Asset Variant ${index + 1}</span></div>
+                        <button class="mobile-preview-btn text-xs font-mono text-gray-400 hover:text-indigo-400 transition-all bg-gray-950 px-2.5 py-1 rounded-md border border-gray-800/80">📱 Mobile View</button>
                     </div>
                     <div class="whitespace-pre-wrap ${typographyClass} mb-6 select-text"></div>
-
                     <div class="flex flex-wrap gap-4 justify-between items-center pt-2 border-t border-t-gray-800/40">
                         <div class="flex gap-2">
-                            <button class="hashtag-toggle-btn px-3 py-1.5 border rounded-xl text-[11px] font-mono transition-all cursor-pointer ${item.isHashtagHidden ? 'bg-indigo-950/40 border-indigo-500 text-indigo-400' : 'bg-gray-950 border-gray-800 text-gray-400 hover:text-white'}">
-                                ${item.isHashtagHidden ? '👔 Tags ACTIVE' : '👔 Strip Tags'}
-                            </button>
-                            <button class="emoji-toggle-btn px-3 py-1.5 border rounded-xl text-[11px] font-mono transition-all cursor-pointer ${item.isEmojiHidden ? 'bg-indigo-950/40 border-indigo-500 text-indigo-400' : 'bg-gray-950 border-gray-800 text-gray-400 hover:text-white'}">
-                                ${item.isEmojiHidden ? '🎨 Emojis STRIPPED' : '🎨 Strip Emojis'}
-                            </button>
+                            <button class="hashtag-toggle-btn px-3 py-1.5 border rounded-xl text-[11px] font-mono bg-gray-950 border-gray-800 text-gray-400">👔 Strip Tags</button>
+                            <button class="emoji-toggle-btn px-3 py-1.5 border rounded-xl text-[11px] font-mono bg-gray-950 border-gray-800 text-gray-400">🎨 Strip Emojis</button>
                         </div>
-                        <div class="flex flex-wrap gap-2 justify-end">
-                            <button class="push-btn bg-indigo-950/40 border border-indigo-800/40 text-indigo-400 px-4 py-2 rounded-xl text-xs font-medium cursor-pointer transition-all hover:bg-indigo-900/50 active:scale-95">
-                                📅 Push to Hub
-                            </button>
-                            <button class="copy-btn bg-gray-950 border border-gray-800 hover:border-gray-700 text-gray-300 px-4 py-2 rounded-xl text-xs font-medium cursor-pointer transition-all active:scale-95">
-                                Copy Text Asset
-                            </button>
-                        </div>
+                        <button class="copy-btn bg-gray-950 border border-gray-800 text-gray-300 px-4 py-2 rounded-xl text-xs font-medium transition-all">Copy Text Asset</button>
                     </div>
                 `;
-
                 card.querySelector('.whitespace-pre-wrap').textContent = targetText;
-
-                const optBtn = card.querySelector('.optimize-hook-btn');
-                if (optBtn) {
-                    optBtn.addEventListener('click', () => {
-                        item.isHookManuallyOptimized = true;
-                        renderInterfaceAssets(useBoomerFont);
-                    });
-                }
-
-                const copyBtn = card.querySelector('.copy-btn');
-                copyBtn.addEventListener('click', () => {
-                    executeClipboardWrite(targetText,
-                        () => {
-                            copyBtn.textContent = 'Copied!'; copyBtn.style.borderColor = '#10B981'; copyBtn.style.color = '#10B981';
-                            card.classList.add('copy-flash-pulse');
-                            setTimeout(() => { card.classList.remove('copy-flash-pulse'); }, 400);
-                            setTimeout(() => { copyBtn.textContent = 'Copy Text Asset'; copyBtn.style.borderColor = ''; copyBtn.style.color = ''; }, 2000);
-                        },
-                        () => alert('Copy configuration restriction encountered.')
-                    );
+                card.querySelector('.copy-btn').addEventListener('click', () => {
+                    executeClipboardWrite(targetText, () => { alert('Text copied!'); }, () => {});
                 });
-
-                const pushBtn = card.querySelector('.push-btn');
-                pushBtn.addEventListener('click', () => {
-                    pushBtn.textContent = '⚡ Scheduled!';
-                    pushBtn.className = "push-btn bg-emerald-950/30 border border-emerald-800/40 text-emerald-400 px-4 py-2 rounded-xl text-xs font-medium pointer-events-none";
-                });
-
-                card.querySelector('.hashtag-toggle-btn').addEventListener('click', () => {
-                    item.isHashtagHidden = !item.isHashtagHidden; renderInterfaceAssets(useBoomerFont);
-                });
-
-                card.querySelector('.emoji-toggle-btn').addEventListener('click', () => {
-                    item.isEmojiHidden = !item.isEmojiHidden; renderInterfaceAssets(useBoomerFont);
-                });
-
+                
                 card.querySelector('.mobile-preview-btn').addEventListener('click', () => {
-                    const lines = targetText.split('\n');
-                    let cutoffIndex = 3; 
-                    for (let i = 0; i < lines.length; i++) {
-                        if (lines[i].toLowerCase().replace(/\s+/g, '').includes('thetruth?')) { cutoffIndex = i + 1; break; }
-                    }
-                    modalHookZone.textContent = lines.slice(0, cutoffIndex).join('\n');
-                    modalBodyZone.textContent = lines.slice(cutoffIndex).join('\n');
+                    let textBlocks = targetText.split('\n');
+                    modalHookZone.textContent = textBlocks[0] || '';
+                    modalBodyZone.textContent = textBlocks.slice(1).join('\n') || '';
                     modal.classList.remove('hidden');
+                });
+
+                card.querySelector('.hashtag-toggle-btn').addEventListener('click', (e) => {
+                    item.isHashtagHidden = !item.isHashtagHidden;
+                    e.target.textContent = item.isHashtagHidden ? "👔 Add Tags" : "👔 Strip Tags";
+                    card.querySelector('.whitespace-pre-wrap').textContent = resolveDynamicTextString(item);
+                });
+                card.querySelector('.emoji-toggle-btn').addEventListener('click', (e) => {
+                    item.isEmojiHidden = !item.isEmojiHidden;
+                    e.target.textContent = item.isEmojiHidden ? "🎨 Add Emojis" : "🎨 Strip Emojis";
+                    card.querySelector('.whitespace-pre-wrap').textContent = resolveDynamicTextString(item);
                 });
 
                 outputContainer.appendChild(card);
             });
         }
 
+        btnStack.addEventListener('click', () => { toggleGameTab('stack', btnStack); });
+        btnDash.addEventListener('click', () => { toggleGameTab('dash', btnDash); });
+        btnFusion.addEventListener('click', () => { toggleGameTab('fusion', btnFusion); });
+
+        function toggleGameTab(target, activeBtn) {
+            document.querySelectorAll('.game-tab-btn').forEach(b => {
+                b.classList.remove('bg-indigo-600', 'text-white'); b.classList.add('text-gray-500');
+            });
+            activeBtn.classList.remove('text-gray-500'); activeBtn.classList.add('bg-indigo-600', 'text-white');
+            triggerGameSwap(target);
+        }
+
+        document.getElementById('toggle-combined-leaderboard').addEventListener('click', (e) => {
+            isViewingCombinedLeaderboard = !isViewingCombinedLeaderboard;
+            e.target.textContent = isViewingCombinedLeaderboard ? "Show Base Game" : "Show Combined";
+            document.getElementById('leaderboard-top-score').textContent = isViewingCombinedLeaderboard ? "5200" : TARGET_LEADERBOARD_RECORDS[currentActiveGame];
+            drawLeaderboardStandings(currentActiveGame, isViewingCombinedLeaderboard);
+        });
+
+        async function executeClipboardWrite(payloadText, passCallback, failCallback) {
+            try {
+                await navigator.clipboard.writeText(payloadText); passCallback();
+            } catch(e) {
+                try {
+                    const tempTextarea = document.createElement('textarea'); tempTextarea.value = payloadText;
+                    tempTextarea.style.position = 'fixed'; document.body.appendChild(tempTextarea);
+                    tempTextarea.select(); document.execCommand('copy'); document.body.removeChild(tempTextarea);
+                    passCallback();
+                } catch(err) { failCallback(); }
+            }
+        }
+
         copyAllBtn.addEventListener('click', () => {
-            const masterTextString = activeGenerationDataset.map((item, rgb) => `--- VARIANT ${rgb + 1} ---\n\n${resolveDynamicTextString(item)}`).join('\n\n========================================\n\n');
-            executeClipboardWrite(masterTextString,
-                () => {
-                    const originalText = copyAllBtn.textContent; copyAllBtn.textContent = '✅ All 3 Variants Copied!'; copyAllBtn.style.background = '#10B981';
-                    setTimeout(() => { copyAllBtn.textContent = originalText; copyAllBtn.style.background = ''; }, 2500);
-                },
-                () => alert('Bulk extract blocked.')
-            );
+            const masterTextString = activeGenerationDataset.map((item, rgb) => `--- VARIANT ${rgb + 1} ---\n\n${resolveDynamicTextString(item)}`).join('\n\n====================\n\n');
+            executeClipboardWrite(masterTextString, () => { alert('All Variants Copied!'); }, () => {});
         });
 
         bragBtn.addEventListener('click', () => {
             let sMax = parseInt(localStorage.getItem('clipToPost_best_stack') || '0', 10);
             let dMax = parseInt(localStorage.getItem('clipToPost_best_dash') || '0', 10);
             let fMax = parseInt(localStorage.getItem('clipToPost_best_fusion') || '0', 10);
-            let totalBragValue = sMax + dMax + fMax;
-            
-            let casualBragPayload = `okay wait... this is actually insane. 💀\n\nI tried using ClipToPost to turn a YouTube video into some LinkedIn posts. The AI literally finished generating 3 variants in under 60 seconds. Fast as hell.\n\nBUT the dev put a live retro arcade game room right inside the loading screen while you wait... and I am completely trapped.\n\nMy productivity is cooked. I'm currently sitting at a ${totalBragValue} combined high score (${sMax} Stack / ${dMax} Runner / ${fMax} Breaker).\n\nGo drop a video link in it and see if you can beat me: ${PRODUCTION_SITE_URL}\n\nSeriously, the product build is legendary. Let me know your scores below.`;
-            
-            executeClipboardWrite(casualBragPayload,
-                () => {
-                    let oldTxt = bragBtn.textContent; bragBtn.textContent = "🚀 GEN Z BRAG SAVED TO CLIPBOARD!";
-                    setTimeout(() => { bragBtn.textContent = oldTxt; }, 3000);
-                },
-                () => alert("Hardware permission error blocking clipboard deployment loop.")
-            );
+            let casualBragPayload = `Trap alert! I tried using ClipToPost to repurpose my video content... and I am completely stuck playing the built-in arcade dashboard instead. Current score: ${sMax+dMax+fMax}. Test it out: ${PRODUCTION_SITE_URL}`;
+            executeClipboardWrite(casualBragPayload, () => { alert('Brag string saved to clipboard!'); }, () => {});
         });
 
         closeModalBtn.addEventListener('click', () => modal.classList.add('hidden'));
-        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
-        boomerFontToggle.addEventListener('change', () => renderInterfaceAssets(boomerFontToggle.checked));
 
         async function fireTransformationPipeline() {
             if (!checkUsageLimits()) return;
-
-            const videoUrl = urlInput.value.trim();
-            if (!videoUrl) { alert('Please supply a target YouTube link resource context.'); return; }
+            if (!authenticatedUserContext) { alert('Please sign in via Google Auth to verify your usage allocation identity first.'); return; }
             
-            const selectedEngine = document.querySelector('input[name="engine-mode"]:checked').value;
-            const isCleanMode = cleanModeToggle.checked;
+            const videoUrl = urlInput.value.trim();
+            
+            // 🛡️ FRONTEND SANITIZATION GATE
+            const validationSyntax = /(youtube\.com|youtu\.be)/i;
+            if (!videoUrl || !validationSyntax.test(videoUrl)) {
+                alert('Security Notice: Input parameter context does not match an actual valid YouTube Link layout string syntax.');
+                return;
+            }
             
             submitBtn.disabled = true; urlInput.disabled = true;
             loadingState.classList.remove('hidden'); outputContainer.innerHTML = ''; masterToolbar.classList.add('hidden'); failoverDeck.classList.add('hidden');
-            
             triggerGameSwap('stack');
 
-            const t1 = setTimeout(() => { statusText.textContent = "EXTRACTING DENSE TRANSCRIPT METRICS..."; }, 4000);
-            const t2 = setTimeout(() => { statusText.textContent = "RE-ENGINEERING AGENTIC LAYOUT FIELDS..."; }, 9000);
+            // 🌍 DYNAMIC TOKEN GENERATION LOGIC
+            const dateObj = new Date();
+            const todayStamp = `${dateObj.getUTCFullYear()}-${dateObj.getUTCMonth()}-${dateObj.getUTCDate()}`;
+            const computedTransitToken = `${IMMUTABLE_BASE_ANCHOR}_${todayStamp}`;
 
             try {
                 const response = await fetch(N8N_WEBHOOK_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ youtubeUrl: videoUrl, engineMode: selectedEngine, cleanLayout: String(isCleanMode) })
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-ClipToPost-Secret': computedTransitToken
+                    },
+                    body: JSON.stringify({ 
+                        youtubeUrl: videoUrl, 
+                        engineMode: document.querySelector('input[name="engine-mode"]:checked').value,
+                        cleanLayout: String(cleanModeToggle.checked),
+                        deviceFingerprint: generatedFingerprint,
+                        userEmail: authenticatedUserContext.email,
+                        userGoogleId: authenticatedUserContext.uid,
+                        userName: authenticatedUserContext.name,
+                        identityJwt: authenticatedUserContext.rawIdentityJwt
+                    })
                 });
 
-                if (!response.ok) throw new Error(`HTTP Error Code: ${response.status}`);
+                if (!response.ok) throw new Error("Network pipeline fault.");
                 const data = await response.json();
-                
-                const rawOutputText = data.output || data.text || (Array.isArray(data) ? (data[0]?.output || data[0]?.text) : '');
-                if (!rawOutputText) throw new Error("Empty text payload structure returned.");
-
+                const rawOutputText = data.output || data.text || '';
                 const postsArray = rawOutputText.split('===NEXT_POST===').filter(post => post.trim().length > 0);
                 
                 localStorage.setItem('clipToPost_clicks', parseInt(localStorage.getItem('clipToPost_clicks') || '0', 10) + 1);
-
                 pushToVaultCaches(postsArray);
 
                 activeGenerationDataset = postsArray.map(rawText => {
-                    const trimmed = rawText.trim();
-                    const hashtagIndex = trimmed.search(/#[a-zA-Z0-9]+/);
-                    return {
-                        fullText: trimmed,
-                        cleanText: hashtagIndex !== -1 ? trimmed.substring(0, hashtagIndex).trim() : trimmed,
-                        isHashtagHidden: false, isEmojiHidden: false, isHookManuallyOptimized: false
-                    };
+                    return { fullText: rawText.trim(), cleanText: rawText.trim(), isHashtagHidden: false, isEmojiHidden: false, isHookManuallyOptimized: false };
                 });
-
-                masterToolbar.classList.remove('hidden');
-                renderInterfaceAssets(boomerFontToggle.checked);
-
-            } catch (err) {
-                console.error(err);
-                failoverDeck.classList.remove('hidden');
-            } finally {
-                clearTimeout(t1); clearTimeout(t2);
-                gameActive = false; 
-                if (gameLoopId) { cancelAnimationFrame(gameLoopId); gameLoopId = null; }
-                statusText.textContent = "ORCHESTRATING PIPELINE RUN...";
-                loadingState.classList.add('hidden');
-                submitBtn.disabled = false; urlInput.disabled = false;
-                checkUsageLimits();
-                updateVaultCounter();
+                masterToolbar.classList.remove('hidden'); renderInterfaceAssets(boomerFontToggle.checked);
+            } catch (err) { failoverDeck.classList.remove('hidden'); }
+            finally {
+                gameActive = false; loadingState.classList.add('hidden'); submitBtn.disabled = false; urlInput.disabled = false;
+                checkUsageLimits(); updateVaultCounter();
             }
         }
 
         submitBtn.addEventListener('click', fireTransformationPipeline);
-        checkUsageLimits();
-        updateVaultCounter();
-        
+        constructDeviceFingerprint().then(() => { updateVaultCounter(); });
         synchronizeHighScores('stack', 0);
+    </script>
+    <script>
+        function evaluateInterfaceSecurityGate() {
+            const globalGate = document.getElementById('global-legal-gate');
+            const tierButtons = document.querySelectorAll('.checkout-btn-tier');
+            if (globalGate && globalGate.checked) {
+                tierButtons.forEach(btn => btn.classList.remove('disabled'));
+            } else {
+                tierButtons.forEach(btn => btn.classList.add('disabled'));
+            }
+        }
+        function routeToGateway(event, tier) {
+            const globalGate = document.getElementById('global-legal-gate');
+            if (!globalGate || !globalGate.checked) {
+                event.preventDefault();
+                alert("Security Check: You must review and check the confirmation box acknowledging the platform terms to open checkout.");
+                return false;
+            }
+            if (tier === 'solo') {
+                event.preventDefault();
+                window.location.href = RAZORPAY_SOLO_URL;
+            } else if (tier === 'agency') {
+                event.preventDefault();
+                window.location.href = RAZORPAY_AGENCY_URL;
+            }
+        }
+        function toggleLegalModal(show) {
+            const modalView = document.getElementById('legal-modal');
+            if (modalView) modalView.style.display = show ? 'block' : 'none';
+            document.body.style.overflow = show ? 'hidden' : 'auto';
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            evaluateInterfaceSecurityGate();
+        });
     </script>
 </body>
 </html>
