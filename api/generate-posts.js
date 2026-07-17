@@ -28,18 +28,20 @@ export default async function handler(req, res) {
         if (!id) return res.status(400).json({ error: "Missing execution ID." });
 
         try {
-            // 🎯 FIXED: Direct, clean string concatenation using your dedicated base API variable
             const cleanBase = baseApiUrl.replace(/\/$/, "");
             const statusCheckUrl = `${cleanBase}/api/v1/executions/${id}?includeData=true`;
 
+            // 🎯 FIXED: Standardize and isolate headers to stop the 400 rejection
             const headers = {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'X-ClipToPost-Secret': transitSecret 
+                'Accept': 'application/json'
             };
             
             if (n8nApiKey) {
+                // If the master API key exists, use it exclusively for n8n API endpoints
                 headers['X-N8N-API-KEY'] = n8nApiKey; 
+            } else {
+                // Fall back to webhook transit token if API token isn't mapped
+                headers['X-ClipToPost-Secret'] = transitSecret;
             }
 
             const response = await fetch(statusCheckUrl, {
