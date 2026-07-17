@@ -12,10 +12,11 @@ export default async function handler(req, res) {
     }
 
     const targetTunnel = process.env.N8N_WEBHOOK_URL;
+    const baseApiUrl = process.env.N8N_API_URL;
     const transitSecret = process.env.SECRET_TRANSIT_TOKEN;
     const n8nApiKey = process.env.N8N_API_KEY; 
 
-    if (!targetTunnel || !transitSecret) {
+    if (!targetTunnel || !transitSecret || !baseApiUrl) {
         return res.status(500).json({ error: "Configuration anomaly: Missing environment keys." });
     }
 
@@ -27,11 +28,10 @@ export default async function handler(req, res) {
         if (!id) return res.status(400).json({ error: "Missing execution ID." });
 
         try {
-            // Safe URL parser engine formats the domain flawlessly without double slashes
-            const parsedWebhookUrl = new URL(targetTunnel);
-            const statusCheckUrl = `${parsedWebhookUrl.protocol}//${parsedWebhookUrl.host}/api/v1/executions/${id}?includeData=true`;
+            // 🎯 FIXED: Direct, clean string concatenation using your dedicated base API variable
+            const cleanBase = baseApiUrl.replace(/\/$/, "");
+            const statusCheckUrl = `${cleanBase}/api/v1/executions/${id}?includeData=true`;
 
-            // Always send BOTH security verification headers so both n8n gates pass
             const headers = {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
