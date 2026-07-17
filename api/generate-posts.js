@@ -13,9 +13,6 @@ export default async function handler(req, res) {
 
     const targetTunnel = process.env.N8N_WEBHOOK_URL;
     const transitSecret = process.env.SECRET_TRANSIT_TOKEN;
-    
-    // 🔑 ADD THIS: If you set up an n8n API Key or Basic Auth, map it here.
-    // If you don't use auth, leave it, but ensure your tunnel allows API requests.
     const n8nApiKey = process.env.N8N_API_KEY; 
 
     if (!targetTunnel || !transitSecret) {
@@ -30,14 +27,14 @@ export default async function handler(req, res) {
         if (!id) return res.status(400).json({ error: "Missing execution ID." });
 
         try {
-            const baseUrl = targetTunnel.split('/webhook')[0];
+            // 🎯 FIXED: Clean trailing slashes perfectly so no double-slashes loop happens
+            const baseUrl = targetTunnel.split('/webhook')[0].replace(/\/$/, "");
             const statusCheckUrl = `${baseUrl}/api/v1/executions/${id}?includeData=true`;
 
             const headers = { 
                 'X-ClipToPost-Secret': transitSecret
             };
             
-            // Inject API Key authentication if present in your environment
             if (n8nApiKey) {
                 headers['X-N8N-API-KEY'] = n8nApiKey;
             }
@@ -48,7 +45,6 @@ export default async function handler(req, res) {
             });
 
             if (!response.ok) {
-                // Log the exact error to your Vercel panel so you can debug network drops
                 console.error(`n8n API fetch failed with status: ${response.status}`);
                 return res.status(200).json({ status: "processing", debugError: `API Status ${response.status}` }); 
             }
@@ -58,8 +54,7 @@ export default async function handler(req, res) {
             if (execData.status === 'success') {
                 const runData = execData.data?.resultData?.runData || {};
                 
-                // 🎯 FIX: Explicitly target your final script node by its true canvas name
-                // change "Code in JavaScript" if your node is named differently on the canvas
+                // 🎯 LOOK HERE: Match the exact name displayed under your final node
                 const targetNodeName = "Code in JavaScript"; 
                 const nodeOutputData = runData[targetNodeName];
 
@@ -71,7 +66,6 @@ export default async function handler(req, res) {
                 let finalOutput = "";
 
                 try {
-                    // Modern clean parsing pipeline matchers
                     if (Array.isArray(nodeOutputData) && nodeOutputData[0]?.json?.output) {
                         finalOutput = nodeOutputData[0].json.output;
                     } else if (nodeOutputData?.data?.main?.[0]?.[0]?.json?.output) {
