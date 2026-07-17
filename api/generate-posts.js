@@ -13,6 +13,10 @@ export default async function handler(req, res) {
 
     const targetTunnel = process.env.N8N_WEBHOOK_URL;
     const transitSecret = process.env.SECRET_TRANSIT_TOKEN;
+    
+    // 🔑 ADD THIS: If you set up an n8n API Key or Basic Auth, map it here.
+    // If you don't use auth, leave it, but ensure your tunnel allows API requests.
+    const n8nApiKey = process.env.N8N_API_KEY; 
 
     if (!targetTunnel || !transitSecret) {
         return res.status(500).json({ error: "Configuration anomaly: Missing environment keys." });
@@ -27,38 +31,47 @@ export default async function handler(req, res) {
 
         try {
             const baseUrl = targetTunnel.split('/webhook')[0];
-            // 🎯 CRITICAL FIX: Append '?includeData=true' so n8n returns node-level output blocks!
             const statusCheckUrl = `${baseUrl}/api/v1/executions/${id}?includeData=true`;
+
+            const headers = { 
+                'X-ClipToPost-Secret': transitSecret
+            };
+            
+            // Inject API Key authentication if present in your environment
+            if (n8nApiKey) {
+                headers['X-N8N-API-KEY'] = n8nApiKey;
+            }
 
             const response = await fetch(statusCheckUrl, {
                 method: 'GET',
-                headers: { 
-                    'X-ClipToPost-Secret': transitSecret
-                }
+                headers: headers
             });
 
             if (!response.ok) {
-                return res.status(200).json({ status: "processing" }); 
+                // Log the exact error to your Vercel panel so you can debug network drops
+                console.error(`n8n API fetch failed with status: ${response.status}`);
+                return res.status(200).json({ status: "processing", debugError: `API Status ${response.status}` }); 
             }
 
             const execData = await response.json();
             
             if (execData.status === 'success') {
                 const runData = execData.data?.resultData?.runData || {};
-                const nodeKeys = Object.keys(runData);
                 
-                if (nodeKeys.length === 0) {
+                // 🎯 FIX: Explicitly target your final script node by its true canvas name
+                // change "Code in JavaScript" if your node is named differently on the canvas
+                const targetNodeName = "Code in JavaScript"; 
+                const nodeOutputData = runData[targetNodeName];
+
+                if (!nodeOutputData) {
+                    console.warn(`Target node '${targetNodeName}' not found in execution data yet.`);
                     return res.status(200).json({ status: "processing" });
                 }
-
-                // Get the final node execution block in the workflow chain
-                const finalNodeKey = nodeKeys[nodeKeys.length - 1]; 
-                const nodeOutputData = runData[finalNodeKey];
 
                 let finalOutput = "";
 
                 try {
-                    // Safe-navigation checks to extract n8n node-level outputs
+                    // Modern clean parsing pipeline matchers
                     if (Array.isArray(nodeOutputData) && nodeOutputData[0]?.json?.output) {
                         finalOutput = nodeOutputData[0].json.output;
                     } else if (nodeOutputData?.data?.main?.[0]?.[0]?.json?.output) {
@@ -68,7 +81,6 @@ export default async function handler(req, res) {
                     } else if (nodeOutputData?.output) {
                         finalOutput = nodeOutputData.output;
                     } else {
-                        // Regular expression extraction fallback
                         const stringifiedDump = JSON.stringify(nodeOutputData);
                         const match = stringifiedDump.match(/"output"\s*:\s*"([\s\S]*?)"(?=,|\})/);
                         if (match && match[1]) {
@@ -83,7 +95,6 @@ export default async function handler(req, res) {
                     return res.status(200).json({ status: "processing", message: "String serialization in progress." });
                 }
 
-                // Split text across post split boundaries cleanly
                 const parsedPosts = finalOutput.split('===NEXT_POST===').map(postText => {
                     const cleanText = postText.replace(/#\w+/g, '').trim();
                     return { 
@@ -101,6 +112,7 @@ export default async function handler(req, res) {
                 return res.status(200).json({ status: "processing" });
             }
         } catch (err) {
+            console.error("GET runtime catch block error:", err);
             return res.status(200).json({ status: "processing" });
         }
     }
