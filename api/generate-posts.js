@@ -31,16 +31,13 @@ export default async function handler(req, res) {
             const cleanBase = baseApiUrl.replace(/\/$/, "");
             const statusCheckUrl = `${cleanBase}/api/v1/executions/${id}?includeData=true`;
 
-            // 🎯 FIXED: Standardize and isolate headers to stop the 400 rejection
             const headers = {
                 'Accept': 'application/json'
             };
             
             if (n8nApiKey) {
-                // If the master API key exists, use it exclusively for n8n API endpoints
                 headers['X-N8N-API-KEY'] = n8nApiKey; 
             } else {
-                // Fall back to webhook transit token if API token isn't mapped
                 headers['X-ClipToPost-Secret'] = transitSecret;
             }
 
@@ -49,20 +46,24 @@ export default async function handler(req, res) {
                 headers: headers
             });
 
+            // If n8n returns 404 or isn't ready yet, don't crash. Tell the front end to keep polling.
             if (!response.ok) {
-                console.error(`n8n API fetch failed with status: ${response.status}`);
-                return res.status(200).json({ status: "processing", debugError: `API Status ${response.status}` }); 
+                return res.status(200).json({ status: "processing" }); 
             }
 
             const execData = await response.json();
             
-            if (execData.status === 'success') {
+            // 🎯 FIXED: If n8n says it's still running, reply instantly so Vercel doesn't time out!
+            if (execData.status === 'running' || execData.finished === false) {
+                return res.status(200).json({ status: "processing" });
+            }
+            
+            if (execData.status === 'success' || execData.finished === true) {
                 const runData = execData.data?.resultData?.runData || {};
                 const targetNodeName = "Code in JavaScript"; 
                 const nodeOutputData = runData[targetNodeName];
 
                 if (!nodeOutputData) {
-                    console.warn(`Target node '${targetNodeName}' not found in execution data yet.`);
                     return res.status(200).json({ status: "processing" });
                 }
 
