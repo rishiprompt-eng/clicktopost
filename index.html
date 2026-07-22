@@ -269,8 +269,8 @@
         let touchStartStartX = 0;
         let touchStartStartY = 0;
 
-        // 🎯 TIME DELTA ENGINE FOR EQUAL FRAME-RATE & EQUAL SPEED ACROSS ALL DEVICES
-        let lastTime = 0;
+        // HIGH-PRECISION DELTA TIME ENGINE
+        let lastTime = performance.now();
         let dt = 1;
 
         const TARGET_LEADERBOARD_RECORDS = { stack: 1500, dash: 1200, fusion: 2500 };
@@ -306,7 +306,9 @@
                 google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: onGoogleIdentityAuthSuccess });
                 google.accounts.id.renderButton(document.getElementById("google-auth-btn-render-target"), { theme: "filled_dark", size: "large", width: "240" });
             }
-            gameActive = true; triggerGameSwap('stack'); requestAnimationFrame(runMasterLoop);
+            gameActive = true; triggerGameSwap('stack');
+            lastTime = performance.now();
+            requestAnimationFrame(runMasterLoop);
         });
 
         async function constructDeviceFingerprint() {
@@ -322,7 +324,7 @@
             } catch(e) { generatedFingerprint = "fb_" + Math.random().toString(36).substring(2, 10); }
         }
 
-        // 🎯 ENHANCED Touch/Swipe Engine with Immediate Pixel Scaling
+        // TOUCH & DRAG CONTROLS
         canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
             const touchObj = e.touches[0];
@@ -341,7 +343,7 @@
             
             if (currentActiveGame === 'dash') {
                 const deltaX = touchObj.clientX - touchStartStartX;
-                if (Math.abs(deltaX) > 8) { // Lower threshold for mobile responsiveness
+                if (Math.abs(deltaX) > 6) {
                     if (deltaX > 0) {
                         if (runnerLane < 2) runnerLane++;
                     } else {
@@ -405,19 +407,25 @@
             drawLeaderboardStandings(gameKey, isViewingCombinedLeaderboard);
         }
 
-        // GAME 1: TOWER STACK (Normalized for Refresh Rates)
-        let stackLayers = []; let currentBlock = {}; let blockSpeed = 5.5; let towerGameOver = false;
+        // GAME 1: TOWER STACK
+        let stackLayers = []; let currentBlock = {}; let blockSpeed = 9.5; let towerGameOver = false;
         function initStack() {
             score = 0; scoreDisplay.textContent = score; towerGameOver = false; spaceLatch = false;
             leaderboardTopDisplay.textContent = isFreeCreditTrialRunActive ? "5000" : TARGET_LEADERBOARD_RECORDS.stack;
             stackLayers = [{ x: 125, y: 250, w: 150, h: 25, color: '#6366f1' }];
-            blockSpeed = isFreeCreditTrialRunActive ? 7.0 : 5.5; currentBlock = { x: 0, y: 225, w: 150, h: 25, dir: 1 };
+            blockSpeed = isFreeCreditTrialRunActive ? 12.0 : 9.5; currentBlock = { x: 0, y: 225, w: 150, h: 25, dir: 1 };
             drawLeaderboardStandings('stack', isViewingCombinedLeaderboard);
         }
         function updateStack() {
             if (towerGameOver) { ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center'; ctx.fillText("CRASHED!", canvas.width / 2, canvas.height / 2); return; }
+            
+            // Speed scaling algorithm
             let activeSpeed = blockSpeed;
-            if (isFreeCreditTrialRunActive && score >= 1200) activeSpeed = blockSpeed * Math.pow(1.22, (score - 1000) / 200);
+            if (isFreeCreditTrialRunActive) {
+                if (score >= 600) activeSpeed = blockSpeed * Math.pow(1.24, (score - 500) / 150);
+            } else {
+                activeSpeed = blockSpeed + (score / 400); // Sandbox mode scaling
+            }
             
             currentBlock.x += currentBlock.dir * activeSpeed * dt; 
             if (currentBlock.x < 0 || currentBlock.x + currentBlock.w > canvas.width) currentBlock.dir *= -1;
@@ -434,39 +442,50 @@
                 score += 100; scoreDisplay.textContent = score; synchronizeHighScores('stack', score);
                 screenshake = 10; spawnExplosion(cutX + cutWidth/2, currentBlock.y, '#ec4899');
                 if (currentBlock.y <= 90) { stackLayers.forEach(l => l.y += 50); stackLayers.shift(); }
-                currentBlock = { x: 0, y: stackLayers[stackLayers.length - 1].y - 25, w: cutWidth, h: 25, dir: 1 }; blockSpeed += isFreeCreditTrialRunActive ? 0.35 : 0.25;
+                
+                let speedIncrement = isFreeCreditTrialRunActive ? 0.75 : 0.45;
+                currentBlock = { x: 0, y: stackLayers[stackLayers.length - 1].y - 25, w: cutWidth, h: 25, dir: 1 }; 
+                blockSpeed += speedIncrement;
             }
         }
 
-        // GAME 2: CYBER RUNNER (Normalized for Refresh Rates)
-        let runnerX = 200; let runnerLane = 1; let runnerObstacles = []; let runnerTimer = 0; let runnerGameOver = false;
+        // GAME 2: CYBER RUNNER
+        let runnerX = 200; let runnerLane = 1; let runnerObstacles = []; let runnerFrame = 0; let runnerGameOver = false;
         function initDash() {
             score = 0; scoreDisplay.textContent = score; runnerGameOver = false;
             leaderboardTopDisplay.textContent = isFreeCreditTrialRunActive ? "5000" : TARGET_LEADERBOARD_RECORDS.dash;
-            runnerLane = 1; runnerX = 200; runnerObstacles = []; runnerTimer = 0;
+            runnerLane = 1; runnerX = 200; runnerObstacles = []; runnerFrame = 0;
             drawLeaderboardStandings('dash', isViewingCombinedLeaderboard);
         }
         function updateDash() {
             if (runnerGameOver) { ctx.fillStyle = '#f43f5e'; ctx.font = 'bold 14px monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = 'center'; ctx.fillText("SYSTEM DEFUNCT!", canvas.width / 2, canvas.height / 2); return; }
             
-            runnerTimer += dt; 
-            let defaultBaseInterval = isFreeCreditTrialRunActive ? 15 : 22;
-            let currentSpawnInterval = Math.max(isFreeCreditTrialRunActive ? 6 : 10, defaultBaseInterval - Math.floor(score / 150));
+            runnerFrame += dt; 
+            let defaultBaseInterval = isFreeCreditTrialRunActive ? 8 : 12;
+            let currentSpawnInterval = Math.max(isFreeCreditTrialRunActive ? 2 : 4, defaultBaseInterval - Math.floor(score / 120));
             
             ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 1; for(let i = 0; i <= canvas.height; i += 30) { ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke(); }
             ctx.strokeStyle = '#312e81'; ctx.lineWidth = 4; [133, 266].forEach(lx => { ctx.beginPath(); ctx.moveTo(lx, 0); ctx.lineTo(lx, canvas.height); ctx.stroke(); });
 
             if (keys[37]) { keys[37] = false; if (runnerLane > 0) runnerLane--; }
-            if (keys[39]) { keys[39] = false; if (runnerLane < 2) runnerLane--; }
+            if (keys[39]) { keys[39] = false; if (runnerLane < 2) runnerLane++; }
             
             let targetX = (runnerLane * 133) + 66; 
             runnerX = targetX;
 
-            if (runnerTimer >= currentSpawnInterval) { 
-                runnerTimer = 0;
+            if (runnerFrame >= currentSpawnInterval) { 
+                runnerFrame = 0;
                 let spawnLane = Math.floor(Math.random() * 3);
-                let initialSpeed = isFreeCreditTrialRunActive ? 8.5 : 5.0;
-                let velocityFactor = isFreeCreditTrialRunActive && score >= 1200 ? Math.pow(1.35, (score / 250)) : (score / 200);
+                let initialSpeed = isFreeCreditTrialRunActive ? 14.5 : 8.5;
+                
+                // Speed scaling algorithm
+                let velocityFactor = 0;
+                if (isFreeCreditTrialRunActive) {
+                    velocityFactor = score >= 800 ? Math.pow(1.38, (score / 200)) : (score / 150);
+                } else {
+                    velocityFactor = (score / 250); // Sandbox mode scaling
+                }
+                
                 runnerObstacles.push({ lane: spawnLane, y: -35, speed: initialSpeed + velocityFactor, processed: false, wasTargetingPlayer: (spawnLane === runnerLane) }); 
             }
             
@@ -479,7 +498,7 @@
                 ctx.shadowBlur = 30; ctx.shadowColor = '#ff3b3b'; ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 14, 0, Math.PI * 2); ctx.fill();
                 ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(obsX, obs.y + 12, 5, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
                 
-                let effectiveRadius = isFreeCreditTrialRunActive && score >= 1200 ? 32 : 14;
+                let effectiveRadius = (isFreeCreditTrialRunActive && score >= 1000) ? 36 : 14;
                 if (!obs.processed && obs.y > (230 - effectiveRadius) && obs.y < 265 && obs.lane === runnerLane) { 
                     obs.processed = true; score -= isFreeCreditTrialRunActive ? 200 : 10; screenshake = 15; spawnExplosion(runnerX, 250, '#ef4444');
                     if (score <= 0) { score = 0; runnerGameOver = true; handleTrialRunFailure(); }
@@ -492,13 +511,13 @@
             }
         }
 
-        // GAME 3: BRICK BREAKER (Normalized for Refresh Rates)
-        let paddle = { x: 160, y: 270, width: 75, height: 10, speed: 6 }; let ball = { x: 200, y: 150, dx: 3.5, dy: -3.5, radius: 5 }; let bricks = []; let fusionGameOver = false;
+        // GAME 3: BRICK BREAKER
+        let paddle = { x: 160, y: 270, width: 75, height: 10, speed: 7 }; let ball = { x: 200, y: 150, dx: 5.5, dy: -5.5, radius: 5 }; let bricks = []; let fusionGameOver = false;
         function initFusion() {
             score = 0; scoreDisplay.textContent = score; fusionGameOver = false;
             leaderboardTopDisplay.textContent = isFreeCreditTrialRunActive ? "5000" : TARGET_LEADERBOARD_RECORDS.fusion; 
-            paddle.width = isFreeCreditTrialRunActive ? 35 : 75; paddle.speed = isFreeCreditTrialRunActive ? 5.5 : 8.5;
-            ball.x = 200; ball.y = 150; ball.dx = isFreeCreditTrialRunActive ? 5.0 : 3.5; ball.dy = isFreeCreditTrialRunActive ? -5.0 : -3.5; bricks = [];
+            paddle.width = isFreeCreditTrialRunActive ? 35 : 75; paddle.speed = isFreeCreditTrialRunActive ? 8.5 : 12.5;
+            ball.x = 200; ball.y = 150; ball.dx = isFreeCreditTrialRunActive ? 8.0 : 5.5; ball.dy = isFreeCreditTrialRunActive ? -8.0 : -5.5; bricks = [];
             let rowsCount = isFreeCreditTrialRunActive ? 6 : 3; for (let r = 0; r < rowsCount; r++) { for (let c = 0; c < 7; c++) { bricks.push({ x: 25 + c * 52, y: 40 + r * 18, width: 44, height: 12, alive: true }); } }
             drawLeaderboardStandings('fusion', isViewingCombinedLeaderboard);
         }
@@ -508,12 +527,16 @@
             if (keys[37] && paddle.x > 0) paddle.x -= paddle.speed * dt; 
             if (keys[39] && paddle.x < canvas.width - paddle.width) paddle.x += paddle.speed * dt;
             
-            let baselineSpeedFactor = 1.0; if (isFreeCreditTrialRunActive && score >= 1000) baselineSpeedFactor = 1.45; 
+            // Speed scaling algorithm
+            let baselineSpeedFactor = 1.0; 
+            if (isFreeCreditTrialRunActive) {
+                if (score >= 800) baselineSpeedFactor = 1.0 + Math.pow(1.22, (score - 600) / 250);
+            } else {
+                baselineSpeedFactor = 1.0 + (score / 1500); // Sandbox mode scaling
+            }
+
             ball.x += ball.dx * baselineSpeedFactor * dt; ball.y += ball.dy * baselineSpeedFactor * dt; 
-            
-            if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) ball.dx *= -1; 
-            if (ball.y - ball.radius < 0) ball.dy *= -1;
-            
+            if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) ball.dx *= -1; if (ball.y - ball.radius < 0) ball.dy *= -1;
             if (ball.y + ball.radius >= paddle.y && ball.y - ball.radius <= paddle.y + paddle.height && ball.x >= paddle.x && ball.x <= paddle.x + paddle.width) { ball.dy = -Math.abs(ball.dy); screenshake = 4; }
             if (ball.y > canvas.height) { fusionGameOver = true; handleTrialRunFailure(); return; }
             
@@ -528,15 +551,14 @@
             if (!activeBricks) bricks.forEach(b => b.alive = true);
         }
 
-        // 🎯 MAIN LOOP: Calculates Elapsed Time (Delta) for Equal Gameplay Speed Across Laptops and Phones
-        function runMasterLoop(timestamp) {
-            if (!lastTime) lastTime = timestamp;
-            let elapsed = timestamp - lastTime;
-            lastTime = timestamp;
-
-            // Normalize delta time relative to 60 FPS (approx 16.67ms per frame)
+        // HIGH-PRECISION MASTER LOOP (Framerate Normalized)
+        function runMasterLoop(now) {
+            let elapsed = now - lastTime;
+            lastTime = now;
+            
+            // Normalize delta relative to 60 FPS (~16.67ms)
             dt = elapsed / 16.67;
-            if (isNaN(dt) || dt > 3) dt = 1; // Safeguard against tab-switching delays
+            if (isNaN(dt) || dt > 3.0) dt = 1.0; // Prevent erratic spikes when switching tabs
 
             ctx.save();
             if (screenshake > 0) { ctx.translate((Math.random() - 0.5) * screenshake, (Math.random() - 0.5) * screenshake); screenshake *= 0.9; if (screenshake < 0.5) screenshake = 0; }
